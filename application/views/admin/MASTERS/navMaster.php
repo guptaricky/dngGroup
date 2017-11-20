@@ -33,7 +33,7 @@
 			<div id="content">
 				<div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Expense Category <span></span></h1>
+		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Manage Navigations<span></span></h1>
 	</div>
 		
 </div>
@@ -48,8 +48,8 @@
 			<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
 				
 				<header>
-					<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
-					<h2>Add Expense Category </h2>				
+					<span class="widget-icon"> <i class="fa fa-link"></i> </span>
+					<h2>Generate Link </h2>				
 					
 				</header>
 
@@ -64,19 +64,33 @@
 							<fieldset>
 								<div class="row">
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
-											<input type="text" name="fname" placeholder="Category Name">
+										<label class="input"> <i class="icon-prepend fa fa-edit"></i>
+											<input type="text" name="linkname" placeholder="Link Name">
 										</label>
 									</section>
+									<section class="col col-12">
+									<label class="input"> <i class="icon-prepend fa fa-desktop"></i>									
+										<input type="text" name="linkicon" placeholder="Select Icon">
+									</label>
+									</section>
+									<section class="col col-12">
+									<label class="input"> <i class="icon-prepend fa fa-link"></i> 										
+										<input type="text" name="linkurl" placeholder="URL">
+									</label>
+									</section>
+									<section class="col col-12">
+										<label class="select">
+											<select name="linkuser">
+												<option value="1" selected="">Admin</option>
+												<option value="2">Super Admin</option>
+												<option value="3">User</option>
+											</select> <i></i> </label>
+									</section>									
 								</div>
-
-								
 							</fieldset>
-
-
 							<footer>
-								<button type="submit" class="btn btn-primary">
-									Add to List
+								<button type="button" class="btn btn-primary" onclick="generateLink()" >
+									Generate link
 								</button>
 							</footer>
 						</form>
@@ -99,7 +113,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
-					<h2>Expense Category List</h2>				
+					<h2>Navigation List</h2>				
 					
 				</header>
 
@@ -179,6 +193,34 @@
 
 </section>
 <!-- end widget grid -->
+<script>
+		function generateLink(){
+			
+		var datastr = $('#checkout-form').serialize();	
+		$.ajax({  
+				type: "POST",
+				url: "<?php echo base_url('admin/MASTERS/generateLink'); ?>",
+				data: datastr,
+				success: function(msg){
+					// alert(msg);
+				}  
+			});	 
+		}
+</script>
+<script>
+		function getNavigations(){
+			alert('hhi');
+		$.ajax({  
+				type: "POST",
+				url: "<?php echo base_url('admin/MASTERS/getNavigations'); ?>",
+				success: function(msg){
+					alert(msg);
+				
+				}  
+			});		
+		}
+		getNavigations();
+</script>
 <script type="text/javascript">
 	/* DO NOT REMOVE : GLOBAL FUNCTIONS!
 	 *
@@ -210,9 +252,6 @@
 	 *
 	 */
 
-	 var flot_updating_chart, flot_statsChart, flot_multigraph, calendar;
-
-	pageSetUp();
 	
 	/*
 	 * PAGE RELATED SCRIPTS

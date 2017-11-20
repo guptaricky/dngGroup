@@ -20,8 +20,6 @@ class Auth extends CI_Controller {
 
 		if (!$this->ion_auth->logged_in())
 		{
-			// echo "hii";
-			// die;
 			// redirect them to the login page
 			redirect('Auth/login', 'refresh');
 		}
@@ -45,11 +43,10 @@ class Auth extends CI_Controller {
 				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 			}
 		
-			// print_r($this->data);
-			// die;
-				// $this->template->set_template('default');
-				 // $this->template->write_view('content', 'auth/index',$this->data);
-				 // $this->template->render();
+			
+			// $this->template->set_template('default');
+			// $this->template->write_view('content', 'auth/index',$this->data);
+			// $this->template->render();
 			// $this->load->view('auth/index',$this->data);
 			// $this->_render_page('auth/index', $this->data);
 			$this->load->view('default_admin/head', $this->data);
@@ -64,15 +61,12 @@ class Auth extends CI_Controller {
 	// log the user in
 	public function login()
 	{
-		// echo "login";
-			// die;
 		$this->data['title'] = $this->lang->line('login_heading');
 
 		//validate form input
 		$this->form_validation->set_rules('identity', str_replace(':', '', $this->lang->line('login_identity_label')), 'required');
 		$this->form_validation->set_rules('password', str_replace(':', '', $this->lang->line('login_password_label')), 'required');
-// echo "hii";
-			// die;
+
 		if ($this->form_validation->run() == true)
 		{
 			// check to see if the user is logging in

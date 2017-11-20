@@ -67,6 +67,12 @@
 					<li class="">
 						<a href="<?php echo base_url().'admin/DASHBOARD/blankPage'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Property Sell</span></a>
 					</li>
+					<li class="">
+						<a href="<?php echo base_url().'admin/DASHBOARD/users_accounts'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-key"></i> <span class="menu-item-parent">Users Accounts</span></a>
+					</li>
+					<li class="">
+						<a href="<?php echo base_url().'admin/MASTERS/navMaster'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-link"></i> <span class="menu-item-parent">Navigations</span></a>
+					</li>
 				</ul>
 			</nav>
 			<a href="http://dngbuilder.com" target="_blank" class="btn btn-primary nav-demo-btn"><i class="fa fa-info-circle"></i> www.dngbuilder.com</a>
