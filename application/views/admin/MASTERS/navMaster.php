@@ -209,7 +209,7 @@
 </script>
 <script>
 		function getNavigations(){
-			alert('hhi');
+			// alert('hhi');
 		$.ajax({  
 				type: "POST",
 				url: "<?php echo base_url('admin/MASTERS/getNavigations'); ?>",

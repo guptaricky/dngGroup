@@ -14,23 +14,31 @@ $this->load->library('email');
 
 
 	public function dashboard(){
-		
-		$this->load->view('default_admin/head');
-		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
-		$this->load->view('admin/DASHBOARD/dashboard');
-		$this->load->view('default_admin/footer');
-		
+		if($this->ion_auth->logged_in())
+		{
+			$this->load->view('default_admin/head');
+			$this->load->view('default_admin/header');
+			$this->load->view('default_admin/sidebar');
+			$this->load->view('admin/DASHBOARD/dashboard');
+			$this->load->view('default_admin/footer');
+		}
+		else{
+			redirect('auth/login');	
+		}	
 	}
 
 	public function blankPage(){
-		
-		$this->load->view('default_admin/head');
-		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
-		$this->load->view('admin/DASHBOARD/blankPage');
-		$this->load->view('default_admin/footer');
-		
+		if($this->ion_auth->logged_in())
+		{
+			$this->load->view('default_admin/head');
+			$this->load->view('default_admin/header');
+			$this->load->view('default_admin/sidebar');
+			$this->load->view('admin/DASHBOARD/blankPage');
+			$this->load->view('default_admin/footer');
+		}
+		else{
+			redirect('auth/login');	
+		}
 	}
 
 	public function users_accounts(){
