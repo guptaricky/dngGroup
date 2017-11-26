@@ -95,7 +95,7 @@
 
 <!-- #PLUGINS -->
 		<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'; ?>"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script>
 			if (!window.jQuery) {
 				document.write('<script src="<?php echo base_url().'assets/js/libs/jquery-2.1.1.min.js'; ?>"><\/script>');
@@ -165,6 +165,6 @@
 		<!-- SmartChat UI : plugin -->
 		<script src="<?php echo base_url().'assets/js/smart-chat-ui/smart.chat.ui.min.js'; ?>"></script>
 		<script src="<?php echo base_url().'assets/js/smart-chat-ui/smart.chat.manager.min.js'; ?>"></script>
-
+		
 	</body>
 </html>

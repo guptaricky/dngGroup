@@ -28,10 +28,11 @@ class MASTERS extends CI_Controller {
 	public function navMaster(){
 		if($this->ion_auth->logged_in())
 		{
+			$data['navigations'] = $this->Common_model->get_data_by_query_pdo("select * from nav_master where 1 ",array());
 			$this->load->view('default_admin/head');
 			$this->load->view('default_admin/header');
 			$this->load->view('default_admin/sidebar');
-			$this->load->view('admin/MASTERS/navMaster');
+			$this->load->view('admin/MASTERS/navMaster',$data);
 			$this->load->view('default_admin/footer');
 		}else{
 			redirect('auth/login');	
@@ -40,10 +41,10 @@ class MASTERS extends CI_Controller {
 
 	public function getNavigations(){
 		
-		// $data['navigations'] = $this->Common_model->get_data_by_query_pdo("select * from nav_master where 1 ",array());
-		// echo json_encode($data['navigations']);
+		$data['navigations'] = $this->Common_model->get_data_by_query_pdo("select * from nav_master where 1 ",array());
+		echo json_encode($data['navigations']);
 		// print_r($data['navigations']);
-		echo "hi";
+		
 	}
 
 	public function generateLink(){
@@ -55,7 +56,7 @@ class MASTERS extends CI_Controller {
 			'nav_url' => $_POST['linkurl'],
 			//'nav_user' => $_POST['linkuser'],
 			'nav_status' => 1
-			);
+			);	
 			$this->Crud_model->insert_record('nav_master',$data);
 		}else{
 			redirect('auth/login');	

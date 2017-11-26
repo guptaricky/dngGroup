@@ -107,14 +107,13 @@
 
 		</article>
 		
-		<article class="col-sm-12 col-md-12 col-lg-9">
-			
+		<article class="col-sm-12 col-md-12 col-lg-9" ng-app="myApp" ng-controller="myCtrl" >
 			<div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false">
-				
+				<button onclick="getNavigations()">Add</button>
 				<header>
 					<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
 					<h2>Navigation List</h2>				
-					
+					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>
 				</header>
 
 				<!-- widget div-->
@@ -128,48 +127,18 @@
 							<table class="table table-bordered">
 								<thead>
 									<tr>
-										<th>Column name</th>
-										<th>Column name</th>
-										<th>Column name</th>
-										<th>Column name</th>
+										<th>Navigation Name</th>
+										<th>Url</th>
+										<th>Icon</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
-									</tr>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
-									</tr>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
-									</tr>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
-									</tr>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
-									</tr>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
+									<tr ng-repeat="x in names">
+										<td>{{ x.nav_name }}</td>
+										<td>{{ x.nav_url }}</td>
+										<td>{{ x.nav_icon }}</td>
+										<td></td>
 									</tr>
 								</tbody>
 							</table>
@@ -194,6 +163,23 @@
 </section>
 <!-- end widget grid -->
 <script>
+		function getNavigations(){
+		
+					var app = angular.module('myApp', []);
+					app.controller('myCtrl', function($scope,$http) {
+						// alert("hiii");
+						// $scope.addItem = function () {
+						$http.get("<?php echo base_url('admin/MASTERS/getNavigations'); ?>")
+						.then(function (response) {
+							$scope.names = response.data;
+							});
+					// }
+					});
+					
+		}
+		getNavigations()
+</script>
+<script>
 		function generateLink(){
 			
 		var datastr = $('#checkout-form').serialize();	
@@ -202,24 +188,18 @@
 				url: "<?php echo base_url('admin/MASTERS/generateLink'); ?>",
 				data: datastr,
 				success: function(msg){
-					// alert(msg);
-				}  
+					
+				}
+			}).done(function (msg) {
+				// alert('in done');
+				getNavigations()
 			});	 
 		}
 </script>
+
+
 <script>
-		function getNavigations(){
-			// alert('hhi');
-		$.ajax({  
-				type: "POST",
-				url: "<?php echo base_url('admin/MASTERS/getNavigations'); ?>",
-				success: function(msg){
-					alert(msg);
-				
-				}  
-			});		
-		}
-		getNavigations();
+	
 </script>
 <script type="text/javascript">
 	/* DO NOT REMOVE : GLOBAL FUNCTIONS!
@@ -259,68 +239,12 @@
 
 	// pagefunction
 	
-	var pagefunction = function() {
-			
-		$(".js-status-update a").click(function () {
-		    var selText = $(this).text();
-		    var $this = $(this);
-		    $this.parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
-		    $this.parents('.dropdown-menu').find('li').removeClass('active');
-		    $this.parent().addClass('active');
-		});
-		
-		/*
-		 * TODO: add a way to add more todo's to list
-		 */
-		
-		// initialize sortable
-		
-	    $("#sortable1, #sortable2").sortable({
-	        handle: '.handle',
-	        connectWith: ".todo",
-	        update: countTasks
-	    }).disableSelection();
-		
-		
-		// check and uncheck
-		$('.todo .checkbox > input[type="checkbox"]').click(function () {
-		    var $this = $(this).parent().parent().parent();
-		
-		    if ($(this).prop('checked')) {
-		        $this.addClass("complete");
-		
-		        // remove this if you want to undo a check list once checked
-		        //$(this).attr("disabled", true);
-		        $(this).parent().hide();
-		
-		        // once clicked - add class, copy to memory then remove and add to sortable3
-		        $this.slideUp(500, function () {
-		            $this.clone().prependTo("#sortable3").effect("highlight", {}, 800);
-		            $this.remove();
-		            countTasks();
-		        });
-		    } else {
-		        // insert undo code here...
-		    }
-		
-		})
-		// count tasks
-		function countTasks() {
-		
-		    $('.todo-group-title').each(function () {
-		        var $this = $(this);
-		        $this.find(".num-of-tasks").text($this.next().find("li").size());
-		    });
-		
-		}
-		
-		
-	}
+
 
 	// end destroy
 	
 	// run pagefunction on load
-	pagefunction();
+
 	
 	
 </script>
