@@ -1,36 +1,41 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class MASTERS extends CI_Controller {
-public function __construct()
-{
-parent :: __construct();
-$this->load->model('Crud_model');
-$this->load->model('Common_model');
-$this->load->model('ion_auth_model');
-$this->load->helper(array('url','language'));
-$this->lang->load('auth');
-$this->load->library('email');
-
-}
+	public function __construct()
+	{
+		parent :: __construct();
+		$this->load->model('Crud_model');
+		$this->load->model('Common_model');
+		$this->load->model('ion_auth_model');
+		$this->load->helper(array('url','language'));
+		$this->lang->load('auth');
+		$this->load->library('email');
+	}
 
 
 	public function expenseCategory(){
-		
-		$this->load->view('default_admin/head');
-		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
-		$this->load->view('admin/MASTERS/expenseCategory');
-		$this->load->view('default_admin/footer');
-		
+		if($this->ion_auth->logged_in())
+		{
+			$this->load->view('default_admin/head');
+			$this->load->view('default_admin/header');
+			$this->load->view('default_admin/sidebar');
+			$this->load->view('admin/MASTERS/expenseCategory');
+			$this->load->view('default_admin/footer');
+		else{
+			redirect('auth/login');	
+		}
 	}
 
 	public function navMaster(){
-		
-		$this->load->view('default_admin/head');
-		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
-		$this->load->view('admin/MASTERS/navMaster');
-		$this->load->view('default_admin/footer');
-		
+		if($this->ion_auth->logged_in())
+		{
+			$this->load->view('default_admin/head');
+			$this->load->view('default_admin/header');
+			$this->load->view('default_admin/sidebar');
+			$this->load->view('admin/MASTERS/navMaster');
+			$this->load->view('default_admin/footer');
+		else{
+			redirect('auth/login');	
+		}
 	}
 
 	public function getNavigations(){
@@ -42,15 +47,19 @@ $this->load->library('email');
 	}
 
 	public function generateLink(){
-		
-		$data = array(
-		'nav_name' => $_POST['linkname'],
-		'nav_icon' => $_POST['linkicon'],
-		'nav_url' => $_POST['linkurl'],
-		//'nav_user' => $_POST['linkuser'],
-		'nav_status' => 1
-		);
-		$this->Crud_model->insert_record('nav_master',$data);
+		if($this->ion_auth->logged_in())
+		{
+			$data = array(
+			'nav_name' => $_POST['linkname'],
+			'nav_icon' => $_POST['linkicon'],
+			'nav_url' => $_POST['linkurl'],
+			//'nav_user' => $_POST['linkuser'],
+			'nav_status' => 1
+			);
+			$this->Crud_model->insert_record('nav_master',$data);
+		else{
+			redirect('auth/login');	
+		}
 	}
 
 
