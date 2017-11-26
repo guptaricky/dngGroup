@@ -2,16 +2,14 @@
 class DASHBOARD extends CI_Controller {
 public function __construct()
 {
-parent :: __construct();
-// $this->load->model('Crud_model');
-$this->load->model('Common_model');
-$this->load->model('ion_auth_model');
-$this->load->helper(array('url','language'));
-$this->lang->load('auth');
-$this->load->library('email');
-
-}
-
+	parent :: __construct();
+		$this->load->model('Crud_model');
+		$this->load->model('Common_model');
+		$this->load->model('ion_auth_model');
+		$this->load->helper(array('url','language'));
+		$this->lang->load('auth');
+		$this->load->library('email');
+	}
 
 	public function dashboard(){
 		if($this->ion_auth->logged_in())
