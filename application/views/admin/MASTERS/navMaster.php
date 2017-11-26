@@ -107,12 +107,12 @@
 
 		</article>
 		
-		<article class="col-sm-12 col-md-12 col-lg-9" ng-app="myApp" ng-controller="myCtrl" >
+		<article class="col-sm-12 col-md-12 col-lg-9" ng-app="myApp" ng-controller="myCtrl" data-ng-init="init()" >
 			<div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
 					<h2>Navigation List</h2>				
-					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="getNavigations()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>
+					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" ng-click="init()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>
 				</header>
 
 				<!-- widget div-->
@@ -164,23 +164,24 @@
 </section>
 <!-- end widget grid -->
 <script>
-		function getNavigations(){
-			// alert("hiii");
+		// function getNavigations(){
+				// alert("hiii");
 					var app = angular.module('myApp', []);
 					app.controller('myCtrl', function($scope,$http) {
 						
-						// $scope.addItem = function () {
+						$scope.init = function () {
 						$scope.showLoader = true;
 						$http.get("<?php echo base_url('admin/MASTERS/getNavigations'); ?>")
 						.then(function (response) {
+							console.log(response.data);
 							$scope.names = response.data;
 							$scope.showLoader = false;
 							});
-					// }
-					});
+					}
+					});	
 					
-		}
-		getNavigations();
+		// }
+		// getNavigations();
 </script>
 <script>
 		function generateLink(){
@@ -195,7 +196,7 @@
 				}
 			}).done(function (msg) {
 				// alert('in done');
-				getNavigations()
+				// getNavigations();
 			});	 
 		}
 </script>
