@@ -20,7 +20,7 @@ class MASTERS extends CI_Controller {
 			$this->load->view('default_admin/sidebar');
 			$this->load->view('admin/MASTERS/expenseCategory');
 			$this->load->view('default_admin/footer');
-		else{
+		}else{
 			redirect('auth/login');	
 		}
 	}
@@ -33,7 +33,7 @@ class MASTERS extends CI_Controller {
 			$this->load->view('default_admin/sidebar');
 			$this->load->view('admin/MASTERS/navMaster');
 			$this->load->view('default_admin/footer');
-		else{
+		}else{
 			redirect('auth/login');	
 		}
 	}
@@ -57,7 +57,7 @@ class MASTERS extends CI_Controller {
 			'nav_status' => 1
 			);
 			$this->Crud_model->insert_record('nav_master',$data);
-		else{
+		}else{
 			redirect('auth/login');	
 		}
 	}
