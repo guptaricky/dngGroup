@@ -112,7 +112,7 @@
 				<header>
 					<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
 					<h2>Navigation List</h2>				
-					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" ng-click="init()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>
+					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" ng-click="init()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>
 				</header>
 
 				<!-- widget div-->
@@ -164,24 +164,19 @@
 </section>
 <!-- end widget grid -->
 <script>
-		// function getNavigations(){
-				// alert("hiii");
-					var app = angular.module('myApp', []);
-					app.controller('myCtrl', function($scope,$http) {
-						
-						$scope.init = function () {
-						$scope.showLoader = true;
-						$http.get("<?php echo base_url('admin/MASTERS/getNavigations'); ?>")
-						.then(function (response) {
-							console.log(response.data);
-							$scope.names = response.data;
-							$scope.showLoader = false;
-							});
-					}
-					});	
-					
-		// }
-		// getNavigations();
+	var app = angular.module('myApp', []);
+	app.controller('myCtrl', function($scope,$http) {
+		
+		$scope.init = function () {
+		$scope.showLoader = true;
+		$http.get("<?php echo base_url('admin/MASTERS/getNavigations'); ?>")
+		.then(function (response) {
+			console.log(response.data);
+			$scope.names = response.data;
+			$scope.showLoader = false;
+			});
+	}
+	});
 </script>
 <script>
 		function generateLink(){
@@ -195,8 +190,7 @@
 					
 				}
 			}).done(function (msg) {
-				// alert('in done');
-				// getNavigations();
+				$('#reloaddata').trigger('click');
 			});	 
 		}
 </script>
