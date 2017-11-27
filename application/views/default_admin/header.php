@@ -41,7 +41,7 @@
 		* 'fixed-page-footer' - Fixes footer
 		* 'container'         - boxed layout mode (non-responsive: will not work with fixed-navigation & fixed-ribbon)
 	-->
-	<body class="smart-style-0">
+	<body class="smart-style-0" ng-app="dngGroup">
 
 		<!-- #HEADER -->
 		<header id="header">

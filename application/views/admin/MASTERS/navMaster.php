@@ -1,6 +1,6 @@
 
 		<!-- #MAIN PANEL -->
-		<div id="main" role="main">
+		<div id="main" role="main"  ng-app="dngGroup" ng-controller="myCtrl" data-ng-init="init()" >
 
 			<!-- RIBBON -->
 			<div id="ribbon">
@@ -89,6 +89,9 @@
 								</div>
 							</fieldset>
 							<footer>
+								<button type="button" id="buttontest" class="btn btn-primary" onclick="testfunc()" >
+									test
+								</button>
 								<button type="button" class="btn btn-primary" onclick="generateLink()" >
 									Generate link
 								</button>
@@ -107,7 +110,7 @@
 
 		</article>
 		
-		<article class="col-sm-12 col-md-12 col-lg-9" ng-app="myApp" ng-controller="myCtrl" data-ng-init="init()" >
+		<article class="col-sm-12 col-md-12 col-lg-9">
 			<div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
@@ -164,7 +167,7 @@
 </section>
 <!-- end widget grid -->
 <script>
-	var app = angular.module('myApp', []);
+	var app = angular.module('dngGroup', []);
 	app.controller('myCtrl', function($scope,$http) {
 		
 		$scope.init = function () {
@@ -180,7 +183,7 @@
 </script>
 <script>
 		function generateLink(){
-			
+				
 		var datastr = $('#checkout-form').serialize();	
 		$.ajax({  
 				type: "POST",
@@ -190,9 +193,23 @@
 					
 				}
 			}).done(function (msg) {
-				$('#reloaddata').trigger('click');
+				// $('#reloaddata').trigger('click');
+					
+					
 			});	 
 		}
+</script>
+
+<script>
+	function testfunc(){
+	// $('#buttontest').click(function(){
+		// alert("hi");
+		angular.element(document.getElementById('myCtrl')).injector().init('$rootScope');
+		// angular.element(document.getElementById('myCtrl')).scope().$apply();
+		
+	// });
+	}
+	
 </script>
 
 
