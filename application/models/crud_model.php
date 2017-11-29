@@ -22,9 +22,9 @@
 			$this->db->query($qry);
         }
 		
-		public function edit_record_by_anyid($tbl,$id,$data,$where)
+		public function edit_record_by_anyid($tbl,$id,$val,$data)
 		{
-            $this->db->where($where,$id);
+            $this->db->where($id,$val);
             if($this->db->update($tbl,$data))
 			{ 
 				return true;
