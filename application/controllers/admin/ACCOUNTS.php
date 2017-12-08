@@ -87,6 +87,20 @@ class ACCOUNTS extends CI_Controller {
 		}
 	}
 
+
+	public function vendor_ledger(){
+		if($this->ion_auth->logged_in())
+		{
+			$this->load->view('default_admin/head');
+			$this->load->view('default_admin/header');
+			$this->load->view('default_admin/sidebar');
+			$this->load->view('admin/ACCOUNTS/vendor_ledger');
+			$this->load->view('default_admin/footer');
+		}else{
+			redirect('auth/login');	
+		}
+	}
+
 	public function generateLink(){
 		if($this->ion_auth->logged_in())
 		{

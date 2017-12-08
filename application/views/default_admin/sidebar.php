@@ -50,7 +50,7 @@
 						<a href="<?php echo base_url().'admin/DASHBOARD/dashboard'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
 					</li>
 					<li class="">
-						<a href="<?php echo base_url().'admin/DASHBOARD/blankPage'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-building"></i> <span class="menu-item-parent">Manage Sites</span></a>
+						<a href="<?php echo base_url().'admin/MASTERS/site_master'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-building"></i> <span class="menu-item-parent">Manage Sites</span></a>
 					</li>
 					<li class="">
 						<a href="<?php echo base_url().'admin/MASTERS/expenseCategory'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Expense Category</span></a>
@@ -59,10 +59,10 @@
 						<a href="<?php echo base_url().'admin/DASHBOARD/blankPage'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Register Employee</span></a>
 					</li>
 					<li class="">
-						<a href="<?php echo base_url().'admin/DASHBOARD/blankPage'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Add Vendors</span></a>
+						<a href="<?php echo base_url().'admin/ACCOUNTS/vendor'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Add Vendors</span></a>
 					</li>
 					<li class="">
-						<a href="<?php echo base_url().'admin/DASHBOARD/blankPage'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-rupee"></i> <span class="menu-item-parent">Vendor's Payment</span></a>
+						<a href="<?php echo base_url().'admin/ACCOUNTS/vendor_ledger'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-rupee"></i> <span class="menu-item-parent">Vendor's Payment</span></a>
 					</li>
 					<li class="">
 						<a href="<?php echo base_url().'admin/DASHBOARD/blankPage'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Property Sell</span></a>

@@ -71,6 +71,40 @@ CREATE TABLE IF NOT EXISTS `nav_master` (
 ) ENGINE=InnoDB;
 
 
+----------Site Management------------
+
+CREATE TABLE IF NOT EXISTS `site_detail` (
+  `site_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  `site_name` varchar(200) NOT NULL,
+  `site_banner` varchar(200) NOT NULL,
+  `site_manager_name` varchar(200) NULL,
+  `site_manager_no` varchar(10) NULL,
+  `site_address` varchar(200) NULL,
+  `site_remark` text NULL,
+  `site_status` int(11) Default 1,
+  `site_added_by` int(11) NOT NULL,
+  `site_entrydt` datetime
+) ENGINE=InnoDB;
+
+
+----------Site Other Detail------------
+
+CREATE TABLE IF NOT EXISTS `site_other_detail` (
+  `detail_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  `detail_site_id` int(11) NOT NULL,
+  `detail_sector` varchar(200) NOT NULL,
+  `detail_type` enum('Plots','Flats','Houses') NOT NULL,
+  `detail_no_of_units` int(11) NULL,
+  `detail_area` int(10) NULL,
+  `detail_rate` decimal(12,2) NULL,
+  `detail_status` enum('Available','Hold','Booked','Sold'),
+  `detail_isactive` int(11) Default 1,
+  `detail_added_by` int(11) NOT NULL,
+  `detail_entrydt` datetime,
+   foreign key(detail_site_id) references site_detail(site_id) on update cascade
+) ENGINE=InnoDB;
+
+
 ----------Expense Heads------------
 
 CREATE TABLE IF NOT EXISTS `expense_category` (
@@ -98,7 +132,8 @@ CREATE TABLE IF NOT EXISTS `vendor_master` (
   `vendor_branch_name` varchar(200) DEFAULT NULL,
   `vendor_acc_no` varchar(50) DEFAULT NULL,
   `vendor_ifsc_code` varchar(20) DEFAULT NULL,
-  `vendor_status` int(11) NOT NULL DEFAULT '1'
+  `vendor_status` int(11) NOT NULL DEFAULT '1',
+  `vendor_entrydt` datetime
 ) ENGINE=InnoDB;
 
 
@@ -106,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `vendor_master` (
 
 CREATE TABLE IF NOT EXISTS `vendor_ledger` (
 `ledger_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  `ledger_site_id` int(11) DEFAULT NULL,
   `ledger_vendor_id` int(11) DEFAULT NULL,
   `ledger_voucher_no` varchar(200) DEFAULT NULL,
   `ledger_voucher_image` varchar(200) DEFAULT NULL,
@@ -121,5 +157,7 @@ CREATE TABLE IF NOT EXISTS `vendor_ledger` (
   `ledger_payment_type` varchar(200) DEFAULT NULL,
   `ledger_cheque_dd_no` varchar(200) DEFAULT NULL,
   `ledger_remark` text,
-  `ledger_status` int(11) NOT NULL DEFAULT '1'
+  `ledger_status` int(11) NOT NULL DEFAULT '1',
+  `ledger_added_by` int(11),
+  `ledger_entrydt` datetime
 ) ENGINE=InnoDB;
