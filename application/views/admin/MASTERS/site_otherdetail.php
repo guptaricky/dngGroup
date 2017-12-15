@@ -32,7 +32,7 @@
 			<div id="content">
 				<div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Site Management <span></span></h1>
+		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Site Other Details <span></span></h1>
 	</div>
 		
 </div>
@@ -48,7 +48,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-plus"></i> </span>
-					<h2>Add Site </h2>				
+					<h2>Add Site Other Details</h2>				
 					
 				</header>
 
@@ -96,7 +96,7 @@
 							</fieldset>
 
 							<footer>
-								<button type="button" class="btn btn-primary" onclick="Addsite()" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
+								<button type="button" class="btn btn-primary" onclick="Addsiteotherdetails()" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
 								<button type="reset" class="btn btn-default" > RESET </button>
 							</footer>
 						</form>
@@ -119,8 +119,8 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>sites List</h2>			
-					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="Getsite()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
+					<h2>Sites Other Detail List</h2>			
+					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="Getsitedetails()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
 					
 				</header>
 
@@ -153,16 +153,16 @@
 <!-- end widget grid -->
 <script>
 		$(document).ready(function(){
-			Getsite();
+			Getsitedetails();
 		});
 		
-		function Getsite(){
+		function Getsitedetails(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
 		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Contact Person</th><th>Contact No.</th><th>Address</th><th>Remark</th><th>Banner</th><th>Action</th></tr></thead><tbody>';			
-		$.getJSON('<?php echo base_url('admin/MASTERS/getsite'); ?>','', function(res){
+		$.getJSON('<?php echo base_url('admin/MASTERS/get_site_otherdetail'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.site_manager_name +'</td><td>'+ v.site_manager_no +'</td><td>'+ v.site_address +'</td><td>'+ v.site_remark +'</td><td>'+ v.site_banner +'</td><td><span style="cursor:pointer;" title="Edit" onclick="Editsite('+ v.site_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="Deletesite('+ v.site_id +')"><i class="fa fa-remove"></i></span></td></tr>';
+					  content +='<tr><td>'+ v.detail_site_id +'</td><td>'+ v.detail_sector +'</td><td>'+ v.detail_type +'</td><td>'+ v.detail_no_of_units +'</td><td>'+ v.detail_area +'</td><td>'+ v.detail_rate +'</td><td><span style="cursor:pointer;" title="Edit" onclick="Editsiteotherdetails('+ v.detail_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="Deletesiteotherdetails('+ v.detail_id +')"><i class="fa fa-remove"></i></span></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
@@ -170,40 +170,41 @@
 		}
 	
 
-		function Addsite(){        
+		function Addsiteotherdetails(){        
 		$(".btn").button('loading');		
                    var form_data = $('#checkout-form').serialize();
-			$.post('<?php echo base_url('admin/MASTERS/addsite'); ?>', form_data, function (response) {
+			$.post('<?php echo base_url('admin/MASTERS/add_site_otherdetail'); ?>', form_data, function (response) {
 				$(".btn").button('reset');
 				$('#checkout-form')[0].reset();
-				Getsite();
+				Getsitedetails();
 			});
 		}	
 		
-		function Editsite(id){
-		$.post('<?php echo base_url('admin/MASTERS/editsite'); ?>', {'id':id}, function(response){
+		function Editsiteotherdetails(id){
+		$.post('<?php echo base_url('admin/MASTERS/edit_site_otherdetail'); ?>', {'id':id}, function(response){
 			var res = jQuery.parseJSON(response);
 				$.each(res, function (k, v) {
-					$("#site_id").val(v.site_id);
-					$("#site_name").val(v.site_name);
-					$("#site_banner").val(v.site_banner);
-					$("#site_manager_name").val(v.site_manager_name);
-					$("#site_manager_no").val(v.site_manager_no);
-					$("#site_address").val(v.site_address);
-					$("#site_remark").val(v.site_remark);
+					$("#detail_id").val(v.detail_id);
+					$("#detail_site_id").val(v.detail_site_id);
+					$("#detail_sector").val(v.detail_sector);
+					$("#detail_type").val(v.detail_type);
+					$("#detail_no_of_units").val(v.detail_no_of_units);
+					$("#detail_area").val(v.detail_area);
+					$("#detail_rate").val(v.detail_rate);
+					$("#detail_site_nos").val(v.detail_site_nos);
 					});	
 			});	 
 		}	
 		
-		function Deletesite(id){
-			var r = confirm("Are you sure you want to Delete this site ?");
+		function Deletesiteotherdetails(id){
+			var r = confirm("Are you sure you want to Delete these site Details ?");
 			if(r==true){
 		$.ajax({  
 				type: "POST",
-				url: "<?php echo base_url('admin/MASTERS/deletesite'); ?>",
+				url: "<?php echo base_url('admin/MASTERS/delete_site_otherdetail'); ?>",
 				data: {'id':id},
 				success: function(msg){
-				Getsite();	
+				Getsitedetails();	
 				}  
 			});	
 			}else{}			

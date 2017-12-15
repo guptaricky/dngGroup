@@ -97,11 +97,27 @@ CREATE TABLE IF NOT EXISTS `site_other_detail` (
   `detail_no_of_units` int(11) NULL,
   `detail_area` int(10) NULL,
   `detail_rate` decimal(12,2) NULL,
+  `detail_site_nos` text NULL,
   `detail_status` enum('Available','Hold','Booked','Sold'),
   `detail_isactive` int(11) Default 1,
   `detail_added_by` int(11) NOT NULL,
   `detail_entrydt` datetime,
    foreign key(detail_site_id) references site_detail(site_id) on update cascade
+) ENGINE=InnoDB;
+
+
+----------List of Properties------------
+
+CREATE TABLE IF NOT EXISTS `property_detail` (
+  `property_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  `property_site_id` int(11) NOT NULL,
+  `property_detail_id` int(11) NOT NULL,
+  `property_sno` varchar(20) NOT NULL,
+  `property_saleto` int(11) NOT NULL,
+  `property_status` enum('Available','Hold','Booked','Sold'),
+  `property_isactive` int(11) Default 1,
+   foreign key(property_site_id) references site_detail(site_id) on update cascade
+   foreign key(property_detail_id) references site_other_detail(detail_id) on update cascade
 ) ENGINE=InnoDB;
 
 

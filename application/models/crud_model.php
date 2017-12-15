@@ -10,7 +10,9 @@
 		{
             if($this->db->insert($tbl,$data))
 			{
-				return TRUE;
+				 $insert_id = $this->db->insert_id();
+				 return  $insert_id;
+				// return TRUE;
 			} else {
 				return FALSE;
 			}	
