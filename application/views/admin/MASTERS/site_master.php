@@ -119,7 +119,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>sites List</h2>			
+					<h2>Site List</h2>			
 					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="Getsite()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
 					
 				</header>
@@ -159,10 +159,10 @@
 		function Getsite(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Contact Person</th><th>Contact No.</th><th>Address</th><th>Remark</th><th>Banner</th><th>Action</th></tr></thead><tbody>';			
+		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Contact Person</th><th>Contact No.</th><th>Address</th><th>Banner</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/MASTERS/getsite'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.site_manager_name +'</td><td>'+ v.site_manager_no +'</td><td>'+ v.site_address +'</td><td>'+ v.site_remark +'</td><td>'+ v.site_banner +'</td><td><span style="cursor:pointer;" title="Edit" onclick="Editsite('+ v.site_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="Deletesite('+ v.site_id +')"><i class="fa fa-remove"></i></span></td></tr>';
+					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.site_manager_name +'</td><td>'+ v.site_manager_no +'</td><td>'+ v.site_address +'</td><td>'+ v.site_banner +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="Editsite('+ v.site_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="Deletesite('+ v.site_id +')">Delete</a> <a class="btn btn-success btn-xs" href="<?php echo base_url("admin/MASTERS/manageSite");?>/'+ v.site_id +'">Manage</a> </td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);

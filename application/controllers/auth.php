@@ -682,8 +682,12 @@ class Auth extends CI_Controller {
 			'id'   => 'password_confirm',
 			'type' => 'password'
 		);
-
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view('default_admin/sidebar');
 		$this->_render_page('auth/edit_user', $this->data);
+		$this->load->view('default_admin/footer');
+		
 	}
 
 	// create a new group

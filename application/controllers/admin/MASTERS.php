@@ -95,6 +95,15 @@ class MASTERS extends MY_Controller {
 		echo json_encode($site);
 	}
 	
+	public function manageSite($id){
+		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($id));
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view('default_admin/sidebar');
+		$this->load->view('admin/MASTERS/manageSite',$data);
+		$this->load->view('default_admin/footer');
+	}
+	
 	public function deletesite(){
 		$id = $this->input->post('id');
 		$data = array(
