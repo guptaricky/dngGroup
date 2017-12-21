@@ -67,7 +67,7 @@
 				</br>
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
-						<h1 class="txt-color-red login-header-big" style="font-size:50px">TULIP</h1>
+						<h1 class="txt-color-white login-header-big" style="font-size:60px"><b>DNG Builders</b></h1>
 						
 
 						<div class="row">
