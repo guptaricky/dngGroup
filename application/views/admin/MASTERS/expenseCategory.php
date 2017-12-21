@@ -151,7 +151,7 @@
 		content +='<table class="table table-bordered"><thead><tr><th>S.No.</th><th>Category</th><th>Description</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/MASTERS/getCatg'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.cat_name +'</td><td>'+ v.cat_name +'</td><td>'+ v.cat_desc +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="Editcat('+ v.cat_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="Deletecat('+ v.cat_id +')">Delete</a></td></tr>';
+					  content +='<tr><td>'+ (k+1) +'.</td><td>'+ v.cat_name +'</td><td>'+ v.cat_desc +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="Editcat('+ v.cat_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="Deletecat('+ v.cat_id +')">Delete</a></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
@@ -166,6 +166,7 @@
                    var form_data = $('#checkout-form').serialize();
 				  
 			$.post('<?php echo base_url('admin/MASTERS/addCategory'); ?>', form_data, function (response) {
+				$("#cat_id").val('');
 				$(".btn").button('reset');
 				$('#checkout-form')[0].reset();
 				Getcatg();
@@ -192,6 +193,7 @@
 				data: {'id':id},
 				success: function(msg){
 				Getcatg();
+				$("#cat_id").val('');
 				$(".btn").button('reset');
 				$('#checkout-form')[0].reset();				
 				}  
