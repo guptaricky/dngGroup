@@ -203,7 +203,9 @@
 				url: "<?php echo base_url('admin/MASTERS/deletesite'); ?>",
 				data: {'id':id},
 				success: function(msg){
-				Getsite();	
+				Getsite();
+				$(".btn").button('reset');
+				$('#checkout-form')[0].reset();					
 				}  
 			});	
 			}else{}			

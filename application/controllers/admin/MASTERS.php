@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class MASTERS extends MY_Controller {
 
-
+	//*****Category code Starts****//
 	public function expenseCategory(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
@@ -10,6 +10,44 @@ class MASTERS extends MY_Controller {
 		$this->load->view('default_admin/footer');
 	}
 
+	public function addCategory(){
+		$userid = (array_slice($this->session->userdata, 9, 1));
+		// $uid = $userid['user_id'];
+		$data = array(
+			'cat_name' => $_POST['catgName'],
+			'cat_desc' => $_POST['catgDesc'],
+			'cat_status' => 1,
+			'cat_added_by' => 1,//$uid,
+			'cat_entrydt' => date('Y-m-d H:i:s'),
+		);
+		if(!empty($_POST['cat_id'])){
+			$this->Crud_model-> edit_record_by_anyid('expense_category','cat_id',$_POST['cat_id'],$data);
+		}else{
+			$this->Crud_model->insert_record('expense_category',$data);
+		}
+	}
+	public function getCatg(){
+		$catg = $this->Common_model->get_data_by_query_pdo("select * from expense_category where 1 and cat_status=?",array(1));
+		echo json_encode($catg);
+	}
+	
+	public function editCatg(){
+		$id = $this->input->post('id');
+		$cat = $this->Common_model->get_data_by_query_pdo("select * from expense_category where cat_id=?",array($id));
+		echo json_encode($cat);
+	}
+	
+	public function deleteCatg(){
+		$id = $this->input->post('id');
+		$data = array(
+			'cat_status' => 0
+		);	
+		$this->Crud_model-> edit_record_by_anyid('expense_category','cat_id',$id,$data);
+	}
+
+	//*****Category code Ends****//
+		
+	//*****Navigation code Starts****//
 	public function navMaster(){
 		$data['navigations'] = $this->Common_model->get_data_by_query_pdo("select * from nav_master where 1 ",array());
 		$this->load->view('default_admin/head');
@@ -34,8 +72,10 @@ class MASTERS extends MY_Controller {
 		);	
 		$this->Crud_model->insert_record('nav_master',$data);
 	}
-
-
+	//*****Navigation code Ends****//
+	
+	
+	//*****Site code Starts****//
 	public function site_master(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
@@ -112,8 +152,6 @@ class MASTERS extends MY_Controller {
 		$this->Crud_model-> edit_record_by_anyid('site_detail','site_id',$id,$data);
 	}
 
-
-
 	public function site_otherdetail(){
 			$this->load->view('default_admin/head');
 			$this->load->view('default_admin/header');
@@ -171,7 +209,7 @@ class MASTERS extends MY_Controller {
 		);	
 		$this->Crud_model-> edit_record_by_anyid('site_other_detail','detail_id',$id,$data);
 	}
-
+	//*****Site code Ends****//
 
 	public function sundays(){
 		$start_date = date('01-01-2013');

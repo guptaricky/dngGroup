@@ -59,18 +59,18 @@
 					<!-- widget content -->
 					<div class="widget-body no-padding">
 						
-						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate">
-
+						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
+							<input type="hidden" name="cat_id" id="cat_id" >
 							<fieldset>
 								<div class="row">
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
-											<input type="text" name="fname" placeholder="Category Name">
+											<input type="text" id ="catgName" name="catgName" placeholder="Category Name">
 										</label>
 									</section>
 									<section class="col col-12">
 									<label class="textarea"> 										
-										<textarea rows="3" name="info" placeholder="Description"></textarea> 
+										<textarea rows="3" id="catgDesc" name="catgDesc" placeholder="Description"></textarea> 
 									</label>
 									</section>	
 								</div>
@@ -80,9 +80,8 @@
 
 
 							<footer>
-								<button type="submit" class="btn btn-primary">
-									Add to List
-								</button>
+								<button type="button" class="btn btn-primary" onclick="addCategory()" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
+								<button type="reset" class="btn btn-default" > RESET </button>
 							</footer>
 						</form>
 
@@ -102,9 +101,11 @@
 			
 			<div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false">
 				
+				
 				<header>
-					<span class="widget-icon"> <i class="fa fa-edit"></i> </span>
-					<h2>Expense Category List</h2>				
+					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
+					<h2>Expense Category List</h2>			
+					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="Getsite()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
 					
 				</header>
 
@@ -116,54 +117,9 @@
 						
 						<div class="table-responsive">
 						
-							<table class="table table-bordered">
-								<thead>
-									<tr>
-										<th>Column name</th>
-										<th>Column name</th>
-										<th>Column name</th>
-										<th>Column name</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
-									</tr>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
-									</tr>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
-									</tr>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
-									</tr>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
-									</tr>
-									<tr>
-										<td>Row 1</td>
-										<td>Row 2</td>
-										<td>Row 3</td>
-										<td>Row 4</td>
-									</tr>
-								</tbody>
-							</table>
+							<div class="table-responsive" id="result_data">
+						
+							</div>
 							
 						</div>
 
@@ -185,19 +141,64 @@
 </section>
 <!-- end widget grid -->
 <script>
-		function addCategory(){
-			
-		var datastr = $('#checkout-form').serialize();	
-		$.ajax({  
-				type: "POST",
-				url: "<?php echo base_url('admin/MASTERS/addCategory'); ?>",
-				data: datastr,
-				success: function(msg){
-				// $('#voch_file').modal('show');
-				// $("#voch_imagefile").html(msg);
-				}  
+		$(document).ready(function(){
+			Getcatg();
+		});
+		
+		function Getcatg(){
+		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
+		var content ='';	
+		content +='<table class="table table-bordered"><thead><tr><th>S.No.</th><th>Category</th><th>Description</th><th>Action</th></tr></thead><tbody>';			
+		$.getJSON('<?php echo base_url('admin/MASTERS/getCatg'); ?>','', function(res){
+					$.each(res, function (k, v) {
+					  content +='<tr><td>'+ v.cat_name +'</td><td>'+ v.cat_name +'</td><td>'+ v.cat_desc +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="Editcat('+ v.cat_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="Deletecat('+ v.cat_id +')">Delete</a></td></tr>';
+					});					
+					content +='</tbody></table>';	
+				$("#result_data").html(content);
 			});	 
 		}
+	
+
+		
+		function addCategory(){  
+		
+		$(".btn").button('loading');		
+                   var form_data = $('#checkout-form').serialize();
+				  
+			$.post('<?php echo base_url('admin/MASTERS/addCategory'); ?>', form_data, function (response) {
+				$(".btn").button('reset');
+				$('#checkout-form')[0].reset();
+				Getcatg();
+			});
+		}	
+		
+		function Editcat(id){
+		$.post('<?php echo base_url('admin/MASTERS/editCatg'); ?>', {'id':id}, function(response){
+			var res = jQuery.parseJSON(response);
+				$.each(res, function (k, v) {
+					$("#cat_id").val(v.cat_id);
+					$("#catgName").val(v.cat_name);
+					$("#catgDesc").val(v.cat_desc);
+					});	
+			});	 
+		}	
+		
+		function Deletecat(id){
+			var r = confirm("Are you sure you want to Delete this Category ?");
+			if(r==true){
+		$.ajax({  
+				type: "POST",
+				url: "<?php echo base_url('admin/MASTERS/deleteCatg'); ?>",
+				data: {'id':id},
+				success: function(msg){
+				Getcatg();
+				$(".btn").button('reset');
+				$('#checkout-form')[0].reset();				
+				}  
+			});	
+			}else{}			
+		}
+		
 </script>
 <script type="text/javascript">
 	/* DO NOT REMOVE : GLOBAL FUNCTIONS!
