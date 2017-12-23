@@ -97,7 +97,7 @@
 
 							<footer>
 								<button type="button" class="btn btn-primary" onclick="Addsite()" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
-								<button type="reset" class="btn btn-default" > RESET </button>
+								<button type="reset" class="btn btn-default" id="reset"> RESET </button>
 							</footer>
 						</form>
 
@@ -186,7 +186,7 @@
 				$.each(res, function (k, v) {
 					$("#site_id").val(v.site_id);
 					$("#site_name").val(v.site_name);
-					$("#site_banner").val(v.site_banner);
+					// $("#site_banner").val(v.site_banner);
 					$("#site_manager_name").val(v.site_manager_name);
 					$("#site_manager_no").val(v.site_manager_no);
 					$("#site_address").val(v.site_address);
@@ -207,7 +207,8 @@
 				}  
 			});	
 			}else{}			
-		}	
+		}
+		
 </script>
 <script type="text/javascript">
 	/* DO NOT REMOVE : GLOBAL FUNCTIONS!

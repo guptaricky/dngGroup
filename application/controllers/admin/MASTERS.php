@@ -106,11 +106,12 @@ class MASTERS extends MY_Controller {
 
 
 	public function site_otherdetail(){
-			$this->load->view('default_admin/head');
-			$this->load->view('default_admin/header');
-			$this->load->view('default_admin/sidebar');
-			$this->load->view('admin/MASTERS/site_otherdetail');
-			$this->load->view('default_admin/footer');
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view('default_admin/sidebar');
+		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
+		$this->load->view('admin/MASTERS/site_otherdetail',$data);
+		$this->load->view('default_admin/footer');
 	}
 
 	public function add_site_otherdetail(){
@@ -123,8 +124,8 @@ class MASTERS extends MY_Controller {
 			'detail_no_of_units' => $_POST['detail_no_of_units'],
 			'detail_area'        => $_POST['detail_area'],
 			'detail_rate'        => $_POST['detail_rate'],
+			'detail_price'        => $_POST['detail_price'],
 			'detail_site_nos'    => $_POST['detail_site_nos'],
-			'detail_status'      => $_POST['detail_status'],
 			'detail_isactive'    => 1,
 			'detail_added_by'    => 1,//$uid,
 			'detail_entrydt'     => date('Y-m-d H:i:s'),
@@ -132,20 +133,27 @@ class MASTERS extends MY_Controller {
 		
 		if(!empty($_POST['detail_id'])){
 			$this->Crud_model-> edit_record_by_anyid('site_other_detail','detail_id',$_POST['detail_id'],$data);
+			$inserted_id = $_POST['detail_id'];
 		}else{
-			$inserted_id = $this->Crud_model->insert_record('site_other_detail',$data);			
-			foreach($_POST['detail_site_nos'] as $no){
-				$data1 = array(
-					'property_detail_id' => $inserted_id,
-					'property_sno' => $no,
-					'property_isactive' => 1,
-				);
-			}
+			$inserted_id = $this->Crud_model->insert_record('site_other_detail',$data);	
 		}
+		
+			$sites = explode(",",$_POST['detail_site_nos']);
+			foreach($sites as $no){
+				$divisions = $this->Common_model->get_data_by_query_pdo("select * from property_detail where 1 and property_detail_id=? and property_sno=?",array($inserted_id, $no));
+				if(empty($divisions)){
+					$data1 = array(
+						'property_detail_id' => $inserted_id,
+						'property_sno' => $no,
+						'property_isactive' => 1,
+					);
+					$this->Crud_model->insert_record('property_detail',$data1);	
+				}
+			}
 	}
 
 	public function get_site_otherdetail(){
-		$site = $this->Common_model->get_data_by_query_pdo("select * from site_other_detail where 1 and detail_isactive=?",array(1));
+		$site = $this->Common_model->get_data_by_query_pdo("select d.*,s.site_name from site_other_detail d left join site_detail s on s.site_id=d.detail_site_id where 1 and detail_isactive=?",array(1));
 		echo json_encode($site);
 	}
 	

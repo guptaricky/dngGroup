@@ -97,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `site_other_detail` (
   `detail_no_of_units` int(11) NULL,
   `detail_area` int(10) NULL,
   `detail_rate` decimal(12,2) NULL,
+  `detail_price` decimal(12,2) NULL,
   `detail_site_nos` text NULL,
   `detail_status` enum('Available','Hold','Booked','Sold'),
   `detail_isactive` int(11) Default 1,
@@ -149,6 +150,7 @@ CREATE TABLE IF NOT EXISTS `vendor_master` (
   `vendor_acc_no` varchar(50) DEFAULT NULL,
   `vendor_ifsc_code` varchar(20) DEFAULT NULL,
   `vendor_status` int(11) NOT NULL DEFAULT '1',
+  `vendor_added_by` int(11) NOT NULL,
   `vendor_entrydt` datetime
 ) ENGINE=InnoDB;
 
@@ -170,10 +172,26 @@ CREATE TABLE IF NOT EXISTS `vendor_ledger` (
   `ledger_payable_amt` decimal(12,2) DEFAULT NULL,
   `ledger_paid_amt` decimal(12,2) DEFAULT NULL,
   `ledger_balance_amt` decimal(12,2) DEFAULT NULL,
+  `ledger_payment_date` date DEFAULT NULL,
   `ledger_payment_type` varchar(200) DEFAULT NULL,
   `ledger_cheque_dd_no` varchar(200) DEFAULT NULL,
   `ledger_remark` text,
   `ledger_status` int(11) NOT NULL DEFAULT '1',
   `ledger_added_by` int(11),
   `ledger_entrydt` datetime
+) ENGINE=InnoDB;
+
+----------Vendor Partial Payment------------
+
+CREATE TABLE IF NOT EXISTS `vendor_partial_payment` (
+  `partial_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  `partial_ledger_id` int(11) DEFAULT NULL,
+  `partial_date` date DEFAULT NULL,
+  `partial_amt` decimal(12,2) DEFAULT NULL,
+  `partial_payment_type` varchar(200) DEFAULT NULL,
+  `partial_cheque_dd_no` varchar(200) DEFAULT NULL,
+  `partial_remark` text,
+  `partial_status` int(11) NOT NULL DEFAULT '1',
+  `partial_added_by` int(11),
+  `partial_entrydt` datetime
 ) ENGINE=InnoDB;

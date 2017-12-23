@@ -165,6 +165,11 @@
 		<!-- SmartChat UI : plugin -->
 		<script src="<?php echo base_url().'assets/js/smart-chat-ui/smart.chat.ui.min.js'; ?>"></script>
 		<script src="<?php echo base_url().'assets/js/smart-chat-ui/smart.chat.manager.min.js'; ?>"></script>
+		<script>
+		$("button[type=reset]").click(function(){
+			$("input[type=hidden]").val('');
+		});
+		</script>
 		
 	</body>
 </html>

@@ -32,7 +32,7 @@
 			<div id="content">
 				<div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Inventory Perchase <span></span></h1>
+		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Vendor Payment <span></span></h1>
 	</div>
 		
 </div>
@@ -48,7 +48,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-plus"></i> </span>
-					<h2>Add Inventory Perchase </h2>				
+					<h2>Add Vendor Payment </h2>				
 					
 				</header>
 

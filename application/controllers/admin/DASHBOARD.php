@@ -1,6 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class DASHBOARD extends MY_Controller {
 	
+	public function __construct() {
+        parent::__construct();
+    }
+	
 	public function dashboard(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
