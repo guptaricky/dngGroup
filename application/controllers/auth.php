@@ -530,8 +530,12 @@ class Auth extends CI_Controller {
                 'type'  => 'password',
                 'value' => $this->form_validation->set_value('password_confirm'),
             );
-
-            $this->_render_page('auth/create_user', $this->data);
+		$this->_render_page('default_admin/head');
+		$this->_render_page('default_admin/header');
+		$this->_render_page('default_admin/sidebar');
+		$this->_render_page('auth/create_user', $this->data);
+		$this->_render_page('default_admin/footer');
+            
         }
     }
 
@@ -560,7 +564,7 @@ class Auth extends CI_Controller {
 			// do we have a valid request?
 			if ($this->_valid_csrf_nonce() === FALSE || $id != $this->input->post('id'))
 			{
-				show_error($this->lang->line('error_csrf'));
+				//show_error($this->lang->line('error_csrf'));
 			}
 
 			// update the password if it was posted
@@ -682,8 +686,12 @@ class Auth extends CI_Controller {
 			'id'   => 'password_confirm',
 			'type' => 'password'
 		);
-
+		$this->_render_page('default_admin/head');
+		$this->_render_page('default_admin/header');
+		$this->_render_page('default_admin/sidebar');
 		$this->_render_page('auth/edit_user', $this->data);
+		$this->_render_page('default_admin/footer');
+		
 	}
 
 	// create a new group
