@@ -65,7 +65,7 @@
 								<div class="row">
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
-											<input type="text" id ="catgName" name="catgName" placeholder="Category Name">
+											<input type="text" id ="catgName" name="catgName" placeholder="Category Name"  style="text-transform: capitalize;">
 										</label>
 									</section>
 									<section class="col col-12">

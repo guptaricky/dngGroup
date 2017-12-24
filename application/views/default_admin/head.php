@@ -56,8 +56,8 @@
 		<link rel="apple-touch-startup-image" href="<?php echo base_url().'assets/img/splash/ipad-landscape.png'; ?>" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
 		<link rel="apple-touch-startup-image" href="<?php echo base_url().'assets/img/splash/ipad-portrait.png'; ?>" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
 		<link rel="apple-touch-startup-image" href="<?php echo base_url().'assets/img/splash/iphone.png'; ?>" media="screen and (max-device-width: 320px)">
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-	<script src="<?php echo base_url('assets/js/jquery-1.10.1.min.js'); ?>" type="text/javascript"></script>
+		<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="<?php //echo base_url('assets/js/jquery-1.10.1.min.js'); ?>" type="text/javascript"></script>-->
 	</head>
 
 
