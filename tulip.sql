@@ -129,6 +129,7 @@ CREATE TABLE IF NOT EXISTS `expense_category` (
   `cat_name` varchar(100) NOT NULL,
   `cat_desc` varchar(100) NOT NULL,
   `cat_status` int(11) NOT NULL,
+  `cat_added_by` int(11) NOT NULL,
   `cat_entrydt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 

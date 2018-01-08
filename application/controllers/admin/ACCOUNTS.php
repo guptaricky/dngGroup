@@ -68,7 +68,6 @@ class ACCOUNTS extends MY_Controller {
 		'ledger_site_id'  		=> $_POST['ledger_site_id'],
 		'ledger_vendor_id' 		=> $_POST['ledger_vendor_id'],
 		'ledger_voucher_no'  	=> $_POST['ledger_voucher_no'],
-		'ledger_voucher_image' 	=> $_POST['ledger_voucher_image'],
 		'ledger_goods_name' 	=> $_POST['ledger_goods_name'],
 		'ledger_unit' 			=> $_POST['ledger_unit'],
 		'ledger_qty'   			=> $_POST['ledger_qty'],
@@ -86,6 +85,26 @@ class ACCOUNTS extends MY_Controller {
 		'ledger_added_by'       => 1,
 		'ledger_entrydt'        => date('Y-m-d H:i:s'),
 		);
+		if(!empty($_POST['ledger_voucher_image'])){
+			$path = './uploads';
+			if (!is_dir($path))
+				mkdir($path);
+			$path = './uploads/ledger_voucher_image';
+			if (!is_dir($path))
+				mkdir($path);
+
+			$config['upload_path'] = $path;
+			$config['allowed_types'] = 'gif|jpg|png|bmp';
+			$config['width'] = 50;
+			$config['height'] = 50;
+			$config['file_name'] = time().'_'.$_POST['site_name'];
+			$config['file_overwrite'] = true;
+			$this->load->library('upload', $config);
+			$this->upload->do_upload('ledger_voucher_image');
+			$data1 = array('upload_data' => $this->upload->data());
+			$error = array('error' => $this->upload->display_errors());
+			$data['ledger_voucher_image'] = $path . '/' . $data1['upload_data']['file_name'];
+		}
 		
 		$data1 = array(
 		'partial_date' 			=> $_POST['ledger_payment_date'],
@@ -136,8 +155,10 @@ class ACCOUNTS extends MY_Controller {
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
 		$this->load->view('default_admin/sidebar');
-		$data['ledger'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where 1 and ledger_id=?",array($lid));
-		$data['vendor'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_master where 1 and vendor_id=?",array($data['ledger'][0]['ledger_vendor_id']));
+		$data['ledger'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where 1 and ledger_id=?",array($lid));
+		// $data['payment'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment where partial_ledger_id=?",array($lid));
+		// $data['ledger'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where 1 and ledger_id=?",array($lid));
+		// $data['vendor'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_master where 1 and vendor_id=?",array($data['ledger'][0]['ledger_vendor_id']));
 		$this->load->view('admin/ACCOUNTS/vendor_partial_payment',$data);
 		$this->load->view('default_admin/footer');
 	}
@@ -155,37 +176,46 @@ class ACCOUNTS extends MY_Controller {
 		'partial_entrydt'		=> date('Y-m-d H:i:s'),
 		);	
 		
-		if(!empty($_POST['ledger_id'])){
+		if(!empty($_POST['partial_id'])){
 		// $this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$_POST['partial_ledger_id'],$data);
 		// $data1['partial_ledger_id']		=> $_POST['ledger_id'];
 		// $this->Crud_model->edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$data1);
 		}else{
 		$this->Crud_model->insert_record('vendor_partial_payment',$data);
-		$data1['partial_ledger_id']	= $insert_id;
+		$ledger = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where 1 and ledger_id=?",array($_POST['partial_ledger_id']));
+		$amt = $ledger[0]['ledger_balance_amt'] - $_POST['partial_amt'];
+		$data1['ledger_balance_amt']	= $amt;
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$_POST['partial_ledger_id'],$data1);
 		}
-		
+		echo $amt;
 		
 		
 	}
 
 	public function getVendor_partial_payment(){
-		$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_balance_amt, s.site_name, v.vendor_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where 1 and ledger_status=?",array(1));
-		echo json_encode($vendor);
+		$lid = $this->input->get('lid');
+		$payment = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment where partial_ledger_id=? and partial_status=?",array($lid,1));
+		echo json_encode($payment);
 	}
 	
 	public function editVendor_partial_payment(){
 		$id = $this->input->post('id');
-		$vendor = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_id=?",array($id));
+		$vendor = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment where partial_id=?",array($id));
 		echo json_encode($vendor);
 	}
 	
 	public function deleteVendor_partial_payment(){
 		$id = $this->input->post('id');
 		$data = array(
-			'ledger_status' => 0
+			'partial_status' => 0
 		);	
-		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$id,$data);
+		$payment = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment where partial_id=?",array($id));
+		$ledger = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where 1 and ledger_id=?",array($payment[0]['partial_ledger_id']));
+		$amt = $ledger[0]['ledger_balance_amt'] + $payment[0]['partial_amt'];
+		$data1['ledger_balance_amt']	= $amt;
+		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$ledger[0]['ledger_id'],$data1);
+		$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_id',$id,$data);
+		echo $amt;
 	}
 
 	public function generateLink(){

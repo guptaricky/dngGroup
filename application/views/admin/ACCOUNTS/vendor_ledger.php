@@ -58,7 +58,7 @@
 					<!-- widget content -->
 					<div class="widget-body no-padding">
 						
-						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate">
+						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
 								<input type="hidden" name="ledger_id" id="ledger_id" >
 								<div class="row">
 									<section class="col col-6">
@@ -206,7 +206,7 @@
 				<header>
 					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
 					<h2>Vendors List</h2>			
-					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="GetVendor()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
+					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="GetVendorLedger()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
 					
 				</header>
 
@@ -216,7 +216,7 @@
 					<!-- widget content -->
 					<div class="widget-body no-padding">
 						
-						<div class="table-responsive" id="result_data">
+						<div class="table-responsive" id="result_data" style='height:500px;overflow:scroll;'>
 						
 						</div>
 
@@ -248,7 +248,7 @@
 		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Vendor name</th><th>Voucher No.</th><th>Date</th><th>Item</th><th>Total Amount</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getVendor_ledger'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.vendor_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_goods_name +'</td><td>'+ v.ledger_payable_amt +'</td><td>'+ v.ledger_balance_amt +'</td><td><span style="cursor:pointer;" title="Edit" onclick="EditVendorLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></span></td></tr>';
+					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.vendor_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_goods_name +'</td><td>'+ v.ledger_payable_amt +'</td><td>'+ v.ledger_balance_amt +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditVendorLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
