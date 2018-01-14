@@ -65,17 +65,17 @@
 							<fieldset>
 								<div class="row">
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<select name="ledger_site_id" id="ledger_site_id">
+										<label class="select">
+										<select name="ledger_site_id" id="ledger_site_id">
 											<option value=""> SELECT SITE </option>
 											<?php foreach($sites as $site){ ?>
 											<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
 											<?php } ?>
-											</select>
-										</label>
+											</select> <i></i> </label>
 									</section>
+									
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
+										<label class="select">
 											<select name="ledger_vendor_id" id="ledger_vendor_id">
 											<option value=""> SELECT VENDOR </option>
 											<?php foreach($vendors as $v){ ?>

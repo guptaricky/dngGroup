@@ -77,7 +77,7 @@
 								<td><?php echo $ctm['cust_city']?></td>
 								<td data-title="Action">
 								<button class="btn btn-primary btn-xs" id="add_tab">Send sms</button>
-								<button class="btn btn-warning btn-xs">More Info.</button>
+								<a href="<?php echo base_url().'admin/PROPERTY/sell_property';?>" class="btn btn-warning btn-xs">Property Sell</a>
 								</td>
 							  </tr>
 							  <?php endforeach;?>
