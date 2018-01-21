@@ -46,13 +46,13 @@
 		<!-- a blank row to get started -->
 		<div class="col-sm-6 col-lg-4">
 			<!-- your contents here -->
-			<div class="panel panel-default" style="background-color:#a90329;border-color:#9a0325!important">
+			<div class="panel panel-default" >
 				<div class="panel-body status">
 					<div class="who clearfix">
-						<h1 class="text-primary" style="color:#fff"><?php echo $st['site_name'];?></h1>
-						<span class="from" style="color:#fff"><b>Manage By:</b> <?php echo $st['site_manager_name'];?></span>
+						<h1 class="text-primary" ><?php echo $st['site_name'];?></h1>
+						<span class="from" ><b>Manage By:</b> <?php echo $st['site_manager_name'];?></span>
 					</div>
-					<div class="image hide"><img src="<?php echo base_url().'assets/img/sites/site1.jpg'; ?>" alt="img">
+					<div class="image"><img src="<?php echo base_url().'assets/img/sites/site1.jpg'; ?>" alt="img">
 					</div>
 				</div>
 			</div>

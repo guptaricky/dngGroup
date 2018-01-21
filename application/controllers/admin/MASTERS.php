@@ -196,14 +196,41 @@ class MASTERS extends MY_Controller {
 	public function manageSite(){
 		$empid = (array_slice($this->session->userdata,10,1));
 		$empid = $empid['emp_id'];
-		$data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
-		$emp_alloted_site = $data['emp_site'][0]['emp_alloted_site'];
-		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($emp_alloted_site));
+		
+		$group = $this->session->userdata('group');
+			
+			if($group == 'admin'){
+				$data['sites'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where 1",array(0));
+			}
+			else{
+			$data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
+			@$emp_alloted_site = $data['emp_site'][0]['emp_alloted_site'];
+			$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($emp_alloted_site));
+			}
+		
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$this->load->view('admin/MASTERS/manageSite',$data);
 		$this->load->view('default_admin/footer');
+	}
+
+	public function getSitedata(){
+		
+		$site_id = $_POST['site_id'];
+		$group = $this->session->userdata('group');
+		if($group == 'admin'){
+			$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($site_id));
+		}
+		else{
+		$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+		$data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
+		@$emp_alloted_site = $data['emp_site'][0]['emp_alloted_site'];
+		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($emp_alloted_site));
+		}
+		
+		$this->load->view('admin/PROPERTY/site_property',$data);
 	}
 
 
