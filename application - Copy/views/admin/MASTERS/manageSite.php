@@ -59,8 +59,6 @@
 								<li><a href="#more-information" data-toggle="tab">Flat 1<span>Available</span></a></li>
 								<li><a href="#specifications" data-toggle="tab">Flat 2<span class="txt-color-blueDark">Booked</span></a></li>
 								<li><a href="#reviews" data-toggle="tab">Flat 3<span class="txt-color-red">Sold Out</span></a></li>
-								<li><i class="fa fa-refresh fa-4x fa-plus"></i></li>
-								
 							</ul>
 							
 						</div>

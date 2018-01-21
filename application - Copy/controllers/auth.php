@@ -22,17 +22,7 @@ class Auth extends CI_Controller {
 		{
 			// redirect them to the login page
 			redirect('Auth/login', 'refresh');
-		}
-		elseif (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
-		{
-			 
-			   // $this->template->write_view('content', 'auth/index',$this->data);
-				$this->_render_page('auth/index', $this->data);
-				 // $this->template->write_view('footer', 'default/footer');
-				// $this->template->render();
-		}
-		else
-		{
+		}else{
 			// set the flash data error message if there is one
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
@@ -42,20 +32,32 @@ class Auth extends CI_Controller {
 			{
 				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 			}
-		
-			
-			// $this->template->set_template('default');
-			// $this->template->write_view('content', 'auth/index',$this->data);
-			// $this->template->render();
-			// $this->load->view('auth/index',$this->data);
-			// $this->_render_page('auth/index', $this->data);
+		if ($this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+		{
+			$this->data['sites'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where 1",array(0));
 			$this->load->view('default_admin/head', $this->data);
 			$this->load->view('default_admin/header', $this->data);
 			$this->load->view('default_admin/sidebar', $this->data);
-			$this->load->view('admin/DASHBOARD/dashboard');
+			$this->load->view('admin/DASHBOARD/dashboard', $this->data);
 			$this->load->view('default_admin/footer');
-			
 		}
+		elseif($this->ion_auth->in_group('Accountant'))
+		{
+			$empid = (array_slice($this->session->userdata,10,1));
+			$empid = $empid['emp_id'];
+			// $empid = $this->session->userdata;
+			// print_r($empid);die;
+			$this->data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
+			// echo $this->db->last_query();die;
+			$this->load->view('default_admin/head');
+			$this->load->view('default_admin/header');
+			$this->load->view('default_user/sidebar');
+			$this->load->view('admin/DASHBOARD/user-dashboard',$this->data);
+			$this->load->view('default_admin/footer');
+		}
+		}
+		
+		
 	}
 
 	// log the user in
@@ -425,11 +427,29 @@ class Auth extends CI_Controller {
 		}
 	}
 
+	// select_user for creating login
+	public function select_employee()
+    {
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view('default_admin/sidebar');
+		$data['employee'] = $this->Common_model->get_data_by_query_pdo("select * from employes where 1 ",array());
+		$this->load->view('auth/select_employee',$data);
+		$this->load->view('default_admin/footer');
+		
+	}
 	// create a new user
 	public function create_user()
     {
         $this->data['title'] = $this->lang->line('create_user_heading');
-
+		$emp_id = $this->uri->segment(3); 
+		$this->session->set_userdata('emp_id', $emp_id);
+		$user = $this->db->query("select * from users where emp_id='$emp_id'");
+		$empdetail = $this->Common_model->get_data_by_query_pdo("select emp_fullname,emp_email,emp_phone from employes where emp_id=?",array($emp_id));
+		$empfullname = $empdetail[0]['emp_fullname'];
+		$empfullname = explode(' ',$empfullname);
+		$emp_first_name = $empfullname[0];
+		$emp_last_name = $empfullname[1];
         if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
         {
             redirect('auth', 'refresh');
@@ -440,6 +460,7 @@ class Auth extends CI_Controller {
         $this->data['identity_column'] = $identity_column;
 
         // validate form input
+		$this->form_validation->set_rules('emp_id', $this->lang->line('create_user_validation_empid_label'), 'required');
         $this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
         $this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required');
         if($identity_column!=='email')
@@ -482,17 +503,23 @@ class Auth extends CI_Controller {
             // set the flash data error message if there is one
             $this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
 
-            $this->data['first_name'] = array(
+            $this->data['emp_id'] = array(
+                'name'  => 'emp_id',
+                'id'    => 'emp_id',
+                'type'  => 'text',
+                'value' => $emp_id,
+            );
+			$this->data['first_name'] = array(
                 'name'  => 'first_name',
                 'id'    => 'first_name',
                 'type'  => 'text',
-                'value' => $this->form_validation->set_value('first_name'),
+                'value' => $emp_first_name,
             );
             $this->data['last_name'] = array(
                 'name'  => 'last_name',
                 'id'    => 'last_name',
                 'type'  => 'text',
-                'value' => $this->form_validation->set_value('last_name'),
+                'value' => $emp_last_name,
             );
             $this->data['identity'] = array(
                 'name'  => 'identity',
@@ -504,19 +531,19 @@ class Auth extends CI_Controller {
                 'name'  => 'email',
                 'id'    => 'email',
                 'type'  => 'text',
-                'value' => $this->form_validation->set_value('email'),
+                'value' => $empdetail[0]['emp_email'],
             );
             $this->data['company'] = array(
                 'name'  => 'company',
                 'id'    => 'company',
                 'type'  => 'text',
-                'value' => $this->form_validation->set_value('company'),
+                'value' => 'DNG',
             );
             $this->data['phone'] = array(
                 'name'  => 'phone',
                 'id'    => 'phone',
                 'type'  => 'text',
-                'value' => $this->form_validation->set_value('phone'),
+                'value' => $empdetail[0]['emp_phone'],
             );
             $this->data['password'] = array(
                 'name'  => 'password',
@@ -530,8 +557,25 @@ class Auth extends CI_Controller {
                 'type'  => 'password',
                 'value' => $this->form_validation->set_value('password_confirm'),
             );
-
-            $this->_render_page('auth/create_user', $this->data);
+		$this->_render_page('default_admin/head');
+		$this->_render_page('default_admin/header');
+		$this->_render_page('default_admin/sidebar');
+		if($user->num_rows() > 0)
+			{
+				
+				
+			$useridloggedin = $this->Common_model->findfield('users','emp_id',$emp_id,'id');	
+			
+				
+			$this->data['usgtest'] = $this->Common_model->get_data_by_query_pdo("select *,TIMESTAMP(log_logout) as logout from user_log where log_uid = ? order by log_id desc ",array($useridloggedin));	
+			$this->load->view('admin/DASHBOARD/login_detail',$this->data);
+				
+			}else {
+			$this->_render_page('auth/create_user',$this->data);
+			}
+		// $this->_render_page('auth/create_user', $this->data);
+		$this->_render_page('default_admin/footer');
+            
         }
     }
 
@@ -560,7 +604,7 @@ class Auth extends CI_Controller {
 			// do we have a valid request?
 			if ($this->_valid_csrf_nonce() === FALSE || $id != $this->input->post('id'))
 			{
-				show_error($this->lang->line('error_csrf'));
+				//show_error($this->lang->line('error_csrf'));
 			}
 
 			// update the password if it was posted
@@ -682,11 +726,11 @@ class Auth extends CI_Controller {
 			'id'   => 'password_confirm',
 			'type' => 'password'
 		);
-		$this->load->view('default_admin/head');
-		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->_render_page('default_admin/head');
+		$this->_render_page('default_admin/header');
+		$this->_render_page('default_admin/sidebar');
 		$this->_render_page('auth/edit_user', $this->data);
-		$this->load->view('default_admin/footer');
+		$this->_render_page('default_admin/footer');
 		
 	}
 

@@ -32,7 +32,7 @@
 			<div id="content">
 				<div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Inventory Perchase <span></span></h1>
+		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Inventory Purchase <span></span></h1>
 	</div>
 		
 </div>
@@ -48,7 +48,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-plus"></i> </span>
-					<h2>Add Inventory Perchase </h2>				
+					<h2>Add Inventory Purchase </h2>				
 					
 				</header>
 
@@ -58,27 +58,27 @@
 					<!-- widget content -->
 					<div class="widget-body no-padding">
 						
-						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate">
+						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
 								<input type="hidden" name="ledger_id" id="ledger_id" >
 								<div class="row">
 									<section class="col col-6">
 							<fieldset>
 								<div class="row">
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<select name="ledger_vendor_id" id="ledger_vendor_id">
+										<label class="select">
+										<select name="ledger_site_id" id="ledger_site_id">
 											<option value=""> SELECT SITE </option>
 											<?php foreach($sites as $site){ ?>
-											<option value="<?php echo $v['site_id']; ?>"><?php echo $v['site_name']; ?></option>
+											<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
 											<?php } ?>
-											</select>
-										</label>
+											</select> <i></i> </label>
 									</section>
+									
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
+										<label class="select">
 											<select name="ledger_vendor_id" id="ledger_vendor_id">
 											<option value=""> SELECT VENDOR </option>
-											<?php foreach($vendor as $v){ ?>
+											<?php foreach($vendors as $v){ ?>
 											<option value="<?php echo $v['vendor_id']; ?>"><?php echo $v['vendor_name']; ?></option>
 											<?php } ?>
 											</select>
@@ -101,18 +101,23 @@
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
-											<input type="text" name="ledger_unit" id="ledger_unit" placeholder="UNIT of Item">
+											<input type="text" name="ledger_unit" id="ledger_unit" placeholder="UNIT eg: kg, Bags">
 										</label>
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
-											<input type="text" name="ledger_qty" id="ledger_qty" placeholder="Quantity">
+											<input type="text" name="ledger_qty" id="ledger_qty" onkeyup="CalculateAmt()" placeholder="Quantity">
 										</label>
 									</section>
 									
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-gears"></i>
-											<input type="text" name="ledger_rate" id="ledger_rate"  placeholder="Quantity">
+											<input type="text" name="ledger_rate" id="ledger_rate" onkeyup="CalculateAmt()"  placeholder="Rate Per Unit">
+										</label>
+									</section>
+									<section class="col col-12">
+										<label class="input"> <i class="icon-prepend fa fa-money"></i>
+											<input type="text" name="ledger_amount" id="ledger_amount" onkeyup="CalculateAmt()"  placeholder="Total Price">
 										</label>
 									</section>
 								</div>
@@ -124,28 +129,28 @@
 								<fieldset>
 								<div class="row">
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="text" name="ledger_amount" id="ledger_amount"  placeholder="Total Price">
-										</label>
-									</section>
-									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-handshake-o"></i>
-											<input type="text" name="ledger_discount" id="ledger_discount"  placeholder="Discount">
+											<input type="text" name="ledger_discount" id="ledger_discount" onkeyup="CalculateAmt()"  placeholder="Discount">
 										</label>
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="text" name="ledger_payable_amt" id="ledger_payable_amt"  placeholder="Payable Amount">
+											<input type="text" name="ledger_payable_amt" onkeyup="CalculateAmt()" id="ledger_payable_amt"  placeholder="Payable Amount">
 										</label>
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="text" name="ledger_paid_amt" id="ledger_paid_amt"  placeholder="Down Payment">
+											<input type="text" name="ledger_paid_amt" id="ledger_paid_amt" onkeyup="CalculateAmt()"  placeholder="Down Payment">
 										</label>
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
 											<input type="text" name="ledger_balance_amt" id="ledger_balance_amt"  placeholder="Balance">
+										</label>
+									</section>
+									<section class="col col-12">
+										<label class="input"> <i class="icon-prepend fa fa-money"></i>
+											<input type="date" name="ledger_payment_date" id="ledger_payment_date"  placeholder="yyyy-mm-dd">
 										</label>
 									</section>
 									<section class="col col-12">
@@ -160,7 +165,7 @@
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
-											<input type="text" name="ledger_cheque_dd_no" id="ledger_cheque_dd_no"  placeholder="Cheque / Transection No.">
+											<input type="text" name="ledger_cheque_dd_no" id="ledger_cheque_dd_no"  placeholder="Cheque / Transaction No.">
 										</label>
 									</section>
 									<section class="col col-12">
@@ -177,7 +182,7 @@
 
 
 							<footer>
-								<button type="button" class="btn btn-primary" onclick="AddVendor()" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
+								<button type="submit" class="btn btn-primary" onclick="/*AddVendorLedger()*/" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
 								<button type="reset" class="btn btn-default" > RESET </button>
 							</footer>
 						</form>
@@ -201,7 +206,7 @@
 				<header>
 					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
 					<h2>Vendors List</h2>			
-					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="GetVendor()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
+					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="GetVendorLedger()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
 					
 				</header>
 
@@ -211,7 +216,7 @@
 					<!-- widget content -->
 					<div class="widget-body no-padding">
 						
-						<div class="table-responsive" id="result_data">
+						<div class="table-responsive" id="result_data" style='height:500px;overflow:scroll;'>
 						
 						</div>
 
@@ -233,17 +238,43 @@
 </section>
 <!-- end widget grid -->
 <script>
-		$(document).ready(function(){
-			GetVendor();
-		});
+$(document).ready(function(){
+	GetVendorLedger();
 		
-		function GetVendor(){
+	$('#checkout-form').on('submit',function(e){//bind event on form submit.
+		e.preventDefault(); 
+		var site = $("#ledger_site_id").val();
+		var vendor = $("#ledger_vendor_id").val();
+		var voch = $("#ledger_voucher_no").val();
+			if(site=='' || vendor=='' || voch==''){
+				alert("Please Enter Valid Details....?");
+			}else{
+				$(".btn").button('loading');
+		 $.ajax({
+			 url:"<?php echo base_url('admin/ACCOUNTS/addVendor_ledger'); ?>",
+			 type:"post",
+			 data:new FormData(this),
+			 processData:false,
+			 contentType:false,
+			 cache:false,
+			 async:false,
+			  success: function(data){
+				$(".btn").button('reset');
+				$('#checkout-form')[0].reset();
+				GetVendorLedger();
+			  }
+			});
+		}
+	});  
+});
+		
+		function GetVendorLedger(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Vendor name</th><th>Firm name</th><th>Contact No.</th><th>Email ID</th><th>TIN No.</th><th>GSTN No.</th><th>Action</th></tr></thead><tbody>';			
-		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getVendor'); ?>','', function(res){
+		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Vendor name</th><th>Voucher No.</th><th>Date</th><th>Item</th><th>Total Amount</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
+		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getVendor_ledger'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.vendor_name +'</td><td>'+ v.vendor_firm_name +'</td><td>'+ v.vendor_contact_no +'</td><td>'+ v.vendor_email_id +'</td><td>'+ v.vendor_tin_no +'</td><td>'+ v.vendor_gstn_no +'</td><td><span style="cursor:pointer;" title="Edit" onclick="EditVendor('+ v.vendor_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="DeleteVendor('+ v.vendor_id +')"><i class="fa fa-remove"></i></span></td></tr>';
+					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.vendor_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_goods_name +'</td><td>'+ v.ledger_payable_amt +'</td><td>'+ v.ledger_balance_amt +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditVendorLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
@@ -251,48 +282,88 @@
 		}
 	
 
-		function AddVendor(){        
-		$(".btn").button('loading');
-			$.post('<?php echo base_url('admin/ACCOUNTS/addVendor'); ?>', $('#checkout-form').serialize(), function (response) {
-				$(".btn").button('reset');
-				$('#checkout-form')[0].reset();
-				GetVendor();
-			});
-		}	
+		// function AddVendorLedger(){  
+		// var site = $("#ledger_site_id").val();
+		// var vendor = $("#ledger_vendor_id").val();
+		// var voch = $("#ledger_voucher_no").val();
+			// if(site=='' || vendor=='' || voch==''){
+				// alert("Please Enter Valid Details....?");
+			// }else{
+				// $(".btn").button('loading');
+				// $.post('<?php echo base_url('admin/ACCOUNTS/addVendor_ledger'); ?>', $('#checkout-form').serialize(), function (response) {
+					// $(".btn").button('reset');
+					// $('#checkout-form')[0].reset();
+					// GetVendorLedger();
+				// });
+			// }
+		// }	
 		
-		function EditVendor(id){
-		$.post('<?php echo base_url('admin/ACCOUNTS/editVendor'); ?>', {'id':id}, function(response){
+		function EditVendorLedger(id){
+		$.post('<?php echo base_url('admin/ACCOUNTS/editVendor_ledger'); ?>', {'id':id}, function(response){
 			var res = jQuery.parseJSON(response);
 				$.each(res, function (k, v) {
-					$("#vendor_id").val(v.vendor_id);
-					$("#vendor_name").val(v.vendor_name);
-					$("#vendor_firm_name").val(v.vendor_firm_name);
-					$("#vendor_contact_no").val(v.vendor_contact_no);
-					$("#vendor_email_id").val(v.vendor_email_id);
-					$("#vendor_gstn_no").val(v.vendor_gstn_no);
-					$("#vendor_tin_no").val(v.vendor_tin_no);
-					$("#vendor_address").val(v.vendor_address);
-					$("#vendor_benificiary_name").val(v.vendor_benificiary_name);
-					$("#vendor_bank_name").val(v.vendor_bank_name);
-					$("#vendor_branch_name").val(v.vendor_branch_name);
-					$("#vendor_acc_no").val(v.vendor_acc_no);
-					$("#vendor_ifsc_code").val(v.vendor_ifsc_code);
+					$("#ledger_id").val(v.ledger_id);
+					$("#ledger_site_id").val(v.ledger_site_id);
+					$("#ledger_vendor_id").val(v.ledger_vendor_id);
+					$("#ledger_voucher_no").val(v.ledger_voucher_no);
+					$("#ledger_voucher_image").val(v.ledger_voucher_image);
+					$("#ledger_goods_name").val(v.ledger_goods_name);
+					$("#ledger_unit").val(v.ledger_unit);
+					$("#ledger_qty").val(v.ledger_qty);
+					$("#ledger_rate").val(v.ledger_rate);
+					$("#ledger_amount").val(v.ledger_amount);
+					$("#ledger_discount").val(v.ledger_discount);
+					$("#ledger_payable_amt").val(v.ledger_payable_amt);
+					$("#ledger_paid_amt").val(v.ledger_paid_amt);
+					$("#ledger_balance_amt").val(v.ledger_balance_amt);
+					$("#ledger_payment_date").val(v.ledger_payment_date);
+					$("#ledger_payment_type").val(v.ledger_payment_type);
+					$("#ledger_cheque_dd_no").val(v.ledger_cheque_dd_no);
+					$("#ledger_remark").val(v.ledger_remark);
 					});	
 			});	 
 		}	
 		
-		function DeleteVendor(id){
+		function DeleteVendorLedger(id){
 			var r = confirm("Are you sure you want to Delete this vendor ?");
 			if(r==true){
 		$.ajax({  
 				type: "POST",
-				url: "<?php echo base_url('admin/ACCOUNTS/deleteVendor'); ?>",
+				url: "<?php echo base_url('admin/ACCOUNTS/deleteVendor_ledger'); ?>",
 				data: {'id':id},
 				success: function(msg){
-				GetVendor();	
+				GetVendorLedger();	
 				}  
 			});	
 			}else{}			
+		}	
+		
+		function  CalculateAmt(){
+			var qty = $("#ledger_qty").val();
+			var rate = $("#ledger_rate").val();
+			var total = parseFloat(qty) * parseFloat(rate);
+			if(isNaN(total)) {
+			var total = 0;
+			}else{
+			var total = total;
+			}
+			$("#ledger_amount").val(total);
+			var disc = $("#ledger_discount").val();
+			var payble = parseFloat(total) - parseFloat(disc);			
+			if(isNaN(payble)) {
+			var payble = 0;
+			}else{
+			var payble = payble;
+			}
+			$("#ledger_payable_amt").val(payble);
+			var paid = $("#ledger_paid_amt").val();
+			var balance = parseFloat(payble) - parseFloat(paid);			
+			if(isNaN(balance)) {
+			var balance = 0;
+			}else{
+			var balance = balance;
+			}
+			$("#ledger_balance_amt").val(balance);
 		}	
 </script>
 <script type="text/javascript">

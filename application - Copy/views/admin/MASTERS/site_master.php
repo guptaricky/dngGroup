@@ -96,8 +96,8 @@
 							</fieldset>
 
 							<footer>
-								<button type="button" class="btn btn-primary" onclick="Addsite()" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
-								<button type="reset" class="btn btn-default" > RESET </button>
+								<button type="submit" class="btn btn-primary" onclick="/*Addsite()*/" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
+								<button type="reset" class="btn btn-default" id="reset"> RESET </button>
 							</footer>
 						</form>
 
@@ -119,7 +119,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>Site List</h2>			
+					<h2>sites List</h2>			
 					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="Getsite()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
 					
 				</header>
@@ -152,17 +152,36 @@
 </section>
 <!-- end widget grid -->
 <script>
-		$(document).ready(function(){
-			Getsite();
-		});
+$(document).ready(function(){
+	Getsite();
+		
+	$('#checkout-form').on('submit',function(e){//bind event on form submit.
+		e.preventDefault(); 
+				$(".btn").button('loading');
+		    $.ajax({
+				url:"<?php echo base_url('admin/MASTERS/addsite'); ?>",
+				type:"post",
+				data:new FormData(this),
+				processData:false,
+				contentType:false,
+				cache:false,
+				async:false,
+				success: function(data){
+					$(".btn").button('reset');
+					$('#checkout-form')[0].reset();
+					Getsite();
+				}
+			});
+	}); 
+});
 		
 		function Getsite(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Contact Person</th><th>Contact No.</th><th>Address</th><th>Banner</th><th>Action</th></tr></thead><tbody>';			
+		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Contact Person</th><th>Contact No.</th><th>Address</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/MASTERS/getsite'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.site_manager_name +'</td><td>'+ v.site_manager_no +'</td><td>'+ v.site_address +'</td><td>'+ v.site_banner +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="Editsite('+ v.site_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="Deletesite('+ v.site_id +')">Delete</a> <a class="btn btn-success btn-xs" href="<?php echo base_url("admin/MASTERS/manageSite");?>/'+ v.site_id +'">Manage</a> </td></tr>';
+					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.site_manager_name +'</td><td>'+ v.site_manager_no +'</td><td>'+ v.site_address +'</td><td>'+ v.site_remark +'</td><td><span style="cursor:pointer;" title="Edit" onclick="Editsite('+ v.site_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="Deletesite('+ v.site_id +')"><i class="fa fa-remove"></i></span></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
@@ -170,15 +189,15 @@
 		}
 	
 
-		function Addsite(){        
-		$(".btn").button('loading');		
-                   var form_data = $('#checkout-form').serialize();
-			$.post('<?php echo base_url('admin/MASTERS/addsite'); ?>', form_data, function (response) {
-				$(".btn").button('reset');
-				$('#checkout-form')[0].reset();
-				Getsite();
-			});
-		}	
+		// function Addsite(){        
+		// $(".btn").button('loading');		
+                   // var form_data = $('#checkout-form').serialize();
+			// $.post('<?php echo base_url('admin/MASTERS/addsite'); ?>', form_data, function (response) {
+				// $(".btn").button('reset');
+				// $('#checkout-form')[0].reset();
+				// Getsite();
+			// });
+		// }	
 		
 		function Editsite(id){
 		$.post('<?php echo base_url('admin/MASTERS/editsite'); ?>', {'id':id}, function(response){
@@ -186,7 +205,7 @@
 				$.each(res, function (k, v) {
 					$("#site_id").val(v.site_id);
 					$("#site_name").val(v.site_name);
-					$("#site_banner").val(v.site_banner);
+					// $("#site_banner").val(v.site_banner);
 					$("#site_manager_name").val(v.site_manager_name);
 					$("#site_manager_no").val(v.site_manager_no);
 					$("#site_address").val(v.site_address);
@@ -203,13 +222,12 @@
 				url: "<?php echo base_url('admin/MASTERS/deletesite'); ?>",
 				data: {'id':id},
 				success: function(msg){
-				Getsite();
-				$(".btn").button('reset');
-				$('#checkout-form')[0].reset();					
+				Getsite();	
 				}  
 			});	
 			}else{}			
-		}	
+		}
+		
 </script>
 <script type="text/javascript">
 	/* DO NOT REMOVE : GLOBAL FUNCTIONS!

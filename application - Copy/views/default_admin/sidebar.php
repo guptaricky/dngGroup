@@ -53,10 +53,16 @@
 						<a href="<?php echo base_url().'admin/MASTERS/site_master'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-building"></i> <span class="menu-item-parent">Manage Sites</span></a>
 					</li>
 					<li class="">
+						<a href="<?php echo base_url().'admin/MASTERS/site_otherdetail'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-building"></i> <span class="menu-item-parent">Manage Site Details</span></a>
+					</li>
+					<li class="">
 						<a href="<?php echo base_url().'admin/MASTERS/expenseCategory'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Expense Category</span></a>
 					</li>
 					<li class="">
-						<a href="<?php echo base_url().'admin/DASHBOARD/blankPage'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Register Employee</span></a>
+						<a href="<?php echo base_url().'admin/EMPLOYEE/view_employee'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Employee</span></a>
+					</li>
+					<li class="">
+						<a href="<?php echo base_url().'admin/CUSTOMER/view_customers'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Customers</span></a>
 					</li>
 					<li class="">
 						<a href="<?php echo base_url().'admin/ACCOUNTS/vendor'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Add Vendors</span></a>
@@ -65,7 +71,14 @@
 						<a href="<?php echo base_url().'admin/ACCOUNTS/vendor_ledger'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-rupee"></i> <span class="menu-item-parent">Vendor's Payment</span></a>
 					</li>
 					<li class="">
-						<a href="<?php echo base_url().'admin/DASHBOARD/blankPage'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Property Sell</span></a>
+<<<<<<< HEAD
+						<a href="<?php echo base_url().'admin/MASTERS/manageSite'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Property Sell</span></a>
+					</li>
+					<li class="">
+						<a href="<?php echo base_url().'admin/ACCOUNTS/fund_transfer'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Fund Transfer</span></a>
+=======
+						<a href="<?php echo base_url().'admin/PROPERTY/sell_property'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Property Sell</span></a>
+>>>>>>> f23d5b409f3861019f88f65f2d593ad4b9a4b9e8
 					</li>
 					<li class="">
 						<a href="<?php echo base_url().'admin/DASHBOARD/users_accounts'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-key"></i> <span class="menu-item-parent">Users Accounts</span></a>

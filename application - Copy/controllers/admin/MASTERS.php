@@ -5,11 +5,10 @@ class MASTERS extends MY_Controller {
 	public function expenseCategory(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$this->load->view('admin/MASTERS/expenseCategory');
 		$this->load->view('default_admin/footer');
 	}
-
 	public function addCategory(){
 		$userid = (array_slice($this->session->userdata, 9, 1));
 		// $uid = $userid['user_id'];
@@ -30,13 +29,11 @@ class MASTERS extends MY_Controller {
 		$catg = $this->Common_model->get_data_by_query_pdo("select * from expense_category where 1 and cat_status=?",array(1));
 		echo json_encode($catg);
 	}
-	
 	public function editCatg(){
 		$id = $this->input->post('id');
 		$cat = $this->Common_model->get_data_by_query_pdo("select * from expense_category where cat_id=?",array($id));
 		echo json_encode($cat);
 	}
-	
 	public function deleteCatg(){
 		$id = $this->input->post('id');
 		$data = array(
@@ -44,7 +41,6 @@ class MASTERS extends MY_Controller {
 		);	
 		$this->Crud_model-> edit_record_by_anyid('expense_category','cat_id',$id,$data);
 	}
-
 	//*****Category code Ends****//
 		
 	//*****Navigation code Starts****//
@@ -52,16 +48,14 @@ class MASTERS extends MY_Controller {
 		$data['navigations'] = $this->Common_model->get_data_by_query_pdo("select * from nav_master where 1 ",array());
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$this->load->view('admin/MASTERS/navMaster',$data);
 		$this->load->view('default_admin/footer');
 	}
-
 	public function getNavigations(){
 		$data['navigations'] = $this->Common_model->get_data_by_query_pdo("select * from nav_master where 1 ",array());
 		echo json_encode($data['navigations']);
 	}
-
 	public function generateLink(){
 		$data = array(
 			'nav_name' => $_POST['linkname'],
@@ -72,18 +66,15 @@ class MASTERS extends MY_Controller {
 		);	
 		$this->Crud_model->insert_record('nav_master',$data);
 	}
-	//*****Navigation code Ends****//
-	
-	
-	//*****Site code Starts****//
+
+
 	public function site_master(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$this->load->view('admin/MASTERS/site_master');
 		$this->load->view('default_admin/footer');
 	}
-
 	public function addsite(){
 		$userid = (array_slice($this->session->userdata, 9, 1));
 		// $uid = $userid['user_id'];
@@ -97,7 +88,7 @@ class MASTERS extends MY_Controller {
 			'site_added_by' => 1,//$uid,
 			'site_entrydt' => date('Y-m-d H:i:s'),
 		);
-		if(!empty($_POST['site_banner'])){
+		if(!empty($_FILES['site_banner'])){
 			$path = './uploads';
 			if (!is_dir($path))
 				mkdir($path);
@@ -123,27 +114,15 @@ class MASTERS extends MY_Controller {
 			$this->Crud_model->insert_record('site_detail',$data);
 		}
 	}
-
 	public function getsite(){
 		$site = $this->Common_model->get_data_by_query_pdo("select * from site_detail where 1 and site_status=?",array(1));
 		echo json_encode($site);
 	}
-	
 	public function editsite(){
 		$id = $this->input->post('id');
 		$site = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($id));
 		echo json_encode($site);
 	}
-	
-	public function manageSite($id){
-		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($id));
-		$this->load->view('default_admin/head');
-		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
-		$this->load->view('admin/MASTERS/manageSite',$data);
-		$this->load->view('default_admin/footer');
-	}
-	
 	public function deletesite(){
 		$id = $this->input->post('id');
 		$data = array(
@@ -152,14 +131,15 @@ class MASTERS extends MY_Controller {
 		$this->Crud_model-> edit_record_by_anyid('site_detail','site_id',$id,$data);
 	}
 
-	public function site_otherdetail(){
-			$this->load->view('default_admin/head');
-			$this->load->view('default_admin/header');
-			$this->load->view('default_admin/sidebar');
-			$this->load->view('admin/MASTERS/site_otherdetail');
-			$this->load->view('default_admin/footer');
-	}
 
+	public function site_otherdetail(){
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
+		$this->load->view('admin/MASTERS/site_otherdetail',$data);
+		$this->load->view('default_admin/footer');
+	}
 	public function add_site_otherdetail(){
 		$userid = (array_slice($this->session->userdata, 9, 1));
 		// $uid = $userid['user_id'];
@@ -170,8 +150,8 @@ class MASTERS extends MY_Controller {
 			'detail_no_of_units' => $_POST['detail_no_of_units'],
 			'detail_area'        => $_POST['detail_area'],
 			'detail_rate'        => $_POST['detail_rate'],
+			'detail_price'        => $_POST['detail_price'],
 			'detail_site_nos'    => $_POST['detail_site_nos'],
-			'detail_status'      => $_POST['detail_status'],
 			'detail_isactive'    => 1,
 			'detail_added_by'    => 1,//$uid,
 			'detail_entrydt'     => date('Y-m-d H:i:s'),
@@ -179,29 +159,33 @@ class MASTERS extends MY_Controller {
 		
 		if(!empty($_POST['detail_id'])){
 			$this->Crud_model-> edit_record_by_anyid('site_other_detail','detail_id',$_POST['detail_id'],$data);
+			$inserted_id = $_POST['detail_id'];
 		}else{
-			$inserted_id = $this->Crud_model->insert_record('site_other_detail',$data);			
-			foreach($_POST['detail_site_nos'] as $no){
-				$data1 = array(
-					'property_detail_id' => $inserted_id,
-					'property_sno' => $no,
-					'property_isactive' => 1,
-				);
-			}
+			$inserted_id = $this->Crud_model->insert_record('site_other_detail',$data);	
 		}
+		
+			$sites = explode(",",$_POST['detail_site_nos']);
+			foreach($sites as $no){
+				$divisions = $this->Common_model->get_data_by_query_pdo("select * from property_detail where 1 and property_detail_id=? and property_sno=?",array($inserted_id, $no));
+				if(empty($divisions)){
+					$data1 = array(
+						'property_detail_id' => $inserted_id,
+						'property_sno' => $no,
+						'property_isactive' => 1,
+					);
+					$this->Crud_model->insert_record('property_detail',$data1);	
+				}
+			}
 	}
-
 	public function get_site_otherdetail(){
-		$site = $this->Common_model->get_data_by_query_pdo("select * from site_other_detail where 1 and detail_isactive=?",array(1));
+		$site = $this->Common_model->get_data_by_query_pdo("select d.*,s.site_name from site_other_detail d left join site_detail s on s.site_id=d.detail_site_id where 1 and detail_isactive=?",array(1));
 		echo json_encode($site);
 	}
-	
 	public function edit_site_otherdetail(){
 		$id = $this->input->post('id');
 		$site = $this->Common_model->get_data_by_query_pdo("select * from site_other_detail where detail_id=?",array($id));
 		echo json_encode($site);
 	}
-	
 	public function delete_site_otherdetail(){
 		$id = $this->input->post('id');
 		$data = array(
@@ -209,28 +193,18 @@ class MASTERS extends MY_Controller {
 		);	
 		$this->Crud_model-> edit_record_by_anyid('site_other_detail','detail_id',$id,$data);
 	}
-	//*****Site code Ends****//
-
-	public function sundays(){
-		$start_date = date('01-01-2013');
-		$end_date = date('31-12-2017');
-		$day = 86400; // Day in seconds  
-        $format = 'd-M-Y'; // Output format (see PHP date funciton)  
-        $sTime = strtotime($start_date); // Start as time  
-        $eTime = strtotime($end_date); // End as time  
-        $numDays = round(($eTime - $sTime) / $day) + 1;  
-        // $date = array();  
-
-        for ($d = 0; $d < $numDays; $d++) {  
-            $date = date($format, ($sTime + ($d * $day)));  
-			$day_name = date('D', strtotime($date));
-			if($day_name=='Sat' || $day_name=='Sun'){
-			echo $date;
-			echo "<br>";
-			}
-        }  
+	public function manageSite(){
+		$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+		$data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
+		$emp_alloted_site = $data['emp_site'][0]['emp_alloted_site'];
+		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($emp_alloted_site));
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$this->load->view('admin/MASTERS/manageSite',$data);
+		$this->load->view('default_admin/footer');
 	}
-
 
 
 }

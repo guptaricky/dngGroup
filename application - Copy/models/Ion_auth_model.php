@@ -963,7 +963,6 @@ class Ion_auth_model extends CI_Model
 	public function login($identity, $password, $remember=FALSE)
 	{
 		$this->trigger_events('pre_login');
-
 		if (empty($identity) || empty($password))
 		{
 			$this->set_error('login_unsuccessful');
@@ -972,7 +971,7 @@ class Ion_auth_model extends CI_Model
 
 		$this->trigger_events('extra_where');
 
-		$query = $this->db->select($this->identity_column . ', email, id, password, active, last_login')
+		$query = $this->db->select($this->identity_column . ', email, id, password, active, last_login, emp_id,username')
 		                  ->where($this->identity_column, $identity)
 		                  ->limit(1)
 		    			  ->order_by('id', 'desc')
@@ -1836,20 +1835,36 @@ class Ion_auth_model extends CI_Model
 
 		$this->trigger_events('pre_set_session');
 
+		
+		$groups = $this->ion_auth->get_users_groups($user->id)->result();
+		foreach ($groups as $key => $row){
+				$group =  $row -> name;
+			}
 		$session_data = array(
 		    'identity'             => $user->{$this->identity_column},
-		    $this->identity_column             => $user->{$this->identity_column},
 		    'email'                => $user->email,
+		    'group'            	   => $group,
 		    'user_id'              => $user->id, //everyone likes to overwrite id so we'll use user_id
 		    'old_last_login'       => $user->last_login,
-		    'last_check'           => time(),
+			'emp_id'               => $user->emp_id,
+			'username'             => $user->username,
 		);
+		
 
-		$this->session->set_userdata($session_data);
+		
 
-		$this->trigger_events('post_set_session');
+		   // get user group ids for user and pass to session
+			// $groups = $this->ion_auth->get_users_groups($user->id)->result();
 
-		return TRUE;
+			// foreach ($groups as $row){
+				// $session_data['groups'][] = $row->id;
+			// }
+
+			$this->session->set_userdata($session_data);
+
+			$this->trigger_events('post_set_session');
+
+			return TRUE;
 	}
 
 	/**

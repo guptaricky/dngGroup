@@ -59,39 +59,63 @@
 					<div class="widget-body no-padding">
 						
 						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
-								<input type="hidden" name="site_id" id="site_id" >
+								<input type="hidden" name="detail_id" id="detail_id" >
 							<fieldset>
 								<div class="row">
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<input type="text" name="site_name" id="site_name" placeholder="Site Name">
+										<label class="input">
+											<select name="detail_site_id" class="form-control col col-12" id="detail_site_id" >
+												<option value=""> SELECT SITE </option>
+												<?php foreach($sites as $site){ ?>
+												<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
+												<?php } ?>
+											</select><i></i>											
 										</label>
 									</section>
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-image"></i>
-											<input type="file" name="site_banner" id="site_banner" placeholder="Site Banner">
+										<label class="input">
+											<select name="detail_sector" class="form-control col col-12"  id="detail_sector" >
+												<option value="">SELECT SECTOR</option>
+												<option value="Sector 1">Sector 1</option>
+												<option value="Sector 2">Sector 2</option>
+											</select><i></i>
 										</label>
 									</section>
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<input type="text" name="site_manager_name" id="site_manager_name" placeholder="Contact Person Name">
+										<label class="input">
+											<select name="detail_type" class="form-control col col-12" id="detail_type">
+												<option value="">SELECT PROPERTY TYPE</option>
+												<option value="Plots">Plots</option>
+												<option value="Flats">Flats</option>
+												<option value="Houses">Houses</option>
+											</select><i></i>
+										</label>
+									</section>
+									<section class="col col-12" hidden>
+										<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
+											<input type="text" name="detail_no_of_units" id="detail_no_of_units" placeholder="No of Units">
 										</label>
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
-											<input type="text" name="site_manager_no" id="site_manager_no" maxlength="10" placeholder="Contact Number">
+											<input type="text" name="detail_area" id="detail_area" onkeyup="getPrice()" placeholder="Area in sqft">
+										</label>
+									</section>
+									<section class="col col-12">
+										<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
+											<input type="text" name="detail_rate" id="detail_rate" onkeyup="getPrice()" placeholder="Rate Per sqft">
+										</label>
+									</section>
+									<section class="col col-12">
+										<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
+											<input type="text" name="detail_price" id="detail_price" placeholder="Total Price">
 										</label>
 									</section>
 									<section class="col col-12">
 									<label class="textarea">					
-										<textarea rows="3" name="site_address" id="site_address" placeholder="Address"></textarea> 
+										<textarea rows="3" name="detail_site_nos" id="detail_site_nos" placeholder="Property Numbers eg: 101,102,103,...."></textarea> 
 									</label>
 									</section>
-									<section class="col col-12">
-									<label class="textarea">					
-										<textarea rows="3" name="site_remark" id="site_remark" placeholder="Remark"></textarea> 
-									</label>
-									</section>	
 								</div>
 							</fieldset>
 
@@ -159,10 +183,10 @@
 		function Getsitedetails(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Contact Person</th><th>Contact No.</th><th>Address</th><th>Remark</th><th>Banner</th><th>Action</th></tr></thead><tbody>';			
+		content +="<table class='table table-bordered'><thead><tr><th>Site name</th><th>Sector</th><th>Property Type</th><th>Area in sqft</th><th>Rate / sqft</th><th>Total Price</th><th>Action</th></tr></thead><tbody>";			
 		$.getJSON('<?php echo base_url('admin/MASTERS/get_site_otherdetail'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.detail_site_id +'</td><td>'+ v.detail_sector +'</td><td>'+ v.detail_type +'</td><td>'+ v.detail_no_of_units +'</td><td>'+ v.detail_area +'</td><td>'+ v.detail_rate +'</td><td><span style="cursor:pointer;" title="Edit" onclick="Editsiteotherdetails('+ v.detail_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="Deletesiteotherdetails('+ v.detail_id +')"><i class="fa fa-remove"></i></span></td></tr>';
+					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.detail_sector +'</td><td>'+ v.detail_type +'</td><td>'+ v.detail_area +'</td><td>'+ v.detail_rate +'</td><td>'+ v.detail_price +'</td><td><span style="cursor:pointer;" title="Edit" onclick="Editsiteotherdetails('+ v.detail_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="Deletesiteotherdetails('+ v.detail_id +')"><i class="fa fa-remove"></i></span></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
@@ -191,6 +215,7 @@
 					$("#detail_no_of_units").val(v.detail_no_of_units);
 					$("#detail_area").val(v.detail_area);
 					$("#detail_rate").val(v.detail_rate);
+					$("#detail_price").val(v.detail_price);
 					$("#detail_site_nos").val(v.detail_site_nos);
 					});	
 			});	 
@@ -208,6 +233,17 @@
 				}  
 			});	
 			}else{}			
+		}	
+		
+		function getPrice(){
+			var area = $("#detail_area").val();
+			var rate = $("#detail_rate").val();
+			var total = parseFloat(area) * parseFloat(rate);
+			if(isNaN(total)) {
+			$("#detail_price").val(0);
+			}else{
+			$("#detail_price").val(total);
+			}
 		}	
 </script>
 <script type="text/javascript">

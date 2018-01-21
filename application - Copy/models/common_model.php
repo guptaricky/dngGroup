@@ -18,6 +18,18 @@
 			}
 			return @$value->$returnfield;
 		}
+		public function toggle_sidebar()
+		{
+			// return $group = $this->session->userdata();
+			$group = $this->session->userdata('group');
+			// return 'default_admin';
+			if($group == 'admin'){
+			return $sidebar = 'default_admin';
+			}
+			else{
+			return $sidebar = 'default_user';	
+			}
+		}
 		
 		public function get_data_by_query_pdo($qry,$data)
 		{

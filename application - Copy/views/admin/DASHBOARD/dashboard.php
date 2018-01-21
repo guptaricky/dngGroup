@@ -42,58 +42,22 @@
 
 	
 	<div class="row">
-
+		<?php foreach($sites as $st){?>
 		<!-- a blank row to get started -->
 		<div class="col-sm-6 col-lg-4">
-
 			<!-- your contents here -->
-			<div class="panel panel-default">
+			<div class="panel panel-default" style="background-color:#a90329;border-color:#9a0325!important">
 				<div class="panel-body status">
 					<div class="who clearfix">
-						<h1 class="text-primary" style="">Site 1</h1>
-						<span class="from"><b>Location:</b> Vijay Nagar</span>
+						<h1 class="text-primary" style="color:#fff"><?php echo $st['site_name'];?></h1>
+						<span class="from" style="color:#fff"><b>Manage By:</b> <?php echo $st['site_manager_name'];?></span>
 					</div>
-					<div class="image"><img src="<?php echo base_url().'assets/img/sites/site1.jpg'; ?>" alt="img">
+					<div class="image hide"><img src="<?php echo base_url().'assets/img/sites/site1.jpg'; ?>" alt="img">
 					</div>
 				</div>
 			</div>
-
-
 		</div>
-		<!-- a blank row to get started -->
-		<div class="col-sm-6 col-lg-4">
-
-			<!-- your contents here -->
-			<div class="panel panel-default">
-				<div class="panel-body status">
-					<div class="who clearfix">
-						<h1 class="text-primary" style="">Site 2</h1>
-						<span class="from"><b>Location:</b> Vijay Nagar</span>
-					</div>
-					<div class="image img-responsive"><img src="<?php echo base_url().'assets/img/sites/site2.jpg'; ?>" alt="img">
-					</div>
-				</div>
-			</div>
-
-
-		</div>
-		<!-- a blank row to get started -->
-		<div class="col-sm-6 col-lg-4">
-
-			<!-- your contents here -->
-			<div class="panel panel-default">
-				<div class="panel-body status">
-					<div class="who clearfix">
-						<h1 class="text-primary" style="">Site 3</h1>
-						<span class="from"><b>Location:</b> Vijay Nagar</span>
-					</div>
-					<div class="image"><img src="<?php echo base_url().'assets/img/sites/site3.jpg'; ?>" alt="img">
-					</div>
-				</div>
-			</div>
-
-
-		</div>
+		<?php } ?>
 
 	<!-- end row -->
 

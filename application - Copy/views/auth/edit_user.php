@@ -42,7 +42,7 @@
 		
 		<div class="row">
 		
-		<article class="col-sm-12 col-md-12 col-lg-7">
+		<article class="col-sm-12 col-md-12 col-lg-12">
 			
 			<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
 				
@@ -58,8 +58,10 @@
 					<!-- widget content -->
 					<div class="widget-body no-padding">
 						<div id="infoMessage"><?php echo $message;?></div>
-						<?php echo form_open("auth/login", array('class' => 'smart-form', 'id' => 'checkout-form'));?>
+						<?php echo form_open(uri_string(), array('class' => 'smart-form', 'id' => 'checkout-form'));?>
 							<fieldset>
+							<div class="row">
+								<section class="col col-6">
 								<div class="row">
 									<section class="col col-12">
 									<?php echo lang('edit_user_fname_label', 'first_name');?>
@@ -100,6 +102,46 @@
 									</section>
 																
 								</div>
+								</section>
+								<section class="col col-6">
+								<label class="label"><h3>Groups :</h3></label>
+								<fieldset>
+								<div class="row">
+									<section class="col col-12">
+										<label class="checkbox"> 
+											 <?php if ($this->ion_auth->is_admin()): ?>
+
+									  <?php foreach ($groups as $group):?>
+										  <label class="checkbox">
+										  <?php
+											  $gID=$group['id'];
+											  $checked = null;
+											  $item = null;
+											  foreach($currentGroups as $grp) {
+												  if ($gID == $grp->id) {
+													  $checked= ' checked="checked"';
+												  break;
+												  }
+											  }
+										  ?>
+										  <input type="checkbox" name="groups[]" value="<?php echo $group['id'];?>"<?php echo $checked;?>>
+										  <i></i><?php echo htmlspecialchars($group['name'],ENT_QUOTES,'UTF-8');?>
+										  </label>
+									  <?php endforeach?>
+
+								  <?php endif ?>
+
+								  <?php echo form_hidden('id', $user->id);?>
+								  <?php echo form_hidden($csrf); ?>
+										</label>
+									</section>
+									
+																
+								</div>
+							</fieldset>
+								</section>
+							</div>
+								
 							</fieldset>
 							<footer>
 							<?php 
@@ -121,71 +163,7 @@
 
 		</article>
 		
-		<article class="col-sm-12 col-md-12 col-lg-5">
-			
-			<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
-				
-				<header>
-					<span class="widget-icon"> <i class="fa fa-user"></i> </span>
-					<h2><?php echo lang('edit_user_heading');?> </h2>				
-					
-				</header>
-
-				<!-- widget div-->
-				<div>
-					
-					<!-- widget content -->
-					<div class="widget-body no-padding">
-						<div id="infoMessage"><?php echo $message;?></div>
-						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate">
-						<?php echo form_open(uri_string());?>
-							<fieldset>
-								<div class="row">
-									<section class="col col-12">
-										<label class="checkbox"> 
-											 <?php if ($this->ion_auth->is_admin()): ?>
-
-									  <?php foreach ($groups as $group):?>
-										  <label class="checkbox">
-										  <?php
-											  $gID=$group['id'];
-											  $checked = null;
-											  $item = null;
-											  foreach($currentGroups as $grp) {
-												  if ($gID == $grp->id) {
-													  $checked= ' checked="checked"';
-												  break;
-												  }
-											  }
-										  ?>
-										  <input type="checkbox" name="groups[]" value="<?php echo $group['id'];?>"<?php echo $checked;?>>
-										  <?php echo htmlspecialchars($group['name'],ENT_QUOTES,'UTF-8');?>
-										  </label>
-									  <?php endforeach?>
-
-								  <?php endif ?>
-
-								  <?php echo form_hidden('id', $user->id);?>
-								  <?php echo form_hidden($csrf); ?>
-										</label>
-									</section>
-									
-																
-								</div>
-							</fieldset>
-						<?php echo form_close();?>
-
-					</div>
-					<!-- end widget content -->
-					
-				</div>
-				<!-- end widget div -->
-				
-			</div>
-			<!-- end widget -->
-
-
-		</article>
+	
 
 		</div>
 
