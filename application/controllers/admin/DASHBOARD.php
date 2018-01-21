@@ -8,15 +8,27 @@ class DASHBOARD extends MY_Controller {
 	public function dashboard(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
-		$this->load->view('admin/DASHBOARD/dashboard');
+		$this->data['sites'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where 1",array(0));
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$this->load->view('admin/DASHBOARD/dashboard',$this->data);
+		$this->load->view('default_admin/footer');
+	}
+
+	public function user_dashboard(){
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+		$this->data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
+		$this->data['expenses'] = $this->Common_model->get_data_by_query_pdo("select * from expense_category where cat_status=?",array(1));
+		$this->load->view('admin/DASHBOARD/user-dashboard',$this->data);
 		$this->load->view('default_admin/footer');
 	}
 
 	public function blankPage(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$this->load->view('admin/DASHBOARD/blankPage');
 		$this->load->view('default_admin/footer');
 	}
@@ -28,7 +40,7 @@ class DASHBOARD extends MY_Controller {
 			}
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$this->load->view('admin/DASHBOARD/users_accounts', $this->data);
 		$this->load->view('default_admin/footer');
 	}

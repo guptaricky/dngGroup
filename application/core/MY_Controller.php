@@ -13,11 +13,15 @@ class MY_Controller extends CI_Controller {
         $this->load->model('Crud_model');
 		$this->load->model('ion_auth_model');
         $this->lang->load('auth');	
-	
-	if(!$this->ion_auth->logged_in()){
-			redirect('auth/login');	
-		}
+		$sidebar = '';
+	 date_default_timezone_set('Asia/Kolkata');
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login');
+        } 
+		// $sidebar = $this->Common_model->toggle_sidebar();
+		// echo $group = $this->session->userdata('group');die;
     }
+	
 }
 
 /* End of file welcome.php */

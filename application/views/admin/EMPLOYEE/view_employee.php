@@ -72,9 +72,9 @@
 							  <?php $sno=0;foreach ($employee as $emp):$sno++;?>
 							  <tr align="left">
 								<td><?php echo $sno;?>.</td>
-								<td><?php echo ucwords(strtolower($ctm['emp_fullname']));?></td>
-								<td><?php echo $ctm['emp_phone']?></td>
-								<td><?php echo $ctm['emp_city']?></td>
+								<td><?php echo ucwords(strtolower($emp['emp_fullname']));?></td>
+								<td><?php echo $emp['emp_phone']?></td>
+								<td><?php echo $emp['emp_city']?></td>
 								<td data-title="Action">
 								<button class="btn btn-primary btn-xs" id="add_tab">Send sms</button>
 								<button class="btn btn-warning btn-xs">More Info.</button>

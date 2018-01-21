@@ -5,7 +5,7 @@ class MASTERS extends MY_Controller {
 	public function expenseCategory(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$this->load->view('admin/MASTERS/expenseCategory');
 		$this->load->view('default_admin/footer');
 	}
@@ -29,13 +29,11 @@ class MASTERS extends MY_Controller {
 		$catg = $this->Common_model->get_data_by_query_pdo("select * from expense_category where 1 and cat_status=?",array(1));
 		echo json_encode($catg);
 	}
-	
 	public function editCatg(){
 		$id = $this->input->post('id');
 		$cat = $this->Common_model->get_data_by_query_pdo("select * from expense_category where cat_id=?",array($id));
 		echo json_encode($cat);
 	}
-	
 	public function deleteCatg(){
 		$id = $this->input->post('id');
 		$data = array(
@@ -43,7 +41,6 @@ class MASTERS extends MY_Controller {
 		);	
 		$this->Crud_model-> edit_record_by_anyid('expense_category','cat_id',$id,$data);
 	}
-
 	//*****Category code Ends****//
 		
 	//*****Navigation code Starts****//
@@ -51,16 +48,14 @@ class MASTERS extends MY_Controller {
 		$data['navigations'] = $this->Common_model->get_data_by_query_pdo("select * from nav_master where 1 ",array());
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$this->load->view('admin/MASTERS/navMaster',$data);
 		$this->load->view('default_admin/footer');
 	}
-
 	public function getNavigations(){
 		$data['navigations'] = $this->Common_model->get_data_by_query_pdo("select * from nav_master where 1 ",array());
 		echo json_encode($data['navigations']);
 	}
-
 	public function generateLink(){
 		$data = array(
 			'nav_name' => $_POST['linkname'],
@@ -76,11 +71,10 @@ class MASTERS extends MY_Controller {
 	public function site_master(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$this->load->view('admin/MASTERS/site_master');
 		$this->load->view('default_admin/footer');
 	}
-
 	public function addsite(){
 		$userid = (array_slice($this->session->userdata, 9, 1));
 		// $uid = $userid['user_id'];
@@ -94,7 +88,7 @@ class MASTERS extends MY_Controller {
 			'site_added_by' => 1,//$uid,
 			'site_entrydt' => date('Y-m-d H:i:s'),
 		);
-		if(!empty($_POST['site_banner'])){
+		if(!empty($_FILES['site_banner'])){
 			$path = './uploads';
 			if (!is_dir($path))
 				mkdir($path);
@@ -120,18 +114,15 @@ class MASTERS extends MY_Controller {
 			$this->Crud_model->insert_record('site_detail',$data);
 		}
 	}
-
 	public function getsite(){
 		$site = $this->Common_model->get_data_by_query_pdo("select * from site_detail where 1 and site_status=?",array(1));
 		echo json_encode($site);
 	}
-	
 	public function editsite(){
 		$id = $this->input->post('id');
 		$site = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($id));
 		echo json_encode($site);
 	}
-	
 	public function deletesite(){
 		$id = $this->input->post('id');
 		$data = array(
@@ -141,16 +132,14 @@ class MASTERS extends MY_Controller {
 	}
 
 
-
 	public function site_otherdetail(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
 		$this->load->view('admin/MASTERS/site_otherdetail',$data);
 		$this->load->view('default_admin/footer');
 	}
-
 	public function add_site_otherdetail(){
 		$userid = (array_slice($this->session->userdata, 9, 1));
 		// $uid = $userid['user_id'];
@@ -188,18 +177,15 @@ class MASTERS extends MY_Controller {
 				}
 			}
 	}
-
 	public function get_site_otherdetail(){
 		$site = $this->Common_model->get_data_by_query_pdo("select d.*,s.site_name from site_other_detail d left join site_detail s on s.site_id=d.detail_site_id where 1 and detail_isactive=?",array(1));
 		echo json_encode($site);
 	}
-	
 	public function edit_site_otherdetail(){
 		$id = $this->input->post('id');
 		$site = $this->Common_model->get_data_by_query_pdo("select * from site_other_detail where detail_id=?",array($id));
 		echo json_encode($site);
 	}
-	
 	public function delete_site_otherdetail(){
 		$id = $this->input->post('id');
 		$data = array(
@@ -207,28 +193,18 @@ class MASTERS extends MY_Controller {
 		);	
 		$this->Crud_model-> edit_record_by_anyid('site_other_detail','detail_id',$id,$data);
 	}
-
-
-	public function sundays(){
-		$start_date = date('01-01-2013');
-		$end_date = date('31-12-2017');
-		$day = 86400; // Day in seconds  
-        $format = 'd-M-Y'; // Output format (see PHP date funciton)  
-        $sTime = strtotime($start_date); // Start as time  
-        $eTime = strtotime($end_date); // End as time  
-        $numDays = round(($eTime - $sTime) / $day) + 1;  
-        // $date = array();  
-
-        for ($d = 0; $d < $numDays; $d++) {  
-            $date = date($format, ($sTime + ($d * $day)));  
-			$day_name = date('D', strtotime($date));
-			if($day_name=='Sat' || $day_name=='Sun'){
-			echo $date;
-			echo "<br>";
-			}
-        }  
+	public function manageSite(){
+		$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+		$data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
+		$emp_alloted_site = $data['emp_site'][0]['emp_alloted_site'];
+		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($emp_alloted_site));
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$this->load->view('admin/MASTERS/manageSite',$data);
+		$this->load->view('default_admin/footer');
 	}
-
 
 
 }

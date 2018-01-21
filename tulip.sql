@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `property_detail` (
   `property_saleto` int(11) NOT NULL,
   `property_status` enum('Available','Hold','Booked','Sold'),
   `property_isactive` int(11) Default 1,
-   foreign key(property_site_id) references site_detail(site_id) on update cascade
+   foreign key(property_site_id) references site_detail(site_id) on update cascade,
    foreign key(property_detail_id) references site_other_detail(detail_id) on update cascade
 ) ENGINE=InnoDB;
 
@@ -162,6 +162,7 @@ CREATE TABLE IF NOT EXISTS `vendor_ledger` (
 `ledger_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
   `ledger_site_id` int(11) DEFAULT NULL,
   `ledger_vendor_id` int(11) DEFAULT NULL,
+  `ledger_type` varchar(100) DEFAULT NULL,
   `ledger_voucher_no` varchar(200) DEFAULT NULL,
   `ledger_voucher_image` varchar(200) DEFAULT NULL,
   `ledger_goods_name` varchar(200) DEFAULT NULL,
@@ -186,6 +187,7 @@ CREATE TABLE IF NOT EXISTS `vendor_ledger` (
 
 CREATE TABLE IF NOT EXISTS `vendor_partial_payment` (
   `partial_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  `partial_type` varchar(100) DEFAULT NULL,
   `partial_ledger_id` int(11) DEFAULT NULL,
   `partial_date` date DEFAULT NULL,
   `partial_amt` decimal(12,2) DEFAULT NULL,
@@ -195,4 +197,22 @@ CREATE TABLE IF NOT EXISTS `vendor_partial_payment` (
   `partial_status` int(11) NOT NULL DEFAULT '1',
   `partial_added_by` int(11),
   `partial_entrydt` datetime
+) ENGINE=InnoDB;
+
+----------Transactions------------
+
+CREATE TABLE IF NOT EXISTS `company_account_fund_transfer` (
+  `transfer_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  `transfer_from` int(11) DEFAULT NULL,
+  `transfer_to` int(11) DEFAULT NULL,
+  `transfer_perpose` varchar(255) DEFAULT NULL,
+  `transfer_date` date DEFAULT NULL,
+  `transfer_amt` decimal(12,2) DEFAULT NULL,
+  `transfer_receipt` varchar(200) DEFAULT NULL,
+  `transfer_payment_type` varchar(200) DEFAULT NULL,
+  `transfer_cheque_dd_no` varchar(200) DEFAULT NULL,
+  `transfer_remark` text,
+  `transfer_status` int(11) NOT NULL DEFAULT '1',
+  `transfer_added_by` int(11),
+  `transfer_entrydt` datetime
 ) ENGINE=InnoDB;

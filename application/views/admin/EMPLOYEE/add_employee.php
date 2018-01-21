@@ -149,7 +149,7 @@
 								</div>
 							</fieldset>
 							
-							<fieldset>
+							<fieldset style="display:none">
 								
 
 								<section>
@@ -188,6 +188,28 @@
 										</label>
 									</section>
 									
+								</div>
+							</fieldset>
+							
+							<fieldset>
+								
+
+								<section>
+									<h3>Allot Site:</h3>
+								</section>
+
+								
+								<div class="row">
+									<section class="col col-4">
+										<label class="select">
+										<select name="site">
+											<option value="0" selected="" disabled="">Select site</option>
+											<?php foreach($sites as $st):?>
+											<option value="<?php echo $st['site_id'];?>"><?php echo $st['site_name'];?></option>
+											<?php endforeach; ?>
+											
+										</select> <i></i> </label>
+									</section>
 								</div>
 							</fieldset>
 							<footer>

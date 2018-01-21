@@ -58,7 +58,31 @@
 					
 					<!-- widget content -->
 					<div class="widget-body no-padding">
+						<div class="table-responsive">
 						
+							
+							<table class="table table-bordered">
+							<thead>
+							  <tr>
+								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Sl.No.</th>
+								<th><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Login</th>
+								<th><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Logout</th>
+								<th><i class="fa fa-fw fa-edit txt-color-blue hidden-md hidden-sm hidden-xs"></i> Ip:</th>
+							  </tr>
+							</thead>
+							<tbody>
+							  <?php $sno=0;foreach ($usgtest as $ft):$sno++;?>
+							  <tr align="left">
+								<td><?php echo $sno;?>.</td>
+								<td><?php echo date("d-m-Y / H:i:s", strtotime($ft['log_entrydt']));?></td>
+								<td><?php if($ft['log_logout']!=0){echo $ft['log_logout'];}else{echo '--';}?></td>
+								<td><?php echo $ft['log_ip'];?></td>
+							  </tr>
+							  <?php endforeach;?>
+							</tbody>
+							</table>
+							
+						</div>
 
 					</div>
 					<!-- end widget content -->

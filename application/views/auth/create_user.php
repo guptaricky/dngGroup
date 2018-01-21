@@ -31,7 +31,7 @@
 				
 				<div class="row">
 
-					<article class="col-sm-12 col-md-12 col-lg-6">
+					<article class="col-sm-12 col-md-12 col-lg-8">
 						
 						<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
 							
@@ -52,7 +52,13 @@
 									<?php echo form_open("auth/create_user", array('class' => 'smart-form', 'id' => 'checkout-form'));?>
 
 										<fieldset>
+										
 											<div class="row">
+												<section class="col col-12 hide">
+													<label class="input"> <i class="icon-prepend fa fa-user"></i>
+													<?php echo form_input($emp_id);?>
+													</label>
+												</section>
 												<section class="col col-12">
 												<?php echo lang('create_user_fname_label', 'first_name');?>
 													<label class="input"> <i class="icon-prepend fa fa-user"></i>
@@ -65,7 +71,7 @@
 													<?php echo form_input($last_name);?>
 													</label>
 												</section>
-												<section class="col col-12">
+												<section class="col col-12 ">
 												<?php
 												  if($identity_column!=='email') {
 													  echo '<p>';

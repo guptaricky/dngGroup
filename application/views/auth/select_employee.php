@@ -33,7 +33,7 @@
 			<div id="content">
 				<div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> Login Details <span> </span></h1>
+		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> Select Employee <span> </span></h1>
 	</div>
 		
 </div>
@@ -49,7 +49,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>User Logs</h2>
+					<h2>Select Employee for Login Creation</h2>
 				</header>
 				
 				
@@ -58,8 +58,25 @@
 					
 					<!-- widget content -->
 					<div class="widget-body no-padding">
-						
-
+					<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
+					<fieldset>	
+					<div class="row">
+						<section class="col col-4">
+							<label class="select">
+							<select name="employee" id="employee">
+								<option value="0" selected="" disabled="">Select any Employee</option>
+								<?php foreach($employee as $emp):?>
+								<option value="<?php echo $emp['emp_id'];?>"><?php echo $emp['emp_fullname'];?></option>
+								<?php endforeach; ?>
+								
+							</select> <i></i> </label>
+						</section>
+						<section class="col col-4">
+							<button type="button" onclick="setUser()" class="btn btn-sm btn-primary" > Proceed </button>
+						</section>
+					</div>
+					</fieldset>
+					</form>
 					</div>
 					<!-- end widget content -->
 					
@@ -78,6 +95,13 @@
 </section>
 
 <!-- end widget grid -->
+<script type="text/javascript">
+	function setUser(){
+		var emp = $('#employee').val();
+		if(emp == null){alert("Please Select any Employee");}
+		else{window.location.href="<?php echo base_url().'auth/create_user'?>/"+emp;}
+	}
+</script>
 <script type="text/javascript">
 	/* DO NOT REMOVE : GLOBAL FUNCTIONS!
 	 *

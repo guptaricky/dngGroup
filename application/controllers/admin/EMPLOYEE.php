@@ -4,7 +4,7 @@ class EMPLOYEE extends MY_Controller {
 	public function view_employee(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$data['employee'] = $this->Common_model->get_data_by_query_pdo("select * from employes where 1 ",array());
 		$this->load->view('admin/EMPLOYEE/view_employee',$data);
 		$this->load->view('default_admin/footer');
@@ -13,8 +13,9 @@ class EMPLOYEE extends MY_Controller {
 	public function add_employee(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$data['banks'] = $this->Common_model->get_data_by_query_pdo("select * from bank_master where 1 ",array());
+		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where 1 ",array());
 		$this->load->view('admin/EMPLOYEE/add_employee',$data);
 		$this->load->view('default_admin/footer');
 	}
@@ -28,6 +29,7 @@ class EMPLOYEE extends MY_Controller {
 			'emp_state' => $_POST['state'],
 			'emp_phone' => $_POST['phone'],
 			'emp_additional_info' => $_POST['info'],
+			'emp_alloted_site' => $_POST['site'],
 			'emp_email' => $_POST['email'],
 			'emp_aadhar' => $_POST['aadhar'],
 			'emp_pan' => strtoupper($_POST['pan']),

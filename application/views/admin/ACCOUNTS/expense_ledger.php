@@ -32,7 +32,7 @@
 			<div id="content">
 				<div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Inventory Purchase <span></span></h1>
+		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Expense Detail <span></span></h1>
 	</div>
 		
 </div>
@@ -48,7 +48,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-plus"></i> </span>
-					<h2>Add Inventory Purchase </h2>				
+					<h2>Add Expense Detail </h2>				
 					
 				</header>
 
@@ -76,17 +76,17 @@
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<select name="ledger_vendor_id" id="ledger_vendor_id">
-											<option value=""> SELECT VENDOR </option>
-											<?php foreach($vendors as $v){ ?>
-											<option value="<?php echo $v['vendor_id']; ?>"><?php echo $v['vendor_name']; ?></option>
+											<select name="ledger_expense_id" id="ledger_expense_id">
+											<option value=""> SELECT EXPENSE CATEGORY </option>
+											<?php foreach($expense as $v){ ?>
+											<option value="<?php echo $v['cat_id']; ?>"><?php echo $v['cat_name']; ?></option>
 											<?php } ?>
 											</select>
 										</label>
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
-											<input type="text" name="ledger_voucher_no" id="ledger_voucher_no" placeholder="Voucher Number">
+											<input type="text" name="ledger_voucher_no" id="ledger_voucher_no" placeholder="Reciept Number">
 										</label>
 									</section>
 									<section class="col col-12">
@@ -95,39 +95,10 @@
 										</label>
 									</section>
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-envelope"></i>
-											<input type="text" name="ledger_goods_name" id="ledger_goods_name" placeholder="Purchased Item Name">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
-											<input type="text" name="ledger_unit" id="ledger_unit" placeholder="UNIT eg: kg, Bags">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
-											<input type="text" name="ledger_qty" id="ledger_qty" onkeyup="CalculateAmt()" placeholder="Quantity">
-										</label>
-									</section>
-									
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-gears"></i>
-											<input type="text" name="ledger_rate" id="ledger_rate" onkeyup="CalculateAmt()"  placeholder="Rate Per Unit">
-										</label>
-									</section>
-									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
 											<input type="text" name="ledger_amount" id="ledger_amount" onkeyup="CalculateAmt()"  placeholder="Total Price">
 										</label>
 									</section>
-								</div>
-
-								
-							</fieldset>
-									</section>
-									<section class="col col-6">
-								<fieldset>
-								<div class="row">
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-handshake-o"></i>
 											<input type="text" name="ledger_discount" id="ledger_discount" onkeyup="CalculateAmt()"  placeholder="Discount">
@@ -138,9 +109,15 @@
 											<input type="text" name="ledger_payable_amt" onkeyup="CalculateAmt()" id="ledger_payable_amt"  placeholder="Payable Amount">
 										</label>
 									</section>
+								</div>
+							</fieldset>
+									</section>
+									<section class="col col-6">
+								<fieldset>
+								<div class="row">
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="text" name="ledger_paid_amt" id="ledger_paid_amt" onkeyup="CalculateAmt()"  placeholder="Down Payment">
+											<input type="text" name="ledger_paid_amt" id="ledger_paid_amt" onkeyup="CalculateAmt()"  placeholder="Paid Amount">
 										</label>
 									</section>
 									<section class="col col-12">
@@ -165,7 +142,7 @@
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
-											<input type="text" name="ledger_cheque_dd_no" id="ledger_cheque_dd_no"  placeholder="Cheque / Transaction No.">
+											<input type="text" name="ledger_cheque_dd_no" id="ledger_cheque_dd_no"  placeholder="Cheque / Transection No.">
 										</label>
 									</section>
 									<section class="col col-12">
@@ -205,7 +182,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>Vendors List</h2>			
+					<h2>Expense List</h2>			
 					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="GetVendorLedger()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
 					
 				</header>
@@ -238,11 +215,11 @@
 </section>
 <!-- end widget grid -->
 <script>
-$(document).ready(function(){
-	GetVendorLedger();
+		$(document).ready(function(){
+			GetVendorLedger();
 		
 	$('#checkout-form').on('submit',function(e){//bind event on form submit.
-		e.preventDefault(); 
+		e.preventDefault();  
 		var site = $("#ledger_site_id").val();
 		var vendor = $("#ledger_vendor_id").val();
 		var voch = $("#ledger_voucher_no").val();
@@ -251,7 +228,7 @@ $(document).ready(function(){
 			}else{
 				$(".btn").button('loading');
 		 $.ajax({
-			 url:"<?php echo base_url('admin/ACCOUNTS/addVendor_ledger'); ?>",
+			 url:"<?php echo base_url('admin/ACCOUNTS/addExpense_ledger'); ?>",
 			 type:"post",
 			 data:new FormData(this),
 			 processData:false,
@@ -259,9 +236,9 @@ $(document).ready(function(){
 			 cache:false,
 			 async:false,
 			  success: function(data){
-				$(".btn").button('reset');
-				$('#checkout-form')[0].reset();
-				GetVendorLedger();
+					$(".btn").button('reset');
+					$('#checkout-form')[0].reset();
+					GetVendorLedger();
 			  }
 			});
 		}
@@ -271,10 +248,10 @@ $(document).ready(function(){
 		function GetVendorLedger(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Vendor name</th><th>Voucher No.</th><th>Date</th><th>Item</th><th>Total Amount</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
-		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getVendor_ledger'); ?>','', function(res){
+		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Expense Category</th><th>Reciept No.</th><th>Date</th><th>Amount</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
+		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getExpense_ledger'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.vendor_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_goods_name +'</td><td>'+ v.ledger_payable_amt +'</td><td>'+ v.ledger_balance_amt +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditVendorLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
+					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.cat_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_payable_amt +'</td><td>'+ v.ledger_balance_amt +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditVendorLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
@@ -290,7 +267,7 @@ $(document).ready(function(){
 				// alert("Please Enter Valid Details....?");
 			// }else{
 				// $(".btn").button('loading');
-				// $.post('<?php echo base_url('admin/ACCOUNTS/addVendor_ledger'); ?>', $('#checkout-form').serialize(), function (response) {
+				// $.post('<?php echo base_url('admin/ACCOUNTS/addExpense_ledger'); ?>', $('#checkout-form').serialize(), function (response) {
 					// $(".btn").button('reset');
 					// $('#checkout-form')[0].reset();
 					// GetVendorLedger();
@@ -299,7 +276,7 @@ $(document).ready(function(){
 		// }	
 		
 		function EditVendorLedger(id){
-		$.post('<?php echo base_url('admin/ACCOUNTS/editVendor_ledger'); ?>', {'id':id}, function(response){
+		$.post('<?php echo base_url('admin/ACCOUNTS/editExpense_ledger'); ?>', {'id':id}, function(response){
 			var res = jQuery.parseJSON(response);
 				$.each(res, function (k, v) {
 					$("#ledger_id").val(v.ledger_id);
@@ -329,7 +306,7 @@ $(document).ready(function(){
 			if(r==true){
 		$.ajax({  
 				type: "POST",
-				url: "<?php echo base_url('admin/ACCOUNTS/deleteVendor_ledger'); ?>",
+				url: "<?php echo base_url('admin/ACCOUNTS/deleteExpense_ledger'); ?>",
 				data: {'id':id},
 				success: function(msg){
 				GetVendorLedger();	
@@ -339,15 +316,7 @@ $(document).ready(function(){
 		}	
 		
 		function  CalculateAmt(){
-			var qty = $("#ledger_qty").val();
-			var rate = $("#ledger_rate").val();
-			var total = parseFloat(qty) * parseFloat(rate);
-			if(isNaN(total)) {
-			var total = 0;
-			}else{
-			var total = total;
-			}
-			$("#ledger_amount").val(total);
+			var total = $("#ledger_amount").val();
 			var disc = $("#ledger_discount").val();
 			var payble = parseFloat(total) - parseFloat(disc);			
 			if(isNaN(payble)) {

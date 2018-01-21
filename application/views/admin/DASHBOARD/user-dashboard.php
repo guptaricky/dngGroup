@@ -1,4 +1,34 @@
+	<!-- Styles -->
+	<style>
+	#chartdiv {
+	  width: 100%;
+	  height: 500px;
+	  font-size: 11px;
+	}
 
+	.amcharts-pie-slice {
+	  transform: scale(1);
+	  transform-origin: 50% 50%;
+	  transition-duration: 0.3s;
+	  transition: all .3s ease-out;
+	  -webkit-transition: all .3s ease-out;
+	  -moz-transition: all .3s ease-out;
+	  -o-transition: all .3s ease-out;
+	  cursor: pointer;
+	  box-shadow: 0 0 30px 0 #000;
+	}
+
+	.amcharts-pie-slice:hover {
+	  transform: scale(1.1);
+	  filter: url(#shadow);
+	}							
+	</style>
+	<!-- Resources -->
+	<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+	<script src="https://www.amcharts.com/lib/3/pie.js"></script>
+	<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+	<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+	<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 		<!-- #MAIN PANEL -->
 		<div id="main" role="main">
 
@@ -15,16 +45,6 @@
 				</ol>
 				<!-- end breadcrumb -->
 
-				<!-- You can also add more buttons to the
-				ribbon for further usability
-
-				Example below:
-
-				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
-					<a href="#" id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa fa-grid"></i> Change Grid</a>
-					<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> Add</span>
-					<button id="search" class="btn btn-ribbon" data-title="search"><i class="fa fa-search"></i> <span class="hidden-mobile">Search</span></button>
-				</span> -->
 
 			</div>
 			<!-- END RIBBON -->
@@ -32,52 +52,94 @@
 			<!-- #MAIN CONTENT -->
 			<div id="content">
 				<div class="row">
-	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> Login Details <span> </span></h1>
-	</div>
-		
-</div>
-<section id="widget-grid" class="">
+					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+						<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> 
+						<?php echo $this->Common_model->findfield('site_detail','site_id',$emp_site[0]['emp_alloted_site'],'site_name');?> <span></span></h1>
+					</div>
+						
+				</div>
+				<!-- widget grid -->
+				<section id="widget-grid" class="">
 
-	
-	<div class="row">
-
-		
-		<article class="col-sm-12 col-md-12 col-lg-12">
-			
-			<div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false">
-				
-				<header>
-					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>User Logs</h2>
-				</header>
-				
-				
-				<!-- widget div-->
-				<div>
 					
-					<!-- widget content -->
-					<div class="widget-body no-padding">
+					<div class="row">
+
+						<!-- a blank row to get started -->
+						<div class="col-sm-6 col-lg-12">
+							<!-- HTML -->
+							<div id="chartdiv"></div>
+						</div>
+						
 						
 
-					</div>
-					<!-- end widget content -->
-					
-				</div>
-				<!-- end widget div -->
-				
-			</div>
-			<!-- end widget -->
+					<!-- end row -->
 
+				</section>
+				<!-- end widget grid -->
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart("chartdiv", {
+  "type": "pie",
+  "startDuration": 0,
+   "theme": "light",
+  "addClassNames": true,
+  "legend":{
+   	"position":"right",
+    "marginRight":100,
+    "autoMargins":false
+  },
+  "innerRadius": "30%",
+  "defs": {
+    "filter": [{
+      "id": "shadow",
+      "width": "200%",
+      "height": "200%",
+      "feOffset": {
+        "result": "offOut",
+        "in": "SourceAlpha",
+        "dx": 0,
+        "dy": 0
+      },
+      "feGaussianBlur": {
+        "result": "blurOut",
+        "in": "offOut",
+        "stdDeviation": 5
+      },
+      "feBlend": {
+        "in": "SourceGraphic",
+        "in2": "blurOut",
+        "mode": "normal"
+      }
+    }]
+  },
+  "dataProvider": [
+  <?php foreach($expenses as $exp){?>
+  {
+    "country": "<?php echo $exp['cat_name'];?>",
+    "Rupees": 1254.25
+  },<?php } ?>],
+  "valueField": "Rupees",
+  "titleField": "country",
+  "export": {
+    "enabled": true
+  }
+});
 
-		</article>
-	</div>
+chart.addListener("init", handleInit);
 
-	<!-- end row -->
+chart.addListener("rollOverSlice", function(e) {
+  handleRollOver(e);
+});
 
-</section>
+function handleInit(){
+  chart.legend.addListener("rollOverItem", handleRollOver);
+}
 
-<!-- end widget grid -->
+function handleRollOver(e){
+  var wedge = e.dataItem.wedge.node;
+  wedge.parentNode.appendChild(wedge);
+}
+</script>
 <script type="text/javascript">
 	/* DO NOT REMOVE : GLOBAL FUNCTIONS!
 	 *
@@ -184,6 +246,7 @@
 	
 	
 </script>
+
 			</div>
 			
 			<!-- END #MAIN CONTENT -->

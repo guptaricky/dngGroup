@@ -63,32 +63,32 @@
 							<fieldset>
 								<div class="row">
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
+										<label class="input">
 											<select name="detail_site_id" class="form-control col col-12" id="detail_site_id" >
 												<option value=""> SELECT SITE </option>
 												<?php foreach($sites as $site){ ?>
 												<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
 												<?php } ?>
-											</select>											
+											</select><i></i>											
 										</label>
 									</section>
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-image"></i>
+										<label class="input">
 											<select name="detail_sector" class="form-control col col-12"  id="detail_sector" >
 												<option value="">SELECT SECTOR</option>
 												<option value="Sector 1">Sector 1</option>
 												<option value="Sector 2">Sector 2</option>
-											</select>
+											</select><i></i>
 										</label>
 									</section>
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
+										<label class="input">
 											<select name="detail_type" class="form-control col col-12" id="detail_type">
 												<option value="">SELECT PROPERTY TYPE</option>
 												<option value="Plots">Plots</option>
 												<option value="Flats">Flats</option>
 												<option value="Houses">Houses</option>
-											</select>
+											</select><i></i>
 										</label>
 									</section>
 									<section class="col col-12" hidden>

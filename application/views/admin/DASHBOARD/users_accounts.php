@@ -54,7 +54,7 @@
 							<div class="row">
 								
 								<div class="col-sm-12 text-right">
-									<a class="btn btn btn-primary" href="<?php echo base_url().'auth/create_user'?>">
+									<a class="btn btn btn-primary" href="<?php echo base_url().'auth/select_employee'?>">
 										<i class="fa fa-plus"></i> Create User
 									</a>
 									<a class="btn btn btn-success" href="<?php echo base_url().'auth/create_group'?>">

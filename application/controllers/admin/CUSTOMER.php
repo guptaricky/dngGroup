@@ -2,18 +2,21 @@
 class CUSTOMER extends MY_Controller {
 
 	public function view_customers(){
+		// echo $group = $this->session->userdata('group');die;
+		// print_r($this->Common_model->toggle_sidebar());die;
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$data['customers'] = $this->Common_model->get_data_by_query_pdo("select * from customers where 1 ",array());
 		$this->load->view('admin/CUSTOMER/view_customers',$data);
 		$this->load->view('default_admin/footer');
 	}
 	
 	public function add_customers(){
+		
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
-		$this->load->view('default_admin/sidebar');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$this->load->view('admin/CUSTOMER/add_customers');
 		$this->load->view('default_admin/footer');
 	}

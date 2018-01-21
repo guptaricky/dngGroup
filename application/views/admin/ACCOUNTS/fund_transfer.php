@@ -32,7 +32,7 @@
 			<div id="content">
 				<div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Site Management <span></span></h1>
+		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Fund Transfer Detail <span></span></h1>
 	</div>
 		
 </div>
@@ -48,7 +48,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-plus"></i> </span>
-					<h2>Add Site </h2>				
+					<h2>Add Fund Transfer Detail </h2>				
 					
 				</header>
 
@@ -59,45 +59,82 @@
 					<div class="widget-body no-padding">
 						
 						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
-								<input type="hidden" name="site_id" id="site_id" >
+								<input type="hidden" name="transfer_id" id="transfer_id" >
+								<div class="row">
+									<section class="col col-12">
 							<fieldset>
 								<div class="row">
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<input type="text" name="site_name" id="site_name" placeholder="Site Name">
+										<label class="select"> 
+											<select name="transfer_from" id="transfer_from">
+											<option value=""> Transfer From </option>
+											<?php foreach($sites as $site){ ?>
+											<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
+											<?php } ?>
+											</select><i></i>
 										</label>
 									</section>
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-image"></i>
-											<input type="file" name="site_banner" id="site_banner" placeholder="Site Banner">
+										<label class="select"> 
+											<select name="transfer_to" id="transfer_to" >
+											<option value=""> Transfer To </option>
+											<?php foreach($sites as $site){ ?>
+											<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
+											<?php } ?>
+											</select><i></i>
 										</label>
 									</section>
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<input type="text" name="site_manager_name" id="site_manager_name" placeholder="Contact Person Name">
+										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
+											<input type="text" name="transfer_perpose" id="transfer_perpose" placeholder="Purpose of Transfer">
 										</label>
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
-											<input type="text" name="site_manager_no" id="site_manager_no" maxlength="10" placeholder="Contact Number">
+											<input type="file" name="transfer_receipt" id="transfer_receipt" placeholder="Receipt Image">
+										</label>
+									</section>
+									<section class="col col-12">
+										<label class="input"> <i class="icon-prepend fa fa-money"></i>
+											<input type="text" name="transfer_amt" id="transfer_amt" placeholder="Transfer Amount">
+										</label>
+									</section>
+									
+									<section class="col col-12">
+										<label class="input"> <i class="icon-prepend fa fa-money"></i>
+											<input type="date" name="transfer_date" id="transfer_date"  placeholder="yyyy-mm-dd">
+										</label>
+									</section>
+									<section class="col col-12">
+										<label class="select"> 
+										<select name="transfer_payment_type" id="transfer_payment_type">
+											<option value=""> SELECT TYPE </option>
+											<option value="Cash">Cash</option>
+											<option value="Cheque">Cheque</option>
+											<option value="Bank">Bank</option>
+											</select><i></i>
+										</label>
+									</section>
+									<section class="col col-12">
+										<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
+											<input type="text" name="transfer_cheque_dd_no" id="transfer_cheque_dd_no"  placeholder="Cheque / Transaction No.">
 										</label>
 									</section>
 									<section class="col col-12">
 									<label class="textarea">					
-										<textarea rows="3" name="site_address" id="site_address" placeholder="Address"></textarea> 
-									</label>
-									</section>
-									<section class="col col-12">
-									<label class="textarea">					
-										<textarea rows="3" name="site_remark" id="site_remark" placeholder="Remark"></textarea> 
+										<textarea rows="3" name="transfer_remark" id="transfer_remark" placeholder="Remark"></textarea> 
 									</label>
 									</section>	
 								</div>
 							</fieldset>
+						</section>
+							</div>
+
 
 							<footer>
-								<button type="submit" class="btn btn-primary" onclick="/*Addsite()*/" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
-								<button type="reset" class="btn btn-default" id="reset"> RESET </button>
+								<button type="submit" class="btn btn-primary" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
+								<!--<button type="button" class="btn btn-primary" onclick="AddFundTransfer()" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>-->
+								<button type="reset" class="btn btn-default" > RESET </button>
 							</footer>
 						</form>
 
@@ -119,8 +156,8 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>sites List</h2>			
-					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="Getsite()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
+					<h2> Fund Transfer List</h2>			
+					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="GetVendorLedger()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
 					
 				</header>
 
@@ -130,7 +167,7 @@
 					<!-- widget content -->
 					<div class="widget-body no-padding">
 						
-						<div class="table-responsive" id="result_data">
+						<div class="table-responsive" id="result_data" style='height:500px;overflow:scroll;'>
 						
 						</div>
 
@@ -153,35 +190,41 @@
 <!-- end widget grid -->
 <script>
 $(document).ready(function(){
-	Getsite();
+GetFundTransfer();
 		
 	$('#checkout-form').on('submit',function(e){//bind event on form submit.
 		e.preventDefault(); 
-				$(".btn").button('loading');
-		    $.ajax({
-				url:"<?php echo base_url('admin/MASTERS/addsite'); ?>",
-				type:"post",
-				data:new FormData(this),
-				processData:false,
-				contentType:false,
-				cache:false,
-				async:false,
-				success: function(data){
+		var transfer_from = $("#transfer_from").val();
+		var transfer_to = $("#transfer_to").val();
+		if(transfer_from=='' || transfer_from==''){
+			alert("Please Enter Valid Details....?");
+		}else{
+			$(".btn").button('loading');
+		 $.ajax({
+			 url:"<?php echo base_url('admin/ACCOUNTS/add_fund_transfer'); ?>",
+			 type:"post",
+			 data:new FormData(this),
+			 processData:false,
+			 contentType:false,
+			 cache:false,
+			 async:false,
+			  success: function(data){
 					$(".btn").button('reset');
 					$('#checkout-form')[0].reset();
-					Getsite();
-				}
+					GetFundTransfer();
+			  }
 			});
-	}); 
+		}
+	});  
 });
 		
-		function Getsite(){
+		function GetFundTransfer(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Contact Person</th><th>Contact No.</th><th>Address</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
-		$.getJSON('<?php echo base_url('admin/MASTERS/getsite'); ?>','', function(res){
+		content +='<table class="table table-bordered"><thead><tr><th>Transfer From</th><th>Transfer To</th><th>Transfer Amount</th><th>Date</th><th>Purpose</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
+		$.getJSON('<?php echo base_url('admin/ACCOUNTS/get_fund_transfer'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.site_manager_name +'</td><td>'+ v.site_manager_no +'</td><td>'+ v.site_address +'</td><td>'+ v.site_remark +'</td><td><span style="cursor:pointer;" title="Edit" onclick="Editsite('+ v.site_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="Deletesite('+ v.site_id +')"><i class="fa fa-remove"></i></span></td></tr>';
+					  content +='<tr><td>'+ v.transfer_from +'</td><td>'+ v.transfer_to +'</td><td>'+ v.transfer_amt +'</td><td>'+ v.transfer_date +'</td><td>'+ v.transfer_perpose +'</td><td>'+ v.transfer_remark +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditFundTransfer('+ v.transfer_id +')"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteFundTransfer('+ v.transfer_id +')" ><i class="fa fa-remove"></i></button></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
@@ -189,44 +232,51 @@ $(document).ready(function(){
 		}
 	
 
-		// function Addsite(){        
-		// $(".btn").button('loading');		
-                   // var form_data = $('#checkout-form').serialize();
-			// $.post('<?php echo base_url('admin/MASTERS/addsite'); ?>', form_data, function (response) {
-				// $(".btn").button('reset');
-				// $('#checkout-form')[0].reset();
-				// Getsite();
-			// });
+		// function AddFundTransfer(){  
+		// var transfer_from = $("#transfer_from").val();
+		// var transfer_to = $("#transfer_to").val();
+			// if(transfer_from=='' || transfer_from==''){
+				// alert("Please Enter Valid Details....?");
+			// }else{
+				// $(".btn").button('loading');
+				// $.post('<?php echo base_url('admin/ACCOUNTS/add_fund_transfer'); ?>', $('#checkout-form').serialize(), function (response) {
+					// $(".btn").button('reset');
+					// $('#checkout-form')[0].reset();
+					// GetFundTransfer();
+				// });
+			// }
 		// }	
 		
-		function Editsite(id){
-		$.post('<?php echo base_url('admin/MASTERS/editsite'); ?>', {'id':id}, function(response){
+		function EditFundTransfer(id){
+		$.post('<?php echo base_url('admin/ACCOUNTS/edit_fund_transfer'); ?>', {'id':id}, function(response){
 			var res = jQuery.parseJSON(response);
 				$.each(res, function (k, v) {
-					$("#site_id").val(v.site_id);
-					$("#site_name").val(v.site_name);
-					// $("#site_banner").val(v.site_banner);
-					$("#site_manager_name").val(v.site_manager_name);
-					$("#site_manager_no").val(v.site_manager_no);
-					$("#site_address").val(v.site_address);
-					$("#site_remark").val(v.site_remark);
+					$("#transfer_id").val(v.transfer_id);
+					$("#transfer_from").val(v.transfer_from);
+					$("#transfer_to").val(v.transfer_to);
+					$("#transfer_perpose").val(v.transfer_perpose);
+					$("#transfer_date").val(v.transfer_date);
+					$("#transfer_amt").val(v.transfer_amt);
+					$("#transfer_payment_type").val(v.transfer_payment_type);
+					$("#transfer_cheque_dd_no").val(v.transfer_cheque_dd_no);
+					$("#transfer_remark").val(v.transfer_remark);
 					});	
 			});	 
 		}	
 		
-		function Deletesite(id){
-			var r = confirm("Are you sure you want to Delete this site ?");
+		function DeleteFundTransfer(id){
+			var r = confirm("Are you sure you want to Delete this Record ?");
 			if(r==true){
 		$.ajax({  
 				type: "POST",
-				url: "<?php echo base_url('admin/MASTERS/deletesite'); ?>",
+				url: "<?php echo base_url('admin/ACCOUNTS/delete_fund_transfer'); ?>",
 				data: {'id':id},
 				success: function(msg){
-				Getsite();	
+				GetFundTransfer();	
 				}  
 			});	
 			}else{}			
-		}
+		}	
 		
 </script>
 <script type="text/javascript">
