@@ -71,7 +71,7 @@
 						<a href="<?php echo base_url().'admin/ACCOUNTS/vendor_ledger'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-rupee"></i> <span class="menu-item-parent">Vendor's Payment</span></a>
 					</li>
 					<li class="">
-<<<<<<< HEAD
+			<<<<<<< HEAD
 						<a href="<?php echo base_url().'admin/MASTERS/manageSite'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Property Sell</span></a>
 					</li>
 					<li class="">
