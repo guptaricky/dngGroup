@@ -31,189 +31,204 @@
 			<!-- #MAIN CONTENT -->
 			<div id="content">
 				<div class="row">
-	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Expense Detail <span></span></h1>
-	</div>
-		
-</div>
-<!-- widget grid -->
-<section id="widget-grid" class="">
-
-	
-	<div class="row">
-
-		<article class="col-sm-12 col-md-12 col-lg-5">
-			
-			<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
-				
-				<header>
-					<span class="widget-icon"> <i class="fa fa-plus"></i> </span>
-					<h2>Add Expense Detail </h2>				
+				<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+					<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Expenses <span></span></h1>
+				</div>
 					
-				</header>
+			</div>
+			<!-- widget grid -->
+			<section id="widget-grid" class="">
 
-				<!-- widget div-->
-				<div>
-					
-					<!-- widget content -->
-					<div class="widget-body no-padding">
+				<div class="row">
+
+					<article class="col-sm-12 col-md-12 col-lg-5">
 						
-						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
-								<input type="hidden" name="ledger_id" id="ledger_id" >
-								<div class="row">
-									<section class="col col-6">
-							<fieldset>
-								<div class="row">
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<select name="ledger_site_id" id="ledger_site_id">
-											<option value=""> SELECT SITE </option>
-											<?php foreach($sites as $site){ ?>
-											<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
-											<?php } ?>
-											</select>
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<select name="ledger_expense_id" id="ledger_expense_id">
-											<option value=""> SELECT EXPENSE CATEGORY </option>
-											<?php foreach($expense as $v){ ?>
-											<option value="<?php echo $v['cat_id']; ?>"><?php echo $v['cat_name']; ?></option>
-											<?php } ?>
-											</select>
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
-											<input type="text" name="ledger_voucher_no" id="ledger_voucher_no" placeholder="Reciept Number">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
-											<input type="file" name="ledger_voucher_image" id="ledger_voucher_image" placeholder="Voucher Image">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="text" name="ledger_amount" id="ledger_amount" onkeyup="CalculateAmt()"  placeholder="Total Price">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-handshake-o"></i>
-											<input type="text" name="ledger_discount" id="ledger_discount" onkeyup="CalculateAmt()"  placeholder="Discount">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="text" name="ledger_payable_amt" onkeyup="CalculateAmt()" id="ledger_payable_amt"  placeholder="Payable Amount">
-										</label>
-									</section>
-								</div>
-							</fieldset>
-									</section>
-									<section class="col col-6">
-								<fieldset>
-								<div class="row">
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="text" name="ledger_paid_amt" id="ledger_paid_amt" onkeyup="CalculateAmt()"  placeholder="Paid Amount">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="text" name="ledger_balance_amt" id="ledger_balance_amt"  placeholder="Balance">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="date" name="ledger_payment_date" id="ledger_payment_date"  placeholder="yyyy-mm-dd">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-sort-down"></i>
-										<select name="ledger_payment_type" id="ledger_payment_type">
-											<option value=""> SELECT TYPE </option>
-											<option value="Cash">Cash</option>
-											<option value="Cheque">Cheque</option>
-											<option value="Bank">Bank</option>
-											</select>
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
-											<input type="text" name="ledger_cheque_dd_no" id="ledger_cheque_dd_no"  placeholder="Cheque / Transection No.">
-										</label>
-									</section>
-									<section class="col col-12">
-									<label class="textarea">					
-										<textarea rows="3" name="ledger_remark" id="ledger_remark" placeholder="Remark"></textarea> 
-									</label>
-									</section>	
-								</div>
+						<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
+							
+							<header>
+								<span class="widget-icon"> <i class="fa fa-plus"></i> </span>
+								<h2>Add Expense Detail </h2>
+							</header>
 
+							<!-- widget div-->
+							<div>
 								
-							</fieldset>
-							</section>
+								<!-- widget content -->
+								<div class="widget-body no-padding">
+									
+									<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
+										<input type="hidden" name="ledger_id" id="ledger_id" >
+										<div class="row">
+										<section class="col col-12">
+										<fieldset>
+											<div class="row">
+												<section class="col col-6">
+													<label class="select"> 
+														<select name="ledger_site_id" id="ledger_site_id">
+														<option value=""> SELECT SITE </option>
+														<?php foreach($sites as $site){ ?>
+														<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
+														<?php } ?>
+														</select><i></i>
+													</label>
+												</section>
+												<section class="col col-6">
+													<label class="select">
+														<select name="ledger_expense_id" id="ledger_expense_id">
+														<option value=""> SELECT EXPENSE CATEGORY </option>
+														<?php foreach($expense as $v){ ?>
+														<option value="<?php echo $v['cat_id']; ?>"><?php echo $v['cat_name']; ?></option>
+														<?php } ?>
+														</select><i></i>
+													</label>
+												</section>
+											</div>
+											
+											
+											<div class="row">
+												<section class="col col-6">
+													<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
+														<input type="text" name="ledger_voucher_no" id="ledger_voucher_no" placeholder="Receipt Number">
+													</label>
+												</section>
+												<section class="col col-6">
+													<label class="input"> <i class="icon-prepend fa fa-calendar"></i>
+														<input type="text" name="ledger_payment_date" id="ledger_payment_date"  placeholder="yyyy-mm-dd" class="datepicker">
+													</label>
+												</section>
+											</div>
+											
+											<div class="row">
+												<section class="col col-8">
+													<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
+														<input type="file" name="ledger_voucher_image" id="ledger_voucher_image" placeholder="Voucher Image">
+													</label>
+												</section>
+											</div>
+											<hr class="simple">
+											<div class="row">
+												<section class="col col-6">
+												<label class="label">Amount: </label>
+													<label class="input"> <i class="icon-prepend fa fa-money"></i>
+														<input type="text" name="ledger_amount" id="ledger_amount" onkeyup="CalculateAmt()"  placeholder="Amount">
+													</label>
+												</section>
+												<section class="col col-6">
+												<label class="label">Discount: </label>
+													<label class="input"> <i class="icon-prepend fa fa-money"></i>
+														<input type="text" name="ledger_discount" id="ledger_discount" onkeyup="CalculateAmt()"  value="0.00" placeholder="Discount">
+													</label>
+												</section>
+											</div>
+											<div class="row">
+												<section class="col col-6">
+												<label class="label">Payable Amount: </label>
+													<label class="input"> <i class="icon-prepend fa fa-money"></i>
+														<input type="text" name="ledger_payable_amt" onkeyup="CalculateAmt()" value="0.00" id="ledger_payable_amt" placeholder="Payable Amount">
+													</label>
+												</section>
+												<section class="col col-6">
+												<label class="label">Paid Amount: </label>
+													<label class="input"> <i class="icon-prepend fa fa-money"></i>
+														<input type="text" name="ledger_paid_amt" id="ledger_paid_amt" onkeyup="CalculateAmt()"  placeholder="Paid Amount">
+													</label>
+												</section>
+											</div>
+											<div class="row">
+												<section class="col col-6">
+												<label class="label">Balance: </label>
+													<label class="input"> <i class="icon-prepend fa fa-money"></i>
+														<input type="text" name="ledger_balance_amt" id="ledger_balance_amt"  placeholder="Balance">
+													</label>
+												</section>
+												<section class="col col-6">
+												<label class="label">Payment Mode: </label>
+													<label class="select"> 
+														<select name="ledger_payment_type" id="ledger_payment_type">
+														<option value=""> SELECT TYPE </option>
+														<option value="Cash">Cash</option>
+														<option value="Cheque">Cheque</option>
+														<option value="Bank">Bank</option>
+														</select><i></i>
+													</label>
+													</label>
+												</section>
+											</div>
+											<div class="row">
+												<section class="col col-6">
+												<label class="label">Transaction No. </label>
+													<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
+														<input type="text" name="ledger_cheque_dd_no" id="ledger_cheque_dd_no"  placeholder="Cheque / Transaction No.">
+													</label>
+												</section>
+											
+												<section class="col col-6">
+												<label class="label">Remark: </label>
+												<label class="textarea">					
+													<textarea rows="3" name="ledger_remark" id="ledger_remark" placeholder="Remark"></textarea> 
+												</label>
+												</section>	
+											</div>
+										</fieldset>
+										</section>
+										</div>
+
+										<footer>
+											<button type="submit" class="btn btn-primary" onclick="/*AddVendorLedger()*/" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
+											<button type="reset" class="btn btn-default" > RESET </button>
+										</footer>
+									</form>
+
+								</div>
+								<!-- end widget content -->
+								
 							</div>
-
-
-							<footer>
-								<button type="submit" class="btn btn-primary" onclick="/*AddVendorLedger()*/" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
-								<button type="reset" class="btn btn-default" > RESET </button>
-							</footer>
-						</form>
-
-					</div>
-					<!-- end widget content -->
-					
-				</div>
-				<!-- end widget div -->
-				
-			</div>
-			<!-- end widget -->
-
-
-		</article>
-		
-		<article class="col-sm-12 col-md-12 col-lg-7">
-			
-			<div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false">
-				
-				<header>
-					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>Expense List</h2>			
-					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="GetVendorLedger()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
-					
-				</header>
-
-				<!-- widget div-->
-				<div>
-					
-					<!-- widget content -->
-					<div class="widget-body no-padding">
-						
-						<div class="table-responsive" id="result_data" style='height:500px;overflow:scroll;'>
-						
+							<!-- end widget div -->
+							
 						</div>
+						<!-- end widget -->
 
-					</div>
-					<!-- end widget content -->
+
+					</article>
 					
+					<article class="col-sm-12 col-md-12 col-lg-7">
+						
+						<div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false">
+							
+							<header>
+								<span class="widget-icon"> <i class="fa fa-list"></i> </span>
+								<h2>Expense List</h2>			
+								<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="GetVendorLedger()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
+								
+							</header>
+
+							<!-- widget div-->
+							<div>
+								
+								<!-- widget content -->
+								<div class="widget-body no-padding">
+									
+									<div class="table-responsive" id="result_data" style='max-height:500px;overflow:scroll;'>
+									
+									</div>
+
+								</div>
+								<!-- end widget content -->
+								
+							</div>
+							<!-- end widget div -->
+							
+						</div>
+						<!-- end widget -->
+
+
+					</article>
 				</div>
-				<!-- end widget div -->
-				
-			</div>
-			<!-- end widget -->
 
+				<!-- end row -->
 
-		</article>
-	</div>
-
-	<!-- end row -->
-
-</section>
-<!-- end widget grid -->
+			</section>
+			<!-- end widget grid -->
 <script>
 		$(document).ready(function(){
 			GetVendorLedger();
@@ -248,13 +263,13 @@
 		function GetVendorLedger(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Expense Category</th><th>Reciept No.</th><th>Date</th><th>Amount</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
+		content +='<table class="table table-bordered"><thead><tr><th>Expense Category</th><th>Reciept No.</th><th>Date</th><th>Amount</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getExpense_ledger'); ?>','', function(res){
-					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.cat_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_payable_amt +'</td><td>'+ v.ledger_balance_amt +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditVendorLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
-					});					
-					content +='</tbody></table>';	
-				$("#result_data").html(content);
+				$.each(res, function (k, v) {
+				  content +='<tr><td>'+ v.cat_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_payable_amt +'</td><td>'+ v.ledger_balance_amt +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditVendorLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
+				});					
+				content +='</tbody></table>';	
+			$("#result_data").html(content);
 			});	 
 		}
 	

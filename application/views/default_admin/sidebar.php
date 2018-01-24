@@ -56,7 +56,16 @@
 						<a href="<?php echo base_url().'admin/MASTERS/site_otherdetail'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-building"></i> <span class="menu-item-parent">Manage Site Details</span></a>
 					</li>
 					<li class="">
+						<a href="<?php echo base_url().'admin/ACCOUNTS/add_account'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Accounts</span></a>
+					</li>
+					<li class="">
+						<a href="<?php echo base_url().'admin/ACCOUNTS/expense_ledger'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-edit"></i> <span class="menu-item-parent">Expenses</span></a>
+					</li>
+					<li class="">
 						<a href="<?php echo base_url().'admin/MASTERS/expenseCategory'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Expense Category</span></a>
+					</li>
+					<li class="">
+						<a href="<?php echo base_url().'admin/ACCOUNTS/expense_ledger'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Expense Details</span></a>
 					</li>
 					<li class="">
 						<a href="<?php echo base_url().'admin/EMPLOYEE/view_employee'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Employee</span></a>

@@ -216,3 +216,19 @@ CREATE TABLE IF NOT EXISTS `company_account_fund_transfer` (
   `transfer_added_by` int(11),
   `transfer_entrydt` datetime
 ) ENGINE=InnoDB;
+
+--
+-- Table structure for table `accounts`
+--
+
+CREATE TABLE `accounts` (
+  `acc_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  `acc_name` varchar(100) NOT NULL,
+  `acc_short_name` varchar(50) NOT NULL,
+  `acc_balance` decimal(15,2) NOT NULL,
+  `acc_status` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--

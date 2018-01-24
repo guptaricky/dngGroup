@@ -377,8 +377,20 @@ class ACCOUNTS extends MY_Controller {
 	}
 
 	public function get_fund_transfer(){
+		$list=[];
 		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where 1 and transfer_status=?",array(1));
-		echo json_encode($transfer);
+		foreach($transfer as $t){
+		$data['transfer_id'] = $t['transfer_id'];
+		$data['transfer_from'] = !empty($t['transfer_from'])?$this->Common_model->get_site_name($t['transfer_from']):'';
+		$data['transfer_to'] = $this->Common_model->get_site_name($t['transfer_to']);
+		$data['transfer_perpose'] = $t['transfer_perpose'];
+		$data['transfer_date'] = $t['transfer_date'];
+		$data['transfer_amt'] = $t['transfer_amt'];
+		$data['transfer_remark'] = $t['transfer_remark'];
+		$list[]=$data;
+		}
+		echo json_encode(array('list'=>$list));
+		exit();
 	}
 	
 	public function edit_fund_transfer(){
@@ -393,6 +405,74 @@ class ACCOUNTS extends MY_Controller {
 			'transfer_status' => 0
 		);	
 		$this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$id,$data);
+	}
+	////STARTS ACCOUNT DETAILS///
+	public function add_account(){
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$this->load->view('admin/ACCOUNTS/add_accounts');
+		$this->load->view('default_admin/footer');
+	}
+	
+	public function insert_account(){
+		$data = array(
+		'acc_name'			=> $_POST['acc_name'],
+		'acc_short_name' 			=> $_POST['acc_short_name']
+		);
+		
+		
+		if(!empty($_POST['acc_id'])){
+		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['acc_id'],$data);
+		}else{
+		$this->Crud_model->insert_record('accounts',$data);
+		}
+	}
+
+	public function get_account(){
+		$accounts = $this->Common_model->get_data_by_query_pdo("select * from accounts where 1 and acc_status=?",array(1));
+		
+		echo json_encode($accounts);
+		exit();
+	}
+	
+	public function edit_account(){
+		$id = $this->input->post('id');
+		$accounts = $this->Common_model->get_data_by_query_pdo("select * from accounts where acc_id=?",array($id));
+		echo json_encode($accounts);
+	}
+	
+	public function delete_account(){
+		$id = $this->input->post('id');
+		$data = array(
+			'acc_status' => 0
+		);	
+		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$id,$data);
+	}
+	////END ACCOUNT DETAILS///
+	
+	public function get_balance(){		
+		$userid = (array_slice($this->session->userdata, 10, 1));
+		$uid = $userid['emp_id'];
+		$balance = 0;
+		$transfer_amt = 0;
+		$expense_amt = 0;
+		$employee = $this->Common_model->get_data_by_query_pdo("select * from employes where emp_id=?",array($uid));
+		if(!empty($employee[0]['emp_alloted_site'])){
+		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where transfer_to=?",array($employee[0]['emp_alloted_site']));
+		foreach($transfer as $t){
+			$transfer_amt = $transfer_amt + $t['transfer_amt'];
+		}
+		$expense = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_vendor_id=?",array($employee[0]['emp_alloted_site']));
+		foreach($expense as $e){
+		$partial_paid = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment where partial_ledger_id=?",array($e['ledger_id']));
+			foreach($partial_paid as $paid){
+			$expense_amt = $expense_amt + $paid['partial_amt'];
+		}
+		}
+		$balance = $transfer_amt - $expense_amt;
+		}
+		echo $balance;
 	}
 
 	

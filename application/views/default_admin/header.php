@@ -122,6 +122,12 @@
 			</div>
 			<!-- end projects dropdown -->
 			
+			<!-- #PROJECTS: projects dropdown -->
+			<div class="project-context hidden-xs">
+				<h4 style="color:gray;font-size:20px;margin-left:450px;" class="m-l-100">Balance : <b id="balance"></b></h4>
+			</div>
+			<!-- end projects dropdown -->
+			
 			<!-- #TOGGLE LAYOUT BUTTONS -->
 			<!-- pulled right: nav area -->
 			<div class="pull-right">
@@ -224,3 +230,19 @@
 		<!-- END HEADER -->
 
 		
+<script>
+		$(document).ready(function(){
+			GetBalance();
+		});
+		
+		function GetBalance(){			
+			$.post('<?php echo base_url('admin/ACCOUNTS/get_balance'); ?>', '', function (response) {
+				$("#balance").html(response);
+			});	 
+		}
+</script>
+<script>
+$(function() {
+	$(".datepicker").datepicker({changeMonth:true,changeYear:true,dateFormat: 'yy-mm-dd'});				
+});
+</script>

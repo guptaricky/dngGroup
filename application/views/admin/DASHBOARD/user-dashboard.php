@@ -56,12 +56,33 @@
 						<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> 
 						<?php echo $this->Common_model->findfield('site_detail','site_id',$emp_site[0]['emp_alloted_site'],'site_name');?> <span></span></h1>
 					</div>
-						
+					<!-- right side of the page with the sparkline graphs -->
+					<!-- col -->
+					<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+						<!-- sparks -->
+						<ul id="sparks">
+							<li class="sparks-info">
+								<h5> Balance <span class="txt-color-blue"><i class="fa fa-rupee"></i> 47,171</span></h5>
+								
+							</li>
+							<li class="sparks-info">
+								<h5> Site Value <span class="txt-color-purple"><i class="fa fa-arrow-circle-up" data-rel="bootstrap-tooltip" title="Increased"></i>&nbsp;45%</span></h5>
+								
+							</li>
+							<li class="sparks-info">
+								<h5> Today's Expenses <span class="txt-color-greenDark"><i class="fa fa-rupee"></i>&nbsp;2447.00</span></h5>
+								
+							</li>
+						</ul>
+						<!-- end sparks -->
+					</div>
+					<!-- end col -->	
 				</div>
+				
 				<!-- widget grid -->
 				<section id="widget-grid" class="">
 
-					
+					<div class="well padding-5">
 					<div class="row">
 
 						<!-- a blank row to get started -->
@@ -69,8 +90,120 @@
 							<!-- HTML -->
 							<div id="chartdiv"></div>
 						</div>
+					</div>
+					</div>
 						
-						
+					<!-- end row -->
+
+				</section>
+				<!-- end widget grid -->
+		
+				
+				<!-- widget grid -->
+				<section id="widget-grid" class="">
+					
+					<div class="row">
+						<article class="col-sm-12 col-md-12 col-lg-12">
+							<!-- Widget ID (each widget will need unique ID)-->
+							<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false">
+								<!-- widget options:
+								usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+								data-widget-colorbutton="false"
+								data-widget-editbutton="false"
+								data-widget-togglebutton="false"
+								data-widget-deletebutton="false"
+								data-widget-fullscreenbutton="false"
+								data-widget-custombutton="false"
+								data-widget-collapsed="true"
+								data-widget-sortable="false"
+
+								-->
+								<header>
+									<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+									<h2>Recent Expenses </h2>
+										<div class="widget-toolbar" role="menu">
+										<div class="btn-group">
+											<a class="btn dropdown-toggle btn-xs btn-danger" href="<?php echo base_url().'admin/ACCOUNTS/expense_ledger'?>">
+												<i class="fa fa-plus"></i> New Expense 
+											</a>
+										</div>
+									</div>
+								</header>
+
+								<!-- widget div-->
+								<div>
+
+									<!-- widget edit box -->
+									<div class="jarviswidget-editbox">
+										<!-- This area used as dropdown edit box -->
+
+									</div>
+									<!-- end widget edit box -->
+
+									<!-- widget content -->
+									<div class="widget-body no-padding">
+
+										<table id="datatable_fixed_column" class="table table-striped table-bordered" width="100%">
+					
+											<thead>
+												<tr>
+													<th class="hasinput">
+													</th>
+													<th class="hasinput">
+														<input type="text" class="form-control" placeholder="Filter Date" />
+													</th>
+													<th class="hasinput" >
+														<div class="input-group">
+															<input class="form-control" placeholder="Filter Description" type="text">
+														</div>	
+													</th>
+													<th class="hasinput">
+														<input type="text" class="form-control" placeholder="Filter Category" />
+													</th>
+													<th class="hasinput">
+														<input type="text" class="form-control" placeholder="Filter Amount" />
+													</th>
+													<th class="hasinput">
+														
+													</th>
+												</tr>
+												<tr>
+													<th>SNO.</th>
+													<th data-class="expand">Date</th>
+													<th>Description</th>
+													<th data-hide="phone">Category</th>
+													<th data-hide="phone">Amount</th>
+													<th data-hide="phone,tablet">Action</th>
+												</tr>
+											</thead>
+
+											<tbody>
+											<?php $sno=0;foreach($expenses as $exp): $sno++;?>
+												<tr>
+													<td><?php echo $sno;?>.</td>
+													<td><?php echo date('d M, Y', strtotime($exp['ledger_entrydt']))?></td>
+													<td><?php echo $exp['ledger_remark'];?></td>
+													<td><?php echo $this->Common_model->findfield('expense_category','cat_id',$exp['ledger_vendor_id'],'cat_name');?></td>
+													<td><?php echo $exp['ledger_paid_amt'];?></td>
+													<td></td>
+												</tr>
+											<?php endforeach ?>	
+												
+											</tbody>
+									
+										</table>
+
+									</div>
+									<!-- end widget content -->
+
+								</div>
+								<!-- end widget div -->
+
+							</div>
+							<!-- end widget -->
+						</article>
+					</div>
 
 					<!-- end row -->
 
@@ -92,8 +225,8 @@ var chart = AmCharts.makeChart("chartdiv", {
   "defs": {
     "filter": [{
       "id": "shadow",
-      "width": "200%",
-      "height": "200%",
+      "width": "150%",
+      "height": "150%",
       "feOffset": {
         "result": "offOut",
         "in": "SourceAlpha",
@@ -115,8 +248,8 @@ var chart = AmCharts.makeChart("chartdiv", {
   "dataProvider": [
   <?php foreach($expenses as $exp){?>
   {
-    "country": "<?php echo $exp['cat_name'];?>",
-    "Rupees": 1254.25
+    "country": "<?php echo $this->Common_model->findfield('expense_category','cat_id',$exp['ledger_vendor_id'],'cat_name');?>",
+    "Rupees": <?php echo $exp['ledger_paid_amt'];?>
   },<?php } ?>],
   "valueField": "Rupees",
   "titleField": "country",

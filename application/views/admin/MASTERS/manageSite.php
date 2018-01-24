@@ -32,14 +32,14 @@
 		<div class="col-sm-12 col-md-12 col-lg-12">
 			<!-- product -->
 			<div class="product-content product-wrap clearfix product-deatil">
-			<form class="smart-form">
+			<form class="smart-form" style="padding-left:0px !important">
 			<?php 
 				$group = $this->session->userdata('group');
 			
 				if($group == 'admin'){
 				?>
 				<div class="row">
-				<section class="col col-4">
+				<section class="col col-4" style="padding-left:0px !important">
 					<label class="select">
 					<select name="site" id="site" onchange="getSite()">
 						<?php foreach($sites as $st):?>

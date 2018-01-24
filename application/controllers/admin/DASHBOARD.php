@@ -5,6 +5,14 @@ class DASHBOARD extends MY_Controller {
         parent::__construct();
     }
 	
+	public function blankPage(){
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$this->load->view('admin/DASHBOARD/blankPage');
+		$this->load->view('default_admin/footer');
+	}
+	
 	public function dashboard(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
@@ -20,16 +28,9 @@ class DASHBOARD extends MY_Controller {
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');$empid = (array_slice($this->session->userdata,10,1));
 		$empid = $empid['emp_id'];
 		$this->data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
-		$this->data['expenses'] = $this->Common_model->get_data_by_query_pdo("select * from expense_category where cat_status=?",array(1));
+		$this->data['expensesCat'] = $this->Common_model->get_data_by_query_pdo("select * from expense_category where cat_status=?",array(1));
+		$this->data['expenses'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_type=?",array('Expense'));
 		$this->load->view('admin/DASHBOARD/user-dashboard',$this->data);
-		$this->load->view('default_admin/footer');
-	}
-
-	public function blankPage(){
-		$this->load->view('default_admin/head');
-		$this->load->view('default_admin/header');
-		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
-		$this->load->view('admin/DASHBOARD/blankPage');
 		$this->load->view('default_admin/footer');
 	}
 

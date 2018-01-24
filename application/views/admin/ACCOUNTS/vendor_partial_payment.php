@@ -129,13 +129,13 @@
 										</label>
 									</section>
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-sort-down"></i>
+										<label class="select"> 
 										<select name="partial_payment_type" id="partial_payment_type">
 											<option value=""> SELECT TYPE </option>
 											<option value="Cash">Cash</option>
 											<option value="Cheque">Cheque</option>
 											<option value="Bank">Bank</option>
-											</select>
+											</select><i></i>
 										</label>
 									</section>
 									<section class="col col-12">

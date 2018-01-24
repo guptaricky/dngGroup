@@ -170,6 +170,7 @@ class MASTERS extends MY_Controller {
 				if(empty($divisions)){
 					$data1 = array(
 						'property_detail_id' => $inserted_id,
+						'property_site_id' => $_POST['detail_site_id'],
 						'property_sno' => $no,
 						'property_isactive' => 1,
 					);
@@ -226,12 +227,15 @@ class MASTERS extends MY_Controller {
 		$empid = (array_slice($this->session->userdata,10,1));
 		$empid = $empid['emp_id'];
 		$data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
-		@$emp_alloted_site = $data['emp_site'][0]['emp_alloted_site'];
-		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($emp_alloted_site));
+		@$site_id = $data['emp_site'][0]['emp_alloted_site'];
+		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($site_id));
 		}
+		$data['propertytype'] = $this->Common_model->get_data_by_query_pdo("select distinct(detail_type) as detail_type from site_other_detail where detail_site_id=?",array($site_id));
+		@$detail_type = $data['propertytype'][0]['detail_type'];
 		
 		$this->load->view('admin/PROPERTY/site_property',$data);
 	}
 
+	
 
 }

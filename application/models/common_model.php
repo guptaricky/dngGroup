@@ -167,7 +167,11 @@
 		return $res;
 		}
 		
-		
+		public function get_site_name($id)
+		{
+			$site = $this->Common_model->get_data_by_query_pdo("select * from site_detail where 1 and site_id=?",array($id)); 
+			return $site[0]['site_name'];
+		}
 	
 	}
 ?>

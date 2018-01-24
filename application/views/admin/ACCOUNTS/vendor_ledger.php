@@ -149,18 +149,18 @@
 										</label>
 									</section>
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="date" name="ledger_payment_date" id="ledger_payment_date"  placeholder="yyyy-mm-dd">
+										<label class="input"> <i class="icon-prepend fa fa-calendar"></i>
+											<input type="text" name="ledger_payment_date" id="ledger_payment_date"  placeholder="yyyy-mm-dd" class="datepicker">
 										</label>
 									</section>
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-sort-down"></i>
+										<label class="select"> 
 										<select name="ledger_payment_type" id="ledger_payment_type">
 											<option value=""> SELECT TYPE </option>
 											<option value="Cash">Cash</option>
 											<option value="Cheque">Cheque</option>
 											<option value="Bank">Bank</option>
-											</select>
+											</select><i></i>
 										</label>
 									</section>
 									<section class="col col-12">
