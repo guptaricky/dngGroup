@@ -340,6 +340,7 @@
 			var payble = payble;
 			}
 			$("#ledger_payable_amt").val(payble);
+			$("#ledger_paid_amt").val(payble);
 			var paid = $("#ledger_paid_amt").val();
 			var balance = parseFloat(payble) - parseFloat(paid);			
 			if(isNaN(balance)) {
