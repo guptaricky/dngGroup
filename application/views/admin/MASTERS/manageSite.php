@@ -48,8 +48,9 @@
 					</select> <i></i> </label>
 				</section>
 				</div>
-			</form>	
 				<?php } ?>
+			</form>	
+				
 			
 				<div class="row" id="property">
 				

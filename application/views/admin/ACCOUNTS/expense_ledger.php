@@ -14,17 +14,6 @@
 				</ol>
 				<!-- end breadcrumb -->
 
-				<!-- You can also add more buttons to the
-				ribbon for further usability
-
-				Example below:
-
-				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
-					<a href="#" id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa fa-grid"></i> Change Grid</a>
-					<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> Add</span>
-					<button id="search" class="btn btn-ribbon" data-title="search"><i class="fa fa-search"></i> <span class="hidden-mobile">Search</span></button>
-				</span> -->
-
 			</div>
 			<!-- END RIBBON -->
 
@@ -62,12 +51,16 @@
 										<section class="col col-12">
 										<fieldset>
 											<div class="row">
-												<section class="col col-6">
-													<label class="select"> 
-														<select name="ledger_site_id" id="ledger_site_id">
+											<?php 
+											// print_r($emp_site);
+											$group = $this->session->userdata('group');
+											?>
+												<section class="col col-6 <?php if(count($emp_site)>0){echo "hide";}?>">
+													<label class="select">
+														<select name="ledger_site_id" id="ledger_site_id" readonly>
 														<option value=""> SELECT SITE </option>
 														<?php foreach($sites as $site){ ?>
-														<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
+														<option value="<?php echo $site['site_id']; ?>" <?php if($site['site_id']===@$emp_site[0]['emp_alloted_site']){echo "selected";}?> ><?php echo $site['site_name']; ?></option>
 														<?php } ?>
 														</select><i></i>
 													</label>
@@ -114,6 +107,18 @@
 													</label>
 												</section>
 												<section class="col col-6">
+												<label class="label">Payment Mode: </label>
+													<label class="select"> 
+														<select name="ledger_payment_type" id="ledger_payment_type">
+														<option value=""> SELECT TYPE </option>
+														<option value="Cash" selected >Cash</option>
+														<option value="Cheque">Cheque</option>
+														<option value="Bank">Bank</option>
+														</select><i></i>
+													</label>
+													</label>
+												</section>
+												<section class="col col-6 hide">
 												<label class="label">Discount: </label>
 													<label class="input"> <i class="icon-prepend fa fa-money"></i>
 														<input type="text" name="ledger_discount" id="ledger_discount" onkeyup="CalculateAmt()"  value="0.00" placeholder="Discount">
@@ -121,13 +126,13 @@
 												</section>
 											</div>
 											<div class="row">
-												<section class="col col-6">
+												<section class="col col-6 hide">
 												<label class="label">Payable Amount: </label>
 													<label class="input"> <i class="icon-prepend fa fa-money"></i>
 														<input type="text" name="ledger_payable_amt" onkeyup="CalculateAmt()" value="0.00" id="ledger_payable_amt" placeholder="Payable Amount">
 													</label>
 												</section>
-												<section class="col col-6">
+												<section class="col col-6 hide">
 												<label class="label">Paid Amount: </label>
 													<label class="input"> <i class="icon-prepend fa fa-money"></i>
 														<input type="text" name="ledger_paid_amt" id="ledger_paid_amt" onkeyup="CalculateAmt()"  placeholder="Paid Amount">
@@ -135,24 +140,13 @@
 												</section>
 											</div>
 											<div class="row">
-												<section class="col col-6">
+												<section class="col col-6 hide">
 												<label class="label">Balance: </label>
 													<label class="input"> <i class="icon-prepend fa fa-money"></i>
 														<input type="text" name="ledger_balance_amt" id="ledger_balance_amt"  placeholder="Balance">
 													</label>
 												</section>
-												<section class="col col-6">
-												<label class="label">Payment Mode: </label>
-													<label class="select"> 
-														<select name="ledger_payment_type" id="ledger_payment_type">
-														<option value=""> SELECT TYPE </option>
-														<option value="Cash">Cash</option>
-														<option value="Cheque">Cheque</option>
-														<option value="Bank">Bank</option>
-														</select><i></i>
-													</label>
-													</label>
-												</section>
+												
 											</div>
 											<div class="row">
 												<section class="col col-6">

@@ -161,14 +161,14 @@ GetAccounts();
 			});
 	});  
 });
-		
+		<!--<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteAccount('+ v.acc_id +')" ><i class="fa fa-remove"></i></button>-->
 		function GetAccounts(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
 		content +='<table class="table table-bordered"><thead><tr><th>Account Name</th><th>Account Short Name</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/get_account'); ?>','', function(data){
 					$.each(data, function (k, v) {
-					  content +='<tr><td>'+ v.acc_name +'</td><td>'+ v.acc_short_name +'</td><td>'+ v.acc_balance +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditAccount('+ v.acc_id +')"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteAccount('+ v.acc_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/acc_statement'); ?>/'+ v.acc_id +'" title="Account Transaction Details"><i class="fa fa-eye-open"></i> Transactions</a></td></tr>';
+					  content +='<tr><td>'+ v.acc_name +'</td><td>'+ v.acc_short_name +'</td><td>'+ v.acc_balance +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditAccount('+ v.acc_id +')"><i class="fa fa-edit"></i></button>&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/acc_statement'); ?>/'+ v.acc_id +'" title="Account Transaction Details"><i class="fa fa-eye-open"></i> Transactions</a>&nbsp;<a class="btn btn-info btn-xs" href="<?php echo base_url('admin/ACCOUNTS/account_balance'); ?>/'+ v.acc_id +'" title="Account Balance Details"><i class="fa fa-eye-open"></i> Add Balance</a></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);

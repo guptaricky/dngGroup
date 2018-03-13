@@ -98,23 +98,20 @@
 			<!-- #PROJECTS: projects dropdown -->
 			<div class="project-context hidden-xs">
 
-				<span class="label">Projects:</span>
-				<span class="project-selector dropdown-toggle" data-toggle="dropdown">Recent projects <i class="fa fa-angle-down"></i></span>
+				<span class="label">This Site:</span>
+				<span class="project-selector dropdown-toggle" data-toggle="dropdown">Balance Rs. <b id="balance"></b> <i class="fa fa-angle-downn"></i></span>
 
 				<!-- Suggestion: populate this list with fetch and push technique -->
 				<ul class="dropdown-menu">
 					<li>
-						<a href="javascript:void(0);">Online e-merchant management system - attaching integration with the iOS</a>
+						<a href="javascript:void(0);">This is the Site Overall Balance amount.</a>
 					</li>
 					<li>
-						<a href="javascript:void(0);">Notes on pipeline upgradee</a>
-					</li>
-					<li>
-						<a href="javascript:void(0);">Assesment Report for merchant account</a>
+						<a href="javascript:void(0);">Site Expenses & Income will be adjusted to this Balance only.</a>
 					</li>
 					<li class="divider"></li>
 					<li>
-						<a href="javascript:void(0);"><i class="fa fa-power-off"></i> Clear</a>
+						<a href="javascript:void(0);"><i class="fa fa-power-off"></i> Exit</a>
 					</li>
 				</ul>
 				<!-- end dropdown-menu-->
@@ -123,8 +120,8 @@
 			<!-- end projects dropdown -->
 			
 			<!-- #PROJECTS: projects dropdown -->
-			<div class="project-context hidden-xs">
-				<h4 style="color:gray;font-size:20px;margin-left:450px;" class="m-l-100">Balance : <b id="balance"></b></h4>
+			<div class="project-context hidden-xs hidden">
+				<h4 style="color:gray;font-size:20px;margin-left:450px;" class="m-l-100">Balance : </h4>
 			</div>
 			<!-- end projects dropdown -->
 			

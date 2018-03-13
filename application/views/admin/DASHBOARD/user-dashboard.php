@@ -54,7 +54,7 @@
 				<div class="row">
 					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
 						<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> 
-						<?php echo $this->Common_model->findfield('site_detail','site_id',$emp_site[0]['emp_alloted_site'],'site_name');?> <span></span></h1>
+						<?php echo $this->Common_model->findfield('site_detail','site_id',$site,'site_name');?> <span></span></h1>
 					</div>
 					<!-- right side of the page with the sparkline graphs -->
 					<!-- col -->
@@ -86,7 +86,7 @@
 					<div class="row">
 
 						<!-- a blank row to get started -->
-						<div class="col-sm-6 col-lg-12">
+						<div class="col-sm-3 col-lg-12">
 							<!-- HTML -->
 							<div id="chartdiv"></div>
 						</div>
@@ -103,7 +103,7 @@
 				<section id="widget-grid" class="">
 					
 					<div class="row">
-						<article class="col-sm-12 col-md-12 col-lg-12">
+						<article class="col-sm-12 col-md-6 col-lg-6">
 							<!-- Widget ID (each widget will need unique ID)-->
 							<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false">
 								<!-- widget options:
@@ -147,46 +147,50 @@
 										<table id="datatable_fixed_column" class="table table-striped table-bordered" width="100%">
 					
 											<thead>
+												<form id='search_form'>
 												<tr>
 													<th class="hasinput">
+													<input type="hidden" name="site_id" value="<?php echo $this->uri->segment(4); ?>"/>
 													</th>
 													<th class="hasinput">
-														<input type="text" class="form-control" placeholder="Filter Date" />
+														<input type="text" class="form-control datepicker" placeholder="Filter Date" name="date" onchange="getexpenselist();"/>
 													</th>
 													<th class="hasinput" >
 														<div class="input-group">
-															<input class="form-control" placeholder="Filter Description" type="text">
+															<input class="form-control" placeholder="Filter Description" type="text" name="desc" onkeyup="getexpenselist();">
 														</div>	
 													</th>
 													<th class="hasinput">
-														<input type="text" class="form-control" placeholder="Filter Category" />
+													<select class="form-control" name="category" onchange="getexpenselist();">
+														<option value=""> EXPENSE CATEGORY </option>
+														<?php foreach($expensesCat as $v){ ?>
+														<option value="<?php echo $v['cat_id']; ?>"><?php echo $v['cat_name']; ?></option>
+														<?php } ?>
+														</select><i></i>
 													</th>
 													<th class="hasinput">
-														<input type="text" class="form-control" placeholder="Filter Amount" />
-													</th>
-													<th class="hasinput">
-														
+														<input type="text" class="form-control" placeholder="Filter Amount" name="amount" onkeyup="getexpenselist();"/>
 													</th>
 												</tr>
+												</form>
 												<tr>
 													<th>SNO.</th>
 													<th data-class="expand">Date</th>
 													<th>Description</th>
 													<th data-hide="phone">Category</th>
 													<th data-hide="phone">Amount</th>
-													<th data-hide="phone,tablet">Action</th>
 												</tr>
 											</thead>
 
-											<tbody>
+											<tbody id='expense_list'>
 											<?php $sno=0;foreach($expenses as $exp): $sno++;?>
 												<tr>
 													<td><?php echo $sno;?>.</td>
-													<td><?php echo date('d M, Y', strtotime($exp['ledger_entrydt']))?></td>
+													<td><?php echo date('d M, Y', strtotime($exp['ledger_payment_date']))?></td>
 													<td><?php echo $exp['ledger_remark'];?></td>
 													<td><?php echo $this->Common_model->findfield('expense_category','cat_id',$exp['ledger_vendor_id'],'cat_name');?></td>
 													<td><?php echo $exp['ledger_paid_amt'];?></td>
-													<td></td>
+													
 												</tr>
 											<?php endforeach ?>	
 												
@@ -203,12 +207,123 @@
 							</div>
 							<!-- end widget -->
 						</article>
+						<article class="col-sm-12 col-md-6 col-lg-6">
+							<!-- Widget ID (each widget will need unique ID)-->
+							<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false">
+								<!-- widget options:
+								usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+								data-widget-colorbutton="false"
+								data-widget-editbutton="false"
+								data-widget-togglebutton="false"
+								data-widget-deletebutton="false"
+								data-widget-fullscreenbutton="false"
+								data-widget-custombutton="false"
+								data-widget-collapsed="true"
+								data-widget-sortable="false"
+
+								-->
+								<header>
+									<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+									<h2>Vendor's Payment </h2>
+										<div class="widget-toolbar hide" role="menu">
+										<div class="btn-group">
+											<a class="btn dropdown-toggle btn-xs btn-danger" href="<?php echo base_url().'admin/ACCOUNTS/expense_ledger'?>">
+												<i class="fa fa-plus"></i> New Expense 
+											</a>
+										</div>
+									</div>
+								</header>
+
+								<!-- widget div-->
+								<div>
+
+									<!-- widget edit box -->
+									<div class="jarviswidget-editbox">
+										<!-- This area used as dropdown edit box -->
+
+									</div>
+									<!-- end widget edit box -->
+
+									<!-- widget content -->
+									<div class="widget-body no-padding" id="result_data">
+
+										<table id="datatable_fixed_column" class="table table-striped table-bordered" width="100%">
+					
+											<thead>
+												<form id='search_vendor_form'>
+												<tr>
+													<th class="hasinput">
+													<input type="hidden" name="site_id" value="<?php echo $this->uri->segment(4); ?>"/>
+													</th>
+													<th class="hasinput">
+													<select class="form-control" name="vendor_id" onchange="getvendorlist();">
+														<option value=""> VENDOR </option>
+														<?php foreach($vendorlist as $v){ ?>
+														<option value="<?php echo $v['vendor_id']; ?>"><?php echo $v['vendor_name']; ?></option>
+														<?php } ?>
+														</select><i></i>
+													</th>
+													<th class="hasinput" colspan="2">
+														<div class="input-group">
+															<input class="form-control" placeholder="Voucher No" type="text" name="voch_no" onkeyup="getvendorlist();">
+														</div>	
+													</th>
+													<th class="hasinput">
+													<input type="text" class="form-control datepicker" placeholder="Filter Date" name="date" onchange="getvendorlist();"/>
+													</th>
+													<th class="hasinput" colspan="2">
+														<input type="text" class="form-control" placeholder="Filter Item" name="item" onkeyup="getvendorlist();"/>
+													</th>
+												</tr>
+												</form>
+												<tr>
+													<th>SNO.</th>
+													<th data-class="expand">Vendor Name</th>
+													<th data-class="expand">Voucher No</th>
+													<th data-class="expand">Date</th>
+													<th>Item</th>
+													<th data-hide="phone">Total Amount</th>
+													<th data-hide="phone">Balance</th>
+												</tr>
+											</thead>
+
+											<tbody id='vendor_list'>
+											<?php $sno=0;foreach($vendor as $ven): $sno++;?>
+												<tr>
+													<td><?php echo $sno;?>.</td>
+													<td><?php echo $this->Common_model->findfield('vendor_master','vendor_id',$ven['ledger_vendor_id'],'vendor_name');?></td>
+													<td><?php echo $ven['ledger_voucher_no']; ?></td>
+													<td><?php echo date('d M, Y', strtotime($ven['ledger_payment_date']))?></td>
+													<td><?php echo $ven['ledger_goods_name'];?></td>
+													
+													<td><?php echo $ven['ledger_payable_amt'];?></td>
+													<td><?php echo $ven['ledger_balance_amt'];?></td>
+													
+												</tr>
+											<?php endforeach ?>	
+												
+											</tbody>
+									
+										</table>
+
+									</div>
+									<!-- end widget content -->
+
+								</div>
+								<!-- end widget div -->
+
+							</div>
+							<!-- end widget -->
+						</article>
+					
 					</div>
 
 					<!-- end row -->
 
 				</section>
 				<!-- end widget grid -->
+	
 <!-- Chart code -->
 <script>
 var chart = AmCharts.makeChart("chartdiv", {
@@ -266,6 +381,30 @@ chart.addListener("rollOverSlice", function(e) {
 
 function handleInit(){
   chart.legend.addListener("rollOverItem", handleRollOver);
+}
+
+function getexpenselist(){
+	var datastring = $('#search_form').serialize();
+  $.ajax({  
+				type: "POST",
+				url: "<?php echo base_url('admin/DASHBOARD/filter_expense'); ?>",
+				data: datastring,
+				success: function(res){
+				$('#expense_list').html(res);	
+				}  
+			});	
+}
+
+function getvendorlist(){
+	var datastring = $('#search_vendor_form').serialize();
+  $.ajax({  
+				type: "POST",
+				url: "<?php echo base_url('admin/DASHBOARD/filter_vendor'); ?>",
+				data: datastring,
+				success: function(res){
+				$('#vendor_list').html(res);	
+				}  
+			});	
 }
 
 function handleRollOver(e){

@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `property_detail` (
   `property_site_id` int(11) NOT NULL,
   `property_detail_id` int(11) NOT NULL,
   `property_sno` varchar(20) NOT NULL,
-  `property_saleto` int(11) NOT NULL,
+  `property_sold_to` int(11) NOT NULL,
   `property_status` enum('Available','Hold','Booked','Sold'),
   `property_isactive` int(11) Default 1,
    foreign key(property_site_id) references site_detail(site_id) on update cascade,
@@ -217,9 +217,7 @@ CREATE TABLE IF NOT EXISTS `company_account_fund_transfer` (
   `transfer_entrydt` datetime
 ) ENGINE=InnoDB;
 
---
--- Table structure for table `accounts`
---
+----------Company Accounts------------
 
 CREATE TABLE `accounts` (
   `acc_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -229,6 +227,15 @@ CREATE TABLE `accounts` (
   `acc_status` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Indexes for dumped tables
---
+----------Company Bank Accounts------------
+
+CREATE TABLE `company_bank_accounts` (
+  `bank_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  `bank_name` varchar(100) NOT NULL,
+  `bank_branch_name` varchar(100) NOT NULL,
+  `bank_ifsc_code` varchar(20) NOT NULL,
+  `bank_acc_no` varchar(50) NOT NULL,
+  `bank_status` int(11) NOT NULL DEFAULT '1',
+  `bank_added_by` int(11),
+  `bank_entrydt` datetime
+) ENGINE=InnoDB;

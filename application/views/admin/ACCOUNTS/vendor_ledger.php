@@ -42,7 +42,7 @@
 	
 	<div class="row">
 
-		<article class="col-sm-12 col-md-12 col-lg-5">
+		<article class="col-sm-12 col-md-12 col-lg-12">
 			
 			<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
 				
@@ -64,12 +64,16 @@
 									<section class="col col-6">
 							<fieldset>
 								<div class="row">
-									<section class="col col-12">
+								<?php 
+								// print_r($emp_site);
+								$group = $this->session->userdata('group');
+								?>
+									<section class="col col-12 <?php if(count($emp_site)>0){echo "hide";}?>">
 										<label class="select">
 										<select name="ledger_site_id" id="ledger_site_id">
 											<option value=""> SELECT SITE </option>
 											<?php foreach($sites as $site){ ?>
-											<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
+											<option value="<?php echo $site['site_id']; ?>" <?php if($site['site_id']===@$emp_site[0]['emp_alloted_site']){echo "selected";}?> ><?php echo $site['site_name']; ?></option>
 											<?php } ?>
 											</select> <i></i> </label>
 									</section>
@@ -199,13 +203,13 @@
 
 		</article>
 		
-		<article class="col-sm-12 col-md-12 col-lg-7">
+		<article class="col-sm-12 col-md-12 col-lg-12">
 			
 			<div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false">
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>Vendors List</h2>			
+					<h2>Vendors Payments</h2>			
 					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="GetVendorLedger()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
 					
 				</header>

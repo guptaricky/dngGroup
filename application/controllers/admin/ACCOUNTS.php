@@ -7,6 +7,9 @@ class ACCOUNTS extends MY_Controller {
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+		$data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
 		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
 		$data['expense'] = $this->Common_model->get_data_by_query_pdo("select cat_id,cat_name from expense_category where 1 and cat_status=?",array(1));
 		$this->load->view('admin/ACCOUNTS/expense_ledger',$data);
@@ -77,9 +80,22 @@ class ACCOUNTS extends MY_Controller {
 	}
 
 	public function getExpense_ledger(){
-		$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id where 1 and ledger_type=? and ledger_status=?",array("Expense",1));
+		$group = $this->session->userdata('group');
+		$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+
+		$data['emp_site'] =  $this->Common_model->get_alloted_site($empid);
+		if($data['emp_site']>0){
+		$site = $data['emp_site'];}
+		if($group == 'admin'){
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id where 1 and ledger_type=? and ledger_status=?",array("Expense",1));
+		}
+		else{
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id where ledger_site_id = ? and ledger_type=? and ledger_status=?",array($site,"Expense",1));
+		}
 		echo json_encode($vendor);
 	}
+	
 	
 	public function editExpense_ledger(){
 		$id = $this->input->post('id');
@@ -151,6 +167,11 @@ class ACCOUNTS extends MY_Controller {
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+		$data['emp_site'] =  $this->Common_model->get_alloted_site($empid);
+		// $data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
+		// print_r($data['emp_site']);die;
 		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
 		$data['vendors'] = $this->Common_model->get_data_by_query_pdo("select vendor_id,vendor_name from vendor_master where 1 and vendor_status=?",array(1));
 		$this->load->view('admin/ACCOUNTS/vendor_ledger',$data);
@@ -228,7 +249,33 @@ class ACCOUNTS extends MY_Controller {
 	}
 
 	public function getVendor_ledger(){
-		$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_balance_amt, s.site_name, v.vendor_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where 1 and ledger_status=?",array(1));
+		$query="";
+		$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+		$data['emp_site'] =  $this->Common_model->get_alloted_site($empid);
+		$site = $data['emp_site'];
+		if($data['emp_site']!=0){
+			
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where ledger_site_id = ? and ledger_type=? and ledger_status=?",array($site,'Vendor',1));	
+		}
+		else{
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where ledger_type=? and ledger_status=?",array('Vendor',1));
+		}
+		// $group = $this->session->userdata('group');
+		
+		// if($data['emp_site']>0){
+		// $site = $data['emp_site'][0]['emp_alloted_site'];}
+		// if($group == 'admin'){
+		
+		// $vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_balance_amt, s.site_name, v.vendor_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where 1 $query and ledger_status=?",array(1));
+		
+		
+		
+		// }
+		// else{
+			
+		// }
+		// echo $this->db->last_query();die;
 		echo json_encode($vendor);
 	}
 	
@@ -330,19 +377,22 @@ class ACCOUNTS extends MY_Controller {
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
+		$data['account'] = $this->Common_model->get_data_by_query_pdo("select acc_id,acc_name from accounts where 1 and acc_status=?",array(1));
 		$this->load->view('admin/ACCOUNTS/fund_transfer',$data);
 		$this->load->view('default_admin/footer');
 	}
 	
 	public function add_fund_transfer(){
+		$transfer_amt = $_POST['transfer_amt'];
 		$data = array(
 		'transfer_from'			=> $_POST['transfer_from'],
 		'transfer_to' 			=> $_POST['transfer_to'],
 		'transfer_perpose' 		=> $_POST['transfer_perpose'],
 		'transfer_date' 		=> $_POST['transfer_date'],
-		'transfer_amt'			=> $_POST['transfer_amt'],
+		'transfer_amt'			=> $transfer_amt,
 		'transfer_payment_type' => $_POST['transfer_payment_type'],
 		'transfer_cheque_dd_no'	=> $_POST['transfer_cheque_dd_no'],
+		'transfer_type'    		=> 2,
 		'transfer_remark'    	=> $_POST['transfer_remark'],
 		'transfer_status'   	=> 1,
 		'transfer_added_by'   	=> 1,
@@ -364,24 +414,30 @@ class ACCOUNTS extends MY_Controller {
 			$config['file_overwrite'] = true;
 			$this->load->library('upload', $config);
 			$this->upload->do_upload('transfer_receipt');
-			$data1 = array('upload_data' => $this->upload->data());
+			$datai = array('upload_data' => $this->upload->data());
 			$error = array('error' => $this->upload->display_errors());
-			$data['transfer_receipt'] = $path . '/' . $data1['upload_data']['file_name'];
+			$data['transfer_receipt'] = $path . '/' . $datai['upload_data']['file_name'];
 		}
-		
+		$accounts = $this->Common_model->get_data_by_query_pdo("select * from accounts where 1 and acc_id=?",array($_POST['transfer_from']));
+		$acc_balance = $accounts[0]['acc_balance'];
 		if(!empty($_POST['transfer_id'])){
+		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where 1 and transfer_id=?",array($_POST['transfer_id']));
+		$data1['acc_balance'] = ($acc_balance + $transfer[0]['transfer_amt']) - $transfer_amt;
 		$this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$_POST['transfer_id'],$data);
+		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
 		}else{
+		$data1['acc_balance'] = $acc_balance - $transfer_amt;
 		$this->Crud_model->insert_record('company_account_fund_transfer',$data);
+		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
 		}
 	}
 
 	public function get_fund_transfer(){
 		$list=[];
-		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where 1 and transfer_status=?",array(1));
+		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where 1 and transfer_status=? and transfer_type=?",array(1,2));
 		foreach($transfer as $t){
 		$data['transfer_id'] = $t['transfer_id'];
-		$data['transfer_from'] = !empty($t['transfer_from'])?$this->Common_model->get_site_name($t['transfer_from']):'';
+		$data['transfer_from'] = !empty($t['transfer_from'])?$this->Common_model->get_acc_name($t['transfer_from']):'';
 		$data['transfer_to'] = $this->Common_model->get_site_name($t['transfer_to']);
 		$data['transfer_perpose'] = $t['transfer_perpose'];
 		$data['transfer_date'] = $t['transfer_date'];
@@ -405,7 +461,98 @@ class ACCOUNTS extends MY_Controller {
 			'transfer_status' => 0
 		);	
 		$this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$id,$data);
+	}	
+	
+	public function account_balance(){
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
+		$data['account'] = $this->Common_model->get_data_by_query_pdo("select acc_id,acc_name from accounts where 1 and acc_status=?",array(1));
+		$this->load->view('admin/ACCOUNTS/add_balance',$data);
+		$this->load->view('default_admin/footer');
 	}
+	
+	public function add_balance_to_account(){
+		$transfer_amt = $_POST['transfer_amt'];
+		$data = array(
+		'transfer_from'			=> '0',
+		'transfer_to' 			=> $_POST['transfer_to'],
+		'transfer_perpose' 		=> $_POST['transfer_perpose'],
+		'transfer_date' 		=> $_POST['transfer_date'],
+		'transfer_amt'			=> $transfer_amt,
+		'transfer_payment_type' => $_POST['transfer_payment_type'],
+		'transfer_cheque_dd_no'	=> $_POST['transfer_cheque_dd_no'],
+		'transfer_type'    		=> 1,
+		'transfer_remark'    	=> $_POST['transfer_remark'],
+		'transfer_status'   	=> 1,
+		'transfer_added_by'   	=> 1,
+		'transfer_entrydt'   	=> date('Y-m-d H:i:s'),
+		);
+		if(!empty($_FILES['transfer_receipt'])){
+			$path = './uploads';
+			if (!is_dir($path))
+				mkdir($path);
+			$path = './uploads/transfer_receipt';
+			if (!is_dir($path))
+				mkdir($path);
+
+			$config['upload_path'] = $path;
+			$config['allowed_types'] = 'gif|jpg|png|bmp';
+			$config['width'] = 50;
+			$config['height'] = 50;
+			$config['file_name'] = time().'_'.$_FILES['transfer_receipt']['name'];
+			$config['file_overwrite'] = true;
+			$this->load->library('upload', $config);
+			$this->upload->do_upload('transfer_receipt');
+			$datai = array('upload_data' => $this->upload->data());
+			$error = array('error' => $this->upload->display_errors());
+			$data['transfer_receipt'] = $path . '/' . $datai['upload_data']['file_name'];
+		}
+		$accounts = $this->Common_model->get_data_by_query_pdo("select * from accounts where 1 and acc_id=?",array($_POST['transfer_to']));
+		$acc_balance = $accounts[0]['acc_balance'];
+		if(!empty($_POST['transfer_id'])){
+		// $transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where 1 and transfer_id=?",array($_POST['transfer_id']));
+		// $data1['acc_balance'] = ($acc_balance + $transfer[0]['transfer_amt']) - $transfer_amt;
+		// $this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$_POST['transfer_id'],$data);
+		// $this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
+		}else{
+		$data1['acc_balance'] = $acc_balance + $transfer_amt;
+		$this->Crud_model->insert_record('company_account_fund_transfer',$data);
+		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
+		}
+	}
+
+	public function get_balance_to_account(){
+		$list=[];
+		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where 1 and transfer_status=? and transfer_type=?",array(1,1));
+		foreach($transfer as $t){
+		$data['transfer_id'] = $t['transfer_id'];
+		$data['transfer_to'] = !empty($t['transfer_to'])?$this->Common_model->get_acc_name($t['transfer_to']):'';
+		$data['transfer_perpose'] = $t['transfer_perpose'];
+		$data['transfer_date'] = $t['transfer_date'];
+		$data['transfer_amt'] = $t['transfer_amt'];
+		$data['transfer_remark'] = $t['transfer_remark'];
+		$list[]=$data;
+		}
+		echo json_encode(array('list'=>$list));
+		exit();
+	}
+	
+	public function edit_balance_to_account(){
+		$id = $this->input->post('id');
+		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where transfer_id=?",array($id));
+		echo json_encode($transfer);
+	}
+	
+	public function delete_balance_to_account(){
+		$id = $this->input->post('id');
+		$data = array(
+			'transfer_status' => 0
+		);	
+		$this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$id,$data);
+	}
+	
 	////STARTS ACCOUNT DETAILS///
 	public function add_account(){
 		$this->load->view('default_admin/head');
@@ -451,29 +598,104 @@ class ACCOUNTS extends MY_Controller {
 	}
 	////END ACCOUNT DETAILS///
 	
+		
+	public function account_transections(){
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
+		$data['account'] = $this->Common_model->get_data_by_query_pdo("select acc_id,acc_name from accounts where 1 and acc_status=?",array(1));
+		$this->load->view('admin/ACCOUNTS/fund_transfer',$data);
+		$this->load->view('default_admin/footer');
+	}
+	
+	public function add_account_balance(){
+		$transfer_amt = $_POST['transfer_amt'];
+		$data = array(
+		'transfer_to' 			=> $_POST['transfer_to'],
+		'transfer_date' 		=> $_POST['transfer_date'],
+		'transfer_amt'			=> $transfer_amt,
+		'transfer_type'    		=> 1,
+		'transfer_remark'    	=> $_POST['transfer_remark'],
+		'transfer_status'   	=> 1,
+		'transfer_added_by'   	=> 1,
+		'transfer_entrydt'   	=> date('Y-m-d H:i:s'),
+		);
+		$accounts = $this->Common_model->get_data_by_query_pdo("select * from accounts where 1 and acc_id=?",array($_POST['transfer_from']));
+		$acc_balance = $accounts[0]['acc_balance'];
+		if(!empty($_POST['transfer_id'])){
+		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where 1 and transfer_id=?",array($_POST['transfer_id']));
+		$data1['acc_balance'] = ($acc_balance + $transfer[0]['transfer_amt']) - $transfer_amt;
+		$this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$_POST['transfer_id'],$data);
+		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
+		}else{
+		$data1['acc_balance'] = $acc_balance - $transfer_amt;
+		$this->Crud_model->insert_record('company_account_fund_transfer',$data);
+		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
+		}
+	}
+
+	public function get_account_transection(){
+		$list=[];
+		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where 1 and transfer_status=?",array(1));
+		foreach($transfer as $t){
+		$data['transfer_id'] = $t['transfer_id'];
+		$data['transfer_from'] = !empty($t['transfer_from'])?$this->Common_model->get_acc_name($t['transfer_from']):'';
+		$data['transfer_to'] = $this->Common_model->get_site_name($t['transfer_to']);
+		$data['transfer_perpose'] = $t['transfer_perpose'];
+		$data['transfer_date'] = $t['transfer_date'];
+		$data['transfer_amt'] = $t['transfer_amt'];
+		$data['transfer_remark'] = $t['transfer_remark'];
+		$list[]=$data;
+		}
+		echo json_encode(array('list'=>$list));
+		exit();
+	}
+	
+	public function edit_account_transection(){
+		$id = $this->input->post('id');
+		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where transfer_id=?",array($id));
+		echo json_encode($transfer);
+	}
+	
+	public function delete_account_transection(){
+		$id = $this->input->post('id');
+		$data = array(
+			'transfer_status' => 0
+		);	
+		$this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$id,$data);
+	}
+	
 	public function get_balance(){		
 		$userid = (array_slice($this->session->userdata, 10, 1));
 		$uid = $userid['emp_id'];
 		$balance = 0;
 		$transfer_amt = 0;
 		$expense_amt = 0;
-		$employee = $this->Common_model->get_data_by_query_pdo("select * from employes where emp_id=?",array($uid));
-		if(!empty($employee[0]['emp_alloted_site'])){
-		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where transfer_to=?",array($employee[0]['emp_alloted_site']));
+		$employee = @$this->Common_model->get_alloted_site($uid);
+		if($employee!=0){
+		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where transfer_to=?",array($employee));
 		foreach($transfer as $t){
 			$transfer_amt = $transfer_amt + $t['transfer_amt'];
 		}
-		$expense = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_vendor_id=?",array($employee[0]['emp_alloted_site']));
+		$expense = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id=?",array($employee));
+		// print_r($expense);die;
+		// echo $transfer_amt;die;
+		
 		foreach($expense as $e){
+			// $expense_amt = $expense_amt + $expense[0]['ledger_payable_amt'];
 		$partial_paid = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment where partial_ledger_id=?",array($e['ledger_id']));
 			foreach($partial_paid as $paid){
 			$expense_amt = $expense_amt + $paid['partial_amt'];
 		}
 		}
+		// echo $expense_amt;die;
 		$balance = $transfer_amt - $expense_amt;
 		}
 		echo $balance;
 	}
+
+	
 
 	
 }

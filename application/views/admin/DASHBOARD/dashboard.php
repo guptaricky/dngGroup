@@ -49,7 +49,7 @@
 			<div class="panel panel-default" >
 				<div class="panel-body status">
 					<div class="who clearfix">
-						<h1 class="text-primary" ><?php echo $st['site_name'];?></h1>
+						<h1 class="text-primary" ><a href="<?php echo base_url().'admin/DASHBOARD/user_dashboard/'.$st['site_id'];?>"><?php echo $st['site_name'];?></a></h1>
 						<span class="from" ><b>Manage By:</b> <?php echo $st['site_manager_name'];?></span>
 					</div>
 					<div class="image"><img src="<?php echo base_url().'assets/img/sites/site1.jpg'; ?>" alt="img">

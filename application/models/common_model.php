@@ -173,5 +173,19 @@
 			return $site[0]['site_name'];
 		}
 	
+		public function get_acc_name($id)
+		{
+			$acc = $this->Common_model->get_data_by_query_pdo("select * from accounts where 1 and acc_id=?",array($id)); 
+			return $acc[0]['acc_name'];
+		}
+		
+		public function get_alloted_site($emp_id)
+		{
+			$acc = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($emp_id));
+			@$alloted_site = $acc[0]['emp_alloted_site'];
+			if(@$alloted_site ==0 || $alloted_site==''){return 0;}
+			else{return @$acc[0]['emp_alloted_site'];}
+		}
+	
 	}
 ?>

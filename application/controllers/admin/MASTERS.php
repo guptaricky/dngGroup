@@ -231,11 +231,56 @@ class MASTERS extends MY_Controller {
 		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($site_id));
 		}
 		$data['propertytype'] = $this->Common_model->get_data_by_query_pdo("select distinct(detail_type) as detail_type from site_other_detail where detail_site_id=?",array($site_id));
+		$data['propertytypedetail'] = $this->Common_model->get_data_by_query_pdo("select * from property_detail pd
+		left join property_other_detail pod on pd.property_id = pod.prop_id
+ 		where pd.property_site_id=?",array($site_id));
 		@$detail_type = $data['propertytype'][0]['detail_type'];
 		
 		$this->load->view('admin/PROPERTY/site_property',$data);
 	}
-
 	
+	
+	public function company_bank_accounts(){
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$this->load->view('admin/MASTERS/company_bank_accounts');
+		$this->load->view('default_admin/footer');
+	}
+	public function add_company_bank_accounts(){
+		$userid = (array_slice($this->session->userdata, 9, 1));
+		// $uid = $userid['user_id'];
+		$data = array(
+			'bank_name' => $_POST['bank_name'],
+			'bank_branch_name' => $_POST['bank_branch_name'],
+			'bank_acc_no' => $_POST['bank_acc_no'],
+			'bank_ifsc_code' => $_POST['bank_ifsc_code'],
+			'bank_status' => 1,
+			'bank_added_by' => 1,//$uid,
+			'bank_entrydt' => date('Y-m-d H:i:s'),
+		);		
+		if(!empty($_POST['bank_id'])){
+			$this->Crud_model-> edit_record_by_anyid('company_bank_accounts','bank_id',$_POST['bank_id'],$data);
+		}else{
+			$this->Crud_model->insert_record('company_bank_accounts',$data);
+		}
+	}
+	public function get_company_bank_accounts(){
+		$bank = $this->Common_model->get_data_by_query_pdo("select * from company_bank_accounts where 1 and bank_status=?",array(1));
+		echo json_encode($bank);
+	}
+	public function edit_company_bank_accounts(){
+		$id = $this->input->post('id');
+		$bank = $this->Common_model->get_data_by_query_pdo("select * from company_bank_accounts where bank_id=?",array($id));
+		echo json_encode($bank);
+	}
+	public function delete_company_bank_accounts(){
+		$id = $this->input->post('id');
+		$data = array(
+			'bank_status' => 0
+		);	
+		$this->Crud_model-> edit_record_by_anyid('company_bank_accounts','bank_id',$id,$data);
+	}
+
 
 }

@@ -35,11 +35,12 @@ class Auth extends CI_Controller {
 		if ($this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
 		{
 			$this->data['sites'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where 1",array(0));
-			$this->load->view('default_admin/head', $this->data);
-			$this->load->view('default_admin/header', $this->data);
-			$this->load->view('default_admin/sidebar', $this->data);
-			$this->load->view('admin/DASHBOARD/dashboard', $this->data);
-			$this->load->view('default_admin/footer');
+			// $this->load->view('default_admin/head', $this->data);
+			// $this->load->view('default_admin/header', $this->data);
+			// $this->load->view('default_admin/sidebar', $this->data);
+			// $this->load->view('admin/DASHBOARD/dashboard', $this->data);
+			// $this->load->view('default_admin/footer');
+			redirect('admin/DASHBOARD/dashboard', 'refresh');
 		}
 		elseif($this->ion_auth->in_group('Accountant'))
 		{
@@ -49,11 +50,12 @@ class Auth extends CI_Controller {
 			// print_r($empid);die;
 			$this->data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
 			// echo $this->db->last_query();die;
-			$this->load->view('default_admin/head');
-			$this->load->view('default_admin/header');
-			$this->load->view('default_user/sidebar');
-			$this->load->view('admin/DASHBOARD/user-dashboard',$this->data);
-			$this->load->view('default_admin/footer');
+			// $this->load->view('default_admin/head');
+			// $this->load->view('default_admin/header');
+			// $this->load->view('default_user/sidebar');
+			// $this->load->view('admin/DASHBOARD/user-dashboard',$this->data);
+			// $this->load->view('default_admin/footer');
+			redirect('admin/DASHBOARD/user_dashboard', 'refresh');
 		}
 		}
 		

@@ -68,8 +68,8 @@
 										<label class="select"> 
 											<select name="transfer_from" id="transfer_from">
 											<option value=""> Transfer From </option>
-											<?php foreach($sites as $site){ ?>
-											<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
+											<?php foreach($account as $acc){ ?>
+											<option value="<?php echo $acc['acc_id']; ?>"><?php echo $acc['acc_name']; ?></option>
 											<?php } ?>
 											</select><i></i>
 										</label>
@@ -196,7 +196,7 @@ GetFundTransfer();
 		e.preventDefault(); 
 		var transfer_from = $("#transfer_from").val();
 		var transfer_to = $("#transfer_to").val();
-		if(transfer_to==''){
+		if(transfer_from=='' || transfer_to==''){
 			alert("Please Enter Valid Details....?");
 		}else{
 			$(".btn").button('loading');
