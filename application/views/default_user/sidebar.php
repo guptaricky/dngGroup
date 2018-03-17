@@ -50,6 +50,9 @@
 						<a href="<?php echo base_url().'admin/DASHBOARD/user_dashboard'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
 					</li>
 					<li class="">
+						<a href="<?php echo base_url().'admin/MASTERS/site_otherdetail'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-building"></i> <span class="menu-item-parent">Manage Site Details</span></a>
+					</li>
+					<li class="">
 						<a href="<?php echo base_url().'admin/CUSTOMER/view_customers'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Customers</span></a>
 					</li>
 					<li class="">
@@ -62,7 +65,7 @@
 						<a href="<?php echo base_url().'admin/MASTERS/manageSite'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Property Sell</span></a>
 					</li>
 					<li class="">
-						<a href="<?php echo base_url().'admin/'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-link"></i> <span class="menu-item-parent">Reports</span></a>
+						<a href="<?php echo base_url().'admin/ACCOUNTS/getReports'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-link"></i> <span class="menu-item-parent">Reports</span></a>
 					</li>
 				</ul>
 			</nav>

@@ -61,7 +61,7 @@
 					<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
 						<!-- sparks -->
 						<ul id="sparks">
-							<li class="sparks-info">
+							<li class="sparks-info hide">
 								<h5> Balance <span class="txt-color-blue"><i class="fa fa-rupee"></i> 47,171</span></h5>
 								
 							</li>

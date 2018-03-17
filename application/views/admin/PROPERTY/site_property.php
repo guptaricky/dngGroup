@@ -39,13 +39,14 @@
 						<?php 
 						// $prop = explode(',',$data['sitedetail'][0]['detail_site_nos']);
 						// for($i=0;$i<count($prop);$i++){
-						foreach($propertytypedetail as $ptd){
+						$prop_count = 0;	
+						foreach($propertytypedetail as $ptd){ $prop_count++;
 							$detail_id = $ptd['property_detail_id'];
 							$data['sitedetail'] = $this->Common_model->get_data_by_query_pdo("select * from site_other_detail where detail_id=?",array($detail_id));
 							$detail_type = $data['sitedetail'][0]['detail_type'];
 							if($pt['detail_type'] == $detail_type){
 						?>
-						<li><a href="#<?php echo $detail_type."_".$ptd['property_id'];?>" data-toggle="tab"><?php echo $ptd['property_sno'];?><span style="color:<?php if($ptd['property_status'] == 'Sold'){echo 'red';}elseif($ptd['property_status']=='Cancelled'){echo 'green';}elseif($ptd['property_status']=='Available'){echo '';}?>"><?php echo $ptd['property_status'];?></span></a></li>
+						<li><a href="#<?php echo $detail_type."_".$ptd['property_id'];?>" data-toggle="tab" onclick="GetDetail('<?php echo $prop_count;?>','<?php echo $detail_type;?>','<?php echo $ptd['property_sno'];?>','<?php echo $ptd['property_status'];?>')"><?php echo $ptd['property_sno'];?><span style="color:<?php if($ptd['property_status'] == 'Sold'){echo 'red';}elseif($ptd['property_status']=='Cancelled'){echo 'green';}elseif($ptd['property_status']=='Available'){echo '';}?>"><?php echo $ptd['property_status'];?></span></a></li>
 						<?php } } ?>
 						</ul>
 					</div>
@@ -155,14 +156,15 @@
 													
 													<div class="col-xs-9 col-sm-5 col-md-9 col-lg-9">
 														
-														<h4>Customer No. <strong>000</strong></h4>
+														<h4 id="prop_detail_print_<?php echo $i;?>"></h4>
+														<!--<h4 id="prop_detail_print">Customer No. <strong>000</strong></h4>-->
 															
 													</div>
 													<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right">
 														
 														<div class="input-group">
 															<span class="input-group-addon"><i class="">Booking Date</i></span>
-															<input class="form-control" name="" value="<?php echo $dateToday = date('d-m-Y')?>" type="text" readonly>
+															<input class="datepicker form-control" name="" value="<?php echo $dateToday = date('d-m-Y')?>" type="text" >
 															
 														</div>
 													</div>
@@ -389,6 +391,15 @@
 			
 <script>
 
+		function GetDetail(sno, prop_type, prop_no, prop_status){
+		// document.getElementById('checkout-form_'+sno).scrollIntoView();
+		// $("#prop_detail_print").html("");
+		$("#prop_detail_print_"+sno).html(prop_type + " : <strong>" + prop_no + "</strong>");
+		
+		
+		}
+		
+		
 		function addCustomer(sno){  
 		
 		// var prop_id = $("#prop_id").val();
@@ -401,4 +412,10 @@
 				$('#alert_check').removeclass('hide');
 			});
 		}
+		
+</script>
+<script>
+$(function() {
+	$(".datepicker").datepicker({changeMonth:true,changeYear:true,dateFormat: 'dd-mm-yy'});				
+});
 </script>

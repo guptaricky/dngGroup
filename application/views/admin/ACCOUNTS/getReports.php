@@ -22,7 +22,7 @@
 			<div id="content">
 				<div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-users"></i> Existing Customers <span></span></h1>
+		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-list"></i> All Transactions <span></span></h1>
 	</div>
 		
 </div>
@@ -38,15 +38,9 @@
 			<div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false">
 				
 				<header>
-					<span class="widget-icon"> <i class="fa fa-users"></i> </span>
-					<h2>Customer List</h2>				
-					<div class="widget-toolbar" role="menu">
-						<div class="btn-group">
-							<a class="btn dropdown-toggle btn-xs btn-danger hide" href="<?php echo base_url().'admin/CUSTOMER/add_customers'?>">
-								<i class="fa fa-plus"></i> Add New Customer 
-							</a>
-						</div>
-					</div>
+					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
+					<h2>Transactions</h2>				
+					
 				</header>
 				
 				
@@ -62,24 +56,27 @@
 							<thead>
 							  <tr>
 								<th>S.No.</th>
-								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Name</th>
-								<th><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Address</th>
-								<th><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Tower No. / Flat</th>
-								<th><i class="fa fa-fw fa-edit txt-color-blue hidden-md hidden-sm hidden-xs"></i> Actions</th>
+								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Ref No.</th>
+								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> From</th>
+								<th><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> Date</th>
+								<th><i class="fa fa-fw fa-edit txt-color-blue hidden-md hidden-sm hidden-xs"></i> Purpose</th>
+								<th><i class="fa fa-fw fa-money txt-color-blue hidden-md hidden-sm hidden-xs"></i> Payment Mode</th>
+								<th><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Cheque / DD</th>
+								<th><i class="fa fa-fw fa-money txt-color-blue hidden-md hidden-sm hidden-xs"></i> Amount</th>
 							  </tr>
 							</thead>
 							<tbody>
-							  <?php $sno=0;foreach ($customers as $ctm):$sno++;?>
+							  <?php $sno=0;foreach ($transactions as $ctm):$sno++;?>
 							  <tr align="left">
 								<td><?php echo $sno;?>.</td>
-								<td><?php echo ucwords(strtolower($ctm['cust_fname'].' '.$ctm['cust_lname']));?></br><i class="fa fa-phone"></i> <?php echo $ctm['cust_phone'];?></td>
-								<td><?php echo $ctm['cust_address'];?></td>
-								<td><?php echo $ctm['cust_additional_info'];?></td>
-								<td data-title="Action">
-								<button class="btn btn-primary btn-xs" id="add_tab">Send sms</button>
-								<a href="<?php echo base_url().'admin/PROPERTY/sell_property';?>" class="btn btn-warning btn-xs hide">Property Sell</a>
-								<a href="<?php echo base_url().'admin/CUSTOMER/add_customers/'.$ctm['cust_id'];?>" class="btn btn-warning btn-xs">View / Edit</a>
-								</td>
+								<td><?php echo sprintf("%04d",$ctm['transfer_id']);?></td>
+								<td><?php echo ucwords(strtolower($this->Common_model->findfield('accounts','acc_id',$ctm['transfer_from'],'acc_name')));?></td>
+								<td><?php echo $ctm['transfer_date'];?></td>
+								<td><?php echo $ctm['transfer_perpose'];?></td>
+								<td><?php echo $ctm['transfer_payment_type'];?></td>
+								<td><?php if( $ctm['transfer_cheque_dd_no']==''){echo 'N/A';}else{echo $ctm['transfer_cheque_dd_no'];}?></td>
+								<td><?php echo $ctm['transfer_amt'];?></td>
+								
 							  </tr>
 							  <?php endforeach;?>
 							</tbody>

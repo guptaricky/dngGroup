@@ -98,28 +98,28 @@
 											<input type="file" name="ledger_voucher_image" id="ledger_voucher_image" placeholder="Voucher Image">
 										</label>
 									</section>
-									<section class="col col-12">
+									<section class="col col-12">Purchased Item Name
 										<label class="input"> <i class="icon-prepend fa fa-envelope"></i>
 											<input type="text" name="ledger_goods_name" id="ledger_goods_name" placeholder="Purchased Item Name">
 										</label>
 									</section>
-									<section class="col col-12">
+									<section class="col col-12">UNIT eg: kg, Bags
 										<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
 											<input type="text" name="ledger_unit" id="ledger_unit" placeholder="UNIT eg: kg, Bags">
 										</label>
 									</section>
-									<section class="col col-12">
+									<section class="col col-12">Quantity
 										<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
 											<input type="text" name="ledger_qty" id="ledger_qty" onkeyup="CalculateAmt()" placeholder="Quantity">
 										</label>
 									</section>
 									
-									<section class="col col-12">
+									<section class="col col-12">Rate Per Unit
 										<label class="input"> <i class="icon-prepend fa fa-gears"></i>
 											<input type="text" name="ledger_rate" id="ledger_rate" onkeyup="CalculateAmt()"  placeholder="Rate Per Unit">
 										</label>
 									</section>
-									<section class="col col-12">
+									<section class="col col-12">Total Price
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
 											<input type="text" name="ledger_amount" id="ledger_amount" onkeyup="CalculateAmt()"  placeholder="Total Price">
 										</label>
@@ -132,36 +132,36 @@
 									<section class="col col-6">
 								<fieldset>
 								<div class="row">
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-handshake-o"></i>
-											<input type="text" name="ledger_discount" id="ledger_discount" onkeyup="CalculateAmt()"  placeholder="Discount">
+									<section class="col col-12">Discount
+										<label class="input"> <i class="icon-prepend fa fa-money"></i>
+											<input type="text" name="ledger_discount" id="ledger_discount" onkeyup="CalculateAmt()"  placeholder="Discount" value="0.00">
 										</label>
 									</section>
-									<section class="col col-12">
+									<section class="col col-12">Payable Amount
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
 											<input type="text" name="ledger_payable_amt" onkeyup="CalculateAmt()" id="ledger_payable_amt"  placeholder="Payable Amount">
 										</label>
 									</section>
-									<section class="col col-12">
+									<section class="col col-12">Down Payment
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
 											<input type="text" name="ledger_paid_amt" id="ledger_paid_amt" onkeyup="CalculateAmt()"  placeholder="Down Payment">
 										</label>
 									</section>
-									<section class="col col-12">
+									<section class="col col-12">Balance
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
 											<input type="text" name="ledger_balance_amt" id="ledger_balance_amt"  placeholder="Balance">
 										</label>
 									</section>
-									<section class="col col-12">
+									<section class="col col-12">Payment Date
 										<label class="input"> <i class="icon-prepend fa fa-calendar"></i>
-											<input type="text" name="ledger_payment_date" id="ledger_payment_date"  placeholder="yyyy-mm-dd" class="datepicker">
+											<input type="text" name="ledger_payment_date" id="ledger_payment_date"  placeholder="yyyy-mm-dd" class="datepicker" value="<?php echo date('Y-m-d');?>">
 										</label>
 									</section>
-									<section class="col col-12">
-										<label class="select"> 
+									<section class="col col-12">Mode of Payment
+										<label class="select">
 										<select name="ledger_payment_type" id="ledger_payment_type">
 											<option value=""> SELECT TYPE </option>
-											<option value="Cash">Cash</option>
+											<option value="Cash" selected>Cash</option>
 											<option value="Cheque">Cheque</option>
 											<option value="Bank">Bank</option>
 											</select><i></i>
@@ -247,27 +247,35 @@ $(document).ready(function(){
 		
 	$('#checkout-form').on('submit',function(e){//bind event on form submit.
 		e.preventDefault(); 
+		var balance = parseFloat($("#balance").html());
+		var ledger_amount = parseFloat($("#ledger_paid_amt").val());
+		// alert(balance);
+		// alert(ledger_amount);
 		var site = $("#ledger_site_id").val();
 		var vendor = $("#ledger_vendor_id").val();
 		var voch = $("#ledger_voucher_no").val();
 			if(site=='' || vendor=='' || voch==''){
 				alert("Please Enter Valid Details....?");
-			}else{
+			}
+			else if(balance < ledger_amount ){
+				alert("Insufficient Site Balance..!!");
+			}
+			else{
 				$(".btn").button('loading');
-		 $.ajax({
-			 url:"<?php echo base_url('admin/ACCOUNTS/addVendor_ledger'); ?>",
-			 type:"post",
-			 data:new FormData(this),
-			 processData:false,
-			 contentType:false,
-			 cache:false,
-			 async:false,
-			  success: function(data){
-				$(".btn").button('reset');
-				$('#checkout-form')[0].reset();
-				GetVendorLedger();
-			  }
-			});
+			 $.ajax({
+				 url:"<?php echo base_url('admin/ACCOUNTS/addVendor_ledger'); ?>",
+				 type:"post",
+				 data:new FormData(this),
+				 processData:false,
+				 contentType:false,
+				 cache:false,
+				 async:false,
+				  success: function(data){
+					$(".btn").button('reset');
+					$('#checkout-form')[0].reset();
+					GetVendorLedger();
+				  }
+				});
 		}
 	});  
 });
@@ -282,7 +290,8 @@ $(document).ready(function(){
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
-			});	 
+			});	
+			GetBalance();
 		}
 	
 

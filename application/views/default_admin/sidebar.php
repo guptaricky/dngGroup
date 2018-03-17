@@ -59,6 +59,9 @@
 						<a href="<?php echo base_url().'admin/ACCOUNTS/add_account'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Accounts</span></a>
 					</li>
 					<li class="">
+						<a href="<?php echo base_url().'admin/ACCOUNTS/fund_transfer'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Fund Transfer</span></a>
+					</li>
+					<li class="">
 						<a href="<?php echo base_url().'admin/ACCOUNTS/expense_ledger'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-edit"></i> <span class="menu-item-parent">Expenses</span></a>
 					</li>
 					<li class="">
@@ -83,12 +86,7 @@
 			
 						<a href="<?php echo base_url().'admin/MASTERS/manageSite'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Property Sell</span></a>
 					</li>
-					<li class="">
-						<a href="<?php echo base_url().'admin/ACCOUNTS/fund_transfer'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Fund Transfer</span></a>
-
-						<a href="<?php echo base_url().'admin/PROPERTY/sell_property'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Property Sell</span></a>
-
-					</li>
+					
 					<li class="">
 						<a href="<?php echo base_url().'admin/DASHBOARD/users_accounts'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-key"></i> <span class="menu-item-parent">Users Accounts</span></a>
 					</li>

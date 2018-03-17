@@ -226,31 +226,39 @@
 <script>
 		$(document).ready(function(){
 			GetVendorLedger();
-		
+			
 	$('#checkout-form').on('submit',function(e){//bind event on form submit.
-		e.preventDefault();  
+		e.preventDefault();
+		var balance = parseFloat($("#balance").html());
+		var ledger_amount = parseFloat($("#ledger_amount").val());
+		// alert(balance);
+		// alert(ledger_amount);
 		var site = $("#ledger_site_id").val();
 		var vendor = $("#ledger_vendor_id").val();
 		var voch = $("#ledger_voucher_no").val();
 			if(site=='' || vendor=='' || voch==''){
 				alert("Please Enter Valid Details....?");
-			}else{
+			}
+			else if(balance < ledger_amount ){
+				alert("Insufficient Site Balance..!!");
+			}
+			else{
 				$(".btn").button('loading');
-		 $.ajax({
-			 url:"<?php echo base_url('admin/ACCOUNTS/addExpense_ledger'); ?>",
-			 type:"post",
-			 data:new FormData(this),
-			 processData:false,
-			 contentType:false,
-			 cache:false,
-			 async:false,
-			  success: function(data){
-					$(".btn").button('reset');
-					$('#checkout-form')[0].reset();
-					GetVendorLedger();
-			  }
-			});
-		}
+			 $.ajax({
+				 url:"<?php echo base_url('admin/ACCOUNTS/addExpense_ledger'); ?>",
+				 type:"post",
+				 data:new FormData(this),
+				 processData:false,
+				 contentType:false,
+				 cache:false,
+				 async:false,
+				  success: function(data){
+						$(".btn").button('reset');
+						$('#checkout-form')[0].reset();
+						GetVendorLedger();
+				  }
+				});
+			}
 	});  
 });
 		
@@ -264,7 +272,8 @@
 				});					
 				content +='</tbody></table>';	
 			$("#result_data").html(content);
-			});	 
+			});
+			GetBalance();			
 		}
 	
 
@@ -318,7 +327,7 @@
 				url: "<?php echo base_url('admin/ACCOUNTS/deleteExpense_ledger'); ?>",
 				data: {'id':id},
 				success: function(msg){
-				GetVendorLedger();	
+				GetVendorLedger();
 				}  
 			});	
 			}else{}			

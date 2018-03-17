@@ -194,6 +194,20 @@ class MASTERS extends MY_Controller {
 		);	
 		$this->Crud_model-> edit_record_by_anyid('site_other_detail','detail_id',$id,$data);
 	}
+	
+	public function site_otherdetail_user(){
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+		@$emp_alloted_site = @$this->Common_model->get_alloted_site($empid);
+		// $data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
+		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=? and site_status=?",array($emp_alloted_site,1));
+		// echo $this->db->last_query();die;
+		$this->load->view('admin/MASTERS/site_otherdetail_user',$data);
+		$this->load->view('default_admin/footer');
+	}
 	public function manageSite(){
 		$empid = (array_slice($this->session->userdata,10,1));
 		$empid = $empid['emp_id'];
@@ -204,9 +218,11 @@ class MASTERS extends MY_Controller {
 				$data['sites'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where 1",array(0));
 			}
 			else{
-			$data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
-			@$emp_alloted_site = $data['emp_site'][0]['emp_alloted_site'];
-			$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($emp_alloted_site));
+			// $data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
+			// @$emp_alloted_site = $data['emp_site'][0]['emp_alloted_site'];
+			@$emp_alloted_site = @$this->Common_model->get_alloted_site($uid);
+			
+			$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=? and site_status=?",array($emp_alloted_site,1));
 			}
 		
 		$this->load->view('default_admin/head');

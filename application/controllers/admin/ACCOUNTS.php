@@ -695,6 +695,25 @@ class ACCOUNTS extends MY_Controller {
 		echo $balance;
 	}
 
+	public function getReports(){		
+		
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$userid = (array_slice($this->session->userdata, 10, 1));
+		$uid = $userid['emp_id'];
+		$alloted_site = @$this->Common_model->get_alloted_site($uid);
+		if($alloted_site!=0){
+		$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where transfer_to=?",array($alloted_site));
+		// echo $this->db->last_query();die;
+		$this->load->view('admin/ACCOUNTS/getReports',$data);
+		$this->load->view('default_admin/footer');
+		
+		
+		
+		}
+	}
+
 	
 
 	

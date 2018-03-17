@@ -1,4 +1,3 @@
-		<?php $group = $this->session->userdata('group');?>
 		<!-- #MAIN PANEL -->
 		<div id="main" role="main">
 
@@ -32,24 +31,27 @@
 			<!-- #MAIN CONTENT -->
 			<div id="content">
 				<div class="row">
-	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Site Other Details <span></span></h1>
-	</div>
-		
-</div>
+					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+						<h2 class="name">
+							<?php echo $site[0]['site_name'];?>
+			 
+						</h2>
+					</div>
+						
+				</div>
 <!-- widget grid -->
 <section id="widget-grid" class="">
 
 	
 	<div class="row">
 
-		<article class="col-sm-12 col-md-12 col-lg-3">
+		<article class="col-sm-12 col-md-12 col-lg-12">
 			
 			<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
 				
 				<header>
-					<span class="widget-icon"> <i class="fa fa-plus"></i> </span>
-					<h2>Add Site Other Details</h2>				
+					<span class="widget-icon"> <i class="fa fa-info"></i> </span>
+					<h2>Site Details</h2>				
 					
 				</header>
 
@@ -57,108 +59,20 @@
 				<div>
 					
 					<!-- widget content -->
-					<div class="widget-body no-padding">
+					<div class="widget-body padding-5">
 						
-						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
-								<input type="hidden" name="detail_id" id="detail_id" >
-							<fieldset>
-								<div class="row">
-									<section class="col col-12">
-										<label class="input">
-											<select name="detail_site_id" class="form-control col col-12" id="detail_site_id" >
-												<option value=""> SELECT SITE </option>
-												<?php foreach($sites as $site){ ?>
-												<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
-												<?php } ?>
-											</select><i></i>											
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input">
-											<select name="detail_sector" class="form-control col col-12"  id="detail_sector" >
-												<option value="">SELECT SECTOR</option>
-												<option value="Sector 1">Sector 1</option>
-												<option value="Sector 2">Sector 2</option>
-												<option value="Sector 3">Sector 3</option>
-												<option value="Sector 4">Sector 4</option>
-											</select><i></i>
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input">
-											<select name="detail_type" class="form-control col col-12" id="detail_type">
-												<option value="">SELECT PROPERTY TYPE</option>
-												<option value="Plots">Plots</option>
-												<option value="Flats">Flats</option>
-												<option value="Houses">Houses</option>
-											</select><i></i>
-										</label>
-									</section>
-									<section class="col col-12" hidden>
-										<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
-											<input type="text" name="detail_no_of_units" id="detail_no_of_units" placeholder="No of Units">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
-											<input type="text" name="detail_area" id="detail_area" onkeyup="getPrice()" placeholder="Area in sqft">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
-											<input type="text" name="detail_rate" id="detail_rate" onkeyup="getPrice()" placeholder="Rate Per sqft">
-										</label>
-									</section>
-									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
-											<input type="text" name="detail_price" id="detail_price" placeholder="Total Price">
-										</label>
-									</section>
-									<section class="col col-12">
-									<label class="textarea">					
-										<textarea rows="3" name="detail_site_nos" id="detail_site_nos" placeholder="Property Numbers eg: 101,102,103,...."></textarea> 
-									</label>
-									</section>
-								</div>
-							</fieldset>
-
-							<footer>
-								<button type="button" class="btn btn-primary" onclick="Addsiteotherdetails()" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
-								<button type="reset" class="btn btn-default" > RESET </button>
-							</footer>
-						</form>
-
-					</div>
-					<!-- end widget content -->
-					
-				</div>
-				<!-- end widget div -->
-				
-			</div>
-			<!-- end widget -->
-
-
-		</article>
-		
-		<article class="col-sm-12 col-md-12 col-lg-9">
-			
-			<div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false">
-				
-				<header>
-					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>Sites Other Detail List</h2>			
-					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="Getsitedetails()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
-					
-				</header>
-
-				<!-- widget div-->
-				<div>
-					
-					<!-- widget content -->
-					<div class="widget-body no-padding">
-						
-						<div class="table-responsive" id="result_data">
-						
+						<div class="bs-example">
+						  <dl class="dl-horizontal">
+							<dt>Description lists</dt>
+							<dd>A description list is perfect for defining terms.</dd>
+							<dt>Euismod</dt>
+							<dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
+							<dd>Donec id elit non mi porta gravida at eget metus.</dd>
+							<dt>Malesuada porta</dt>
+							<dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+							<dt>Felis euismod semper eget lacinia</dt>
+							<dd>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</dd>
+						  </dl>
 						</div>
 
 					</div>
@@ -172,6 +86,7 @@
 
 
 		</article>
+		
 	</div>
 
 	<!-- end row -->
@@ -189,7 +104,7 @@
 		content +="<table class='table table-bordered'><thead><tr><th>Site name</th><th>Sector</th><th>Property Type</th><th>Area in sqft</th><th>Rate / sqft</th><th>Total Price</th><th>Action</th></tr></thead><tbody>";			
 		$.getJSON('<?php echo base_url('admin/MASTERS/get_site_otherdetail'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.detail_sector +'</td><td>'+ v.detail_type +'</td><td>'+ v.detail_area +'</td><td>'+ v.detail_rate +'</td><td>'+ v.detail_price +'</td><td><span style="cursor:pointer;" title="Edit" onclick="Editsiteotherdetails('+ v.detail_id +')"><i class="fa fa-edit"></i></span>&nbsp;<?php if($group == 'admin'){?><span title="Delete" style="cursor:pointer;" onclick="Deletesiteotherdetails('+ v.detail_id +')"><i class="fa fa-remove"></i></span><?php } ?></td></tr>';
+					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.detail_sector +'</td><td>'+ v.detail_type +'</td><td>'+ v.detail_area +'</td><td>'+ v.detail_rate +'</td><td>'+ v.detail_price +'</td><td><span style="cursor:pointer;" title="Edit" onclick="Editsiteotherdetails('+ v.detail_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="Deletesiteotherdetails('+ v.detail_id +')"><i class="fa fa-remove"></i></span></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
