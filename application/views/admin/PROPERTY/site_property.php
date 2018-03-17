@@ -164,7 +164,7 @@
 														
 														<div class="input-group">
 															<span class="input-group-addon"><i class="">Booking Date</i></span>
-															<input class="datepicker form-control" name="" value="<?php echo $dateToday = date('d-m-Y')?>" type="text" >
+															<input class="datepicker form-control" name="" value="<?php echo $dateToday = date('d-m-Y')?>" type="text" onchange="">
 															
 														</div>
 													</div>
@@ -184,14 +184,14 @@
 													<div class="row">
 														<section class="col col-6">
 															<input class="form-control" name="prop_id" value="<?php echo $ptd['property_id']; ?>" type="hidden">
-															<input class="form-control" id="prepend" name="bookingDate" value="<?php echo $dateToday = date('d-m-Y')?>" type="hidden">
+															<input class="form-control" id="prepend_<?php echo $i;?>" name="bookingDate" value="<?php echo $dateToday = date('d-m-Y')?>" type="hidden">
 															<label class="input"> <i class="icon-prepend fa fa-user"></i>
-															<input type="text" id="fname" name="fname" placeholder="First name" style="text-transform: capitalize;">
+															<input type="text" id="fname_<?php echo $i;?>" name="fname" placeholder="First name" style="text-transform: capitalize;">
 															</label>
 														</section>
 														<section class="col col-6">
 															<label class="input"> <i class="icon-prepend fa fa-user"></i>
-																<input type="text" name="lname" placeholder="Last name" style="text-transform: capitalize;">
+																<input type="text" id="lname_<?php echo $i;?>" name="lname" placeholder="Last name" style="text-transform: capitalize;">
 															</label>
 														</section>
 													</div>
@@ -199,12 +199,12 @@
 													<div class="row">
 														<section class="col col-6">
 															<label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
-																<input type="email" name="email" placeholder="E-mail">
+																<input type="email" id="email_<?php echo $i;?>" name="email" placeholder="E-mail">
 															</label>
 														</section>
 														<section class="col col-6">
 															<label class="input"> <i class="icon-prepend fa fa-phone"></i>
-																<input type="tel" name="phone" placeholder="Phone" data-mask="(999) 999-9999">
+																<input type="tel" id="phone_<?php echo $i;?>" name="phone" placeholder="Phone" data-mask="(999) 999-9999">
 															</label>
 														</section>
 													</div>
@@ -215,44 +215,44 @@
 														
 														<section class="col col-5">
 															<label class="input">
-																<input type="text" name="state" placeholder="State">
+																<input type="text" id="state_<?php echo $i;?>" name="state" placeholder="State">
 															</label>
 														</section>
 														
 														<section class="col col-4">
 															<label class="input">
-																<input type="text" name="city" placeholder="City">
+																<input type="text" id="city_<?php echo $i;?>" name="city" placeholder="City">
 															</label>
 														</section>
 
 														<section class="col col-3">
 															<label class="input">
-																<input type="text" name="code" placeholder="Post code">
+																<input type="text" id="code_<?php echo $i;?>" name="code" placeholder="Post code">
 															</label>
 														</section>
 													</div>
 
 													<section>
 														<label for="address" class="input">
-															<input type="text" name="address" placeholder="Address"  style="text-transform: capitalize;">
+															<input type="text" id="address_<?php echo $i;?>" name="address" placeholder="Address"  style="text-transform: capitalize;">
 														</label>
 													</section>
 
 													<section>
 														<label class="textarea"> 										
-															<textarea rows="3" name="info" placeholder="Additional info"></textarea> 
+															<textarea rows="3" id="info_<?php echo $i;?>" name="info" placeholder="Additional info"></textarea> 
 														</label>
 													</section>
 													<div class="row">
 													<section class="col col-5">
 														<label class="input">
-															<input type="text" name="aadhar" placeholder="Aadhar Number">
+															<input type="text" id="aadhar_<?php echo $i;?>" name="aadhar" placeholder="Aadhar Number">
 														</label>
 													</section>
 													
 													<section class="col col-4">
 														<label class="input">
-															<input type="text" name="pan" placeholder="PAN"  style="text-transform: uppercase;">
+															<input type="text" id="pan_<?php echo $i;?>" name="pan" placeholder="PAN"  style="text-transform: uppercase;">
 														</label>
 													</section>
 													</div>

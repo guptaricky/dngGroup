@@ -76,7 +76,7 @@
 								<td><?php echo $ctm['cust_address'];?></td>
 								<td><?php echo $ctm['cust_additional_info'];?></td>
 								<td data-title="Action">
-								<button class="btn btn-primary btn-xs" id="add_tab">Send sms</button>
+								<button class="btn btn-primary btn-xs hide" id="add_tab">Send sms</button>
 								<a href="<?php echo base_url().'admin/PROPERTY/sell_property';?>" class="btn btn-warning btn-xs hide">Property Sell</a>
 								<a href="<?php echo base_url().'admin/CUSTOMER/add_customers/'.$ctm['cust_id'];?>" class="btn btn-warning btn-xs">View / Edit</a>
 								</td>
