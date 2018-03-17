@@ -63,7 +63,8 @@
 						// echo $detail_type;
 						if($pt['detail_type'] == $detail_type){
 						if($ptd['property_status']=='Sold'){
-						$sold_to = $this->Common_model->findfield('customers','cust_id',$ptd['prop_sold_to'],'cust_fullname') ;
+						$sold_to = $this->Common_model->findfield('customers','cust_id',$ptd['prop_sold_to'],'cust_fname') ;
+						$sold_to .= " ".$this->Common_model->findfield('customers','cust_id',$ptd['prop_sold_to'],'cust_lname') ;
 						$prop_price = $ptd['prop_price'];
 						$booking_date = date('d M Y', strtotime($ptd['prop_booking_date']));
 						$detail_id = $ptd['property_detail_id'];
