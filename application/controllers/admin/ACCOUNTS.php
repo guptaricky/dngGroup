@@ -678,13 +678,13 @@ class ACCOUNTS extends MY_Controller {
 		foreach($transfer as $t){
 			$transfer_amt = $transfer_amt + $t['transfer_amt'];
 		}
-		$expense = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id=?",array($employee));
+		$expense = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id=? and ledger_status = ?",array($employee,1));
 		// print_r($expense);die;
 		// echo $transfer_amt;die;
 		
 		foreach($expense as $e){
 			// $expense_amt = $expense_amt + $expense[0]['ledger_payable_amt'];
-		$partial_paid = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment where partial_ledger_id=?",array($e['ledger_id']));
+		$partial_paid = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment where partial_ledger_id=? and partial_status = ?",array($e['ledger_id'],1));
 			foreach($partial_paid as $paid){
 			$expense_amt = $expense_amt + $paid['partial_amt'];
 		}
