@@ -56,7 +56,10 @@
 						<a href="<?php echo base_url().'admin/MASTERS/site_otherdetail'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-building"></i> <span class="menu-item-parent">Manage Site Details</span></a>
 					</li>
 					<li class="">
-						<a href="<?php echo base_url().'admin/ACCOUNTS/add_account'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Accounts</span></a>
+						<a href="<?php echo base_url().'admin/ACCOUNTS/add_account'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Site Accounts</span></a>
+					</li>
+					<li class="">
+						<a href="<?php echo base_url().'admin/MASTERS/company_bank_accounts'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Bank Accounts</span></a>
 					</li>
 					<li class="">
 						<a href="<?php echo base_url().'admin/ACCOUNTS/fund_transfer'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Fund Transfer</span></a>

@@ -247,6 +247,7 @@ class MASTERS extends MY_Controller {
 		$site_id = $this->Common_model->get_alloted_site($empid);
 		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($site_id));
 		}
+		$data['customer'] = $this->Common_model->get_data_by_query_pdo("select * from customers where cust_active=?",array(1));
 		$data['propertytype'] = $this->Common_model->get_data_by_query_pdo("select distinct(detail_type) as detail_type from site_other_detail where detail_site_id=?",array($site_id));
 		$data['propertytypedetail'] = $this->Common_model->get_data_by_query_pdo("select * from property_detail pd
 		left join property_other_detail pod on pd.property_id = pod.prop_id

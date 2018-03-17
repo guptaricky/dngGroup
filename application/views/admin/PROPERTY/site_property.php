@@ -181,6 +181,17 @@
 												</p>
 											</div>
 												<fieldset>
+												<div class="row">
+													<section class="col col-12" style="padding-left:15px !important">
+														<label class="select">
+														<select id="cust_id_<?php echo $i;?>" name="cust_id" onchange="getCustDetail(this.value)">
+														<option value="">  Select Customer if Registerd </option>
+															<?php foreach($customer as $cust):?>
+															<option value="<?php echo $cust['cust_id'];?>"><?php echo $cust['cust_fname'].' '.$cust['cust_lname'];?></option>
+															<?php endforeach; ?>
+														</select> <i></i> </label>
+													</section>
+												</div>
 													<div class="row">
 														<section class="col col-6">
 															<input class="form-control" name="prop_id" value="<?php echo $ptd['property_id']; ?>" type="hidden">

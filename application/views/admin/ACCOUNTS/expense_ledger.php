@@ -86,7 +86,7 @@
 												</section>
 												<section class="col col-6">
 													<label class="input"> <i class="icon-prepend fa fa-calendar"></i>
-														<input type="text" name="ledger_payment_date" id="ledger_payment_date"  placeholder="yyyy-mm-dd" class="datepicker">
+														<input type="text" name="ledger_payment_date" id="ledger_payment_date"  placeholder="yyyy-mm-dd" class="datepicker" value="<?php echo date('Y-m-d');?>">
 													</label>
 												</section>
 											</div>
@@ -99,6 +99,21 @@
 												</section>
 											</div>
 											<hr class="simple">
+											<div class="row">
+												<section class="col col-6">
+												<label class="label">Payment From Account: </label>
+													<label class="select"> 
+														<select name="ledger_payment_type" id="ledger_payment_type">
+														<option value="0" selected> SELECT BANK ACCOUNT </option>
+														<?php foreach($bank_accounts as $ba){?>
+														<option value="<?php echo $ba['bank_id'];?>" ><?php echo $ba['bank_name']." - ".$ba['bank_acc_no'];?></option>
+														<?php } ?>
+														</select><i></i>
+													</label>
+													</label>
+												</section>
+												
+											</div>
 											<div class="row">
 												<section class="col col-6">
 												<label class="label">Amount: </label>
