@@ -7,7 +7,7 @@ class CUSTOMER extends MY_Controller {
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
-		$data['customers'] = $this->Common_model->get_data_by_query_pdo("select * from customers where 1 ",array());
+		$data['customers'] = $this->Common_model->get_data_by_query_pdo("select * from customers where cust_active = 1 ",array());
 		$this->load->view('admin/CUSTOMER/view_customers',$data);
 		$this->load->view('default_admin/footer');
 	}
@@ -21,10 +21,12 @@ class CUSTOMER extends MY_Controller {
 		$this->load->view('default_admin/footer');
 	}
 	public function addCustomer(){
-		$userid = (array_slice($this->session->userdata, 9, 1));
+		// $userid = (array_slice($this->session->userdata, 9, 1));
 		// $uid = $userid['user_id'];
+		$cust_id = $_POST['cust_id'];
 		$data = array(
-			'cust_fullname' => ucwords(strtolower($_POST['fname'].' '.$_POST['lname'])),
+			'cust_fname' => ucwords(strtoupper($_POST['fname'])),
+			'cust_lname' => ucwords(strtoupper($_POST['lname'])),
 			'cust_address' => $_POST['address'],
 			'cust_city' => $_POST['city'],
 			'cust_state' => $_POST['state'],
@@ -35,11 +37,19 @@ class CUSTOMER extends MY_Controller {
 			'cust_pan' => strtoupper($_POST['pan']),
 			'cust_user' => 1
 		);
-		
-		$this->Crud_model->insert_record('customers',$data);
+		if(!empty($cust_id)){
+			$this->Crud_model-> edit_record_by_anyid('customers','cust_id',$cust_id,$data);
+		}
+		else{
+			$this->Crud_model->insert_record('customers',$data);
+		}
 		
 	}
-
+	public function editCustomerDetail(){
+		$id = $this->input->post('id');
+		$customer = $this->Common_model->get_data_by_query_pdo("select * from customers where cust_id=?",array($id));
+		echo json_encode($customer);
+	}
 	public function addCustomerSellProperty(){
 		$userid = (array_slice($this->session->userdata, 9, 1));
 		// $uid = $userid['user_id'];

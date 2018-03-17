@@ -72,12 +72,13 @@
 							  <?php $sno=0;foreach ($customers as $ctm):$sno++;?>
 							  <tr align="left">
 								<td><?php echo $sno;?>.</td>
-								<td><?php echo ucwords(strtolower($ctm['cust_fullname']));?></td>
-								<td><?php echo $ctm['cust_phone']?></td>
-								<td><?php echo $ctm['cust_city']?></td>
+								<td><?php echo ucwords(strtolower($ctm['cust_fname'].' '.$ctm['cust_lname']));?></td>
+								<td><?php echo $ctm['cust_phone'];?></td>
+								<td><?php echo $ctm['cust_city'];?></td>
 								<td data-title="Action">
 								<button class="btn btn-primary btn-xs" id="add_tab">Send sms</button>
 								<a href="<?php echo base_url().'admin/PROPERTY/sell_property';?>" class="btn btn-warning btn-xs">Property Sell</a>
+								<a href="<?php echo base_url().'admin/CUSTOMER/add_customers/'.$ctm['cust_id'];?>" class="btn btn-warning btn-xs">Edit</a>
 								</td>
 							  </tr>
 							  <?php endforeach;?>

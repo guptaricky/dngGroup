@@ -219,15 +219,16 @@ class MASTERS extends MY_Controller {
 	public function getSitedata(){
 		
 		$site_id = $_POST['site_id'];
+		
 		$group = $this->session->userdata('group');
 		if($group == 'admin'){
 			$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($site_id));
 		}
 		else{
-		$empid = (array_slice($this->session->userdata,10,1));
-		$empid = $empid['emp_id'];
-		$data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
-		@$site_id = $data['emp_site'][0]['emp_alloted_site'];
+		$empids = (array_slice($this->session->userdata,10,1));
+		$empid = $empids['emp_id'];
+		// $data['emp_site'] = $this->Common_model->get_alloted_site($empid);
+		$site_id = $this->Common_model->get_alloted_site($empid);
 		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($site_id));
 		}
 		$data['propertytype'] = $this->Common_model->get_data_by_query_pdo("select distinct(detail_type) as detail_type from site_other_detail where detail_site_id=?",array($site_id));

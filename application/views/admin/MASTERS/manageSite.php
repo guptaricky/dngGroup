@@ -76,6 +76,7 @@
 <script>
 	function getSite(){
 	var site_id = $('#site').val();
+	$("#property").html('<center><img src="<?php echo base_url().'../assets/img/loading_spinner.gif'; ?>" /> </center>');
 		$.ajax({
 		url:"<?php echo base_url('admin/MASTERS/getSitedata'); ?>",
 		type:"post",

@@ -21,11 +21,11 @@
 			<!-- #MAIN CONTENT -->
 			<div id="content">
 				<div class="row">
-	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-users"></i> Add New Customers <span></span></h1>
-	</div>
-		
-</div>
+				<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+					<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-users"></i> Add New Customers <span></span></h1>
+				</div>
+					
+			</div>
 <!-- widget grid -->
 <section id="widget-grid" class="">
 
@@ -74,15 +74,16 @@
 							</p>
 						</div>
 							<fieldset>
+							<input type="hidden" name="cust_id" id="cust_id">
 								<div class="row">
 									<section class="col col-6">
 										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<input type="text" name="fname" placeholder="First name" style="text-transform: capitalize;">
+											<input type="text" name="fname" id="fname" placeholder="First name" style="text-transform: capitalize;">
 										</label>
 									</section>
 									<section class="col col-6">
 										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<input type="text" name="lname" placeholder="Last name" style="text-transform: capitalize;">
+											<input type="text" name="lname" id="lname" placeholder="Last name" style="text-transform: capitalize;">
 										</label>
 									</section>
 								</div>
@@ -90,12 +91,12 @@
 								<div class="row">
 									<section class="col col-6">
 										<label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
-											<input type="email" name="email" placeholder="E-mail">
+											<input type="email" name="email" id="email" placeholder="E-mail">
 										</label>
 									</section>
 									<section class="col col-6">
 										<label class="input"> <i class="icon-prepend fa fa-phone"></i>
-											<input type="tel" name="phone" placeholder="Phone" data-mask="(999) 999-9999">
+											<input type="tel" name="phone" id="phone" placeholder="Phone" data-mask="(999) 999-9999">
 										</label>
 									</section>
 								</div>
@@ -106,44 +107,44 @@
 									
 									<section class="col col-5">
 										<label class="input">
-											<input type="text" name="state" placeholder="State">
+											<input type="text" name="state" id="state" placeholder="State">
 										</label>
 									</section>
 									
 									<section class="col col-4">
 										<label class="input">
-											<input type="text" name="city" placeholder="City">
+											<input type="text" name="city" id="city" placeholder="City">
 										</label>
 									</section>
 
 									<section class="col col-3">
 										<label class="input">
-											<input type="text" name="code" placeholder="Post code">
+											<input type="text" name="code" id="code" placeholder="Post code">
 										</label>
 									</section>
 								</div>
 
 								<section>
 									<label for="address" class="input">
-										<input type="text" name="address" placeholder="Address"  style="text-transform: capitalize;">
+										<input type="text" name="address" id="address" placeholder="Address"  style="text-transform: capitalize;">
 									</label>
 								</section>
 
 								<section>
 									<label class="textarea"> 										
-										<textarea rows="3" name="info" placeholder="Additional info"></textarea> 
+										<textarea rows="3" name="info" id="info" placeholder="Additional info"></textarea> 
 									</label>
 								</section>
 								<div class="row">
 								<section class="col col-5">
 									<label class="input">
-										<input type="text" name="aadhar" placeholder="Aadhar Number">
+										<input type="text" name="aadhar" id="aadhar" placeholder="Aadhar Number">
 									</label>
 								</section>
 								
 								<section class="col col-4">
 									<label class="input">
-										<input type="text" name="pan" placeholder="PAN"  style="text-transform: uppercase;">
+										<input type="text" name="pan" id="pan" placeholder="PAN" style="text-transform: uppercase;">
 									</label>
 								</section>
 								</div>
@@ -194,5 +195,31 @@
 				
 			});
 		}
+</script>
+<script>		
+		$(document).ready(function(){
+			editCustomerDetail();
+		
+		});
+		function editCustomerDetail(){
+			var id = '<?php echo $this->uri->segment(4);?>';
+			// alert(id);
+			$.post('<?php echo base_url('admin/CUSTOMER/editCustomerDetail'); ?>', {'id':id}, function(response){
+			var res = jQuery.parseJSON(response);
+				$.each(res, function (k, v) {
+					$("#cust_id").val(v.cust_id);
+					$("#fname").val(v.cust_fname);
+					$("#lname").val(v.cust_lname);
+					$("#email").val(v.cust_email);
+					$("#phone").val(v.cust_phone);
+					$("#city").val(v.cust_city);
+					$("#address").val(v.cust_address);
+					$("#aadhar").val(v.cust_aadhar);
+					$("#pan").val(v.cust_pan);
+					$("#info").val(v.cust_additional_info);
+					
+					});	
+			});
+		}	
 </script>
 		
