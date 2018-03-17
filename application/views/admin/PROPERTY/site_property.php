@@ -184,7 +184,7 @@
 												<div class="row">
 													<section class="col col-12" style="padding-left:15px !important">
 														<label class="select">
-														<select id="cust_id_<?php echo $i;?>" name="cust_id" onchange="getCustDetail(this.value)">
+														<select id="cust_id_<?php echo $i;?>" name="cust_id" onchange="getCustDetail(<?php echo $i;?>,this.value)">
 														<option value="">  Select Customer if Registerd </option>
 															<?php foreach($customer as $cust):?>
 															<option value="<?php echo $cust['cust_id'];?>"><?php echo $cust['cust_fname'].' '.$cust['cust_lname'];?></option>
@@ -408,6 +408,35 @@
 		$("#prop_detail_print_"+sno).html(prop_type + " : <strong>" + prop_no + "</strong>");
 		
 		
+		}
+		
+		function getCustDetail(sno,cust_id){
+			if(cust_id!=''){
+			$.post('<?php echo base_url('admin/CUSTOMER/editCustomerDetail'); ?>', {'id':cust_id}, function(response){
+			var res = jQuery.parseJSON(response);
+				$.each(res, function (k, v) {
+					$("#fname_"+sno).val(v.cust_fname);
+					$("#lname_"+sno).val(v.cust_lname);
+					$("#email_"+sno).val(v.cust_email);
+					$("#phone_"+sno).val(v.cust_phone);
+					$("#city_"+sno).val(v.cust_city);
+					$("#address_"+sno).val(v.cust_address);
+					$("#aadhar_"+sno).val(v.cust_aadhar);
+					$("#pan_"+sno).val(v.cust_pan);
+					$("#info_"+sno).val(v.cust_additional_info);
+					});	
+			});	
+			}else{
+				$("#fname_"+sno).val('');
+				$("#lname_"+sno).val('');
+				$("#email_"+sno).val('');
+				$("#phone_"+sno).val('');
+				$("#city_"+sno).val('');
+				$("#address_"+sno).val('');
+				$("#aadhar_"+sno).val('');
+				$("#pan_"+sno).val('');
+				$("#info_"+sno).val('');
+			}
 		}
 		
 		

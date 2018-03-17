@@ -54,7 +54,8 @@ class CUSTOMER extends MY_Controller {
 		$userid = (array_slice($this->session->userdata, 9, 1));
 		// $uid = $userid['user_id'];
 		$data = array(
-			'cust_fullname' => ucwords(strtolower($_POST['fname'].' '.$_POST['lname'])),
+			'cust_fname' => ucwords(strtolower($_POST['fname'])),
+			'cust_lname' => ucwords(strtolower($_POST['lname'])),
 			'cust_address' => $_POST['address'],
 			'cust_city' => $_POST['city'],
 			'cust_state' => $_POST['state'],
@@ -75,7 +76,11 @@ class CUSTOMER extends MY_Controller {
 		
 		// echo $_POST['prop_id'];
 		// die;
+		if(!empty($_POST['cust_id'])){
+		$this->Crud_model->edit_record_by_anyid('customers','cust_id',$_POST['cust_id'],$data);
+		}else{
 		$this->Crud_model->insert_record('customers',$data);
+		}
 		$cust = $this->Common_model->get_data_by_query_pdo("select max(cust_id) as cust_id from customers",array(0));
 		$data_prop = array(
 			'prop_id' => $_POST['prop_id'],
