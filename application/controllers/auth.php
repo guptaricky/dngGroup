@@ -447,11 +447,11 @@ class Auth extends CI_Controller {
 		$emp_id = $this->uri->segment(3); 
 		$this->session->set_userdata('emp_id', $emp_id);
 		$user = $this->db->query("select * from users where emp_id='$emp_id'");
-		$empdetail = $this->Common_model->get_data_by_query_pdo("select emp_fullname,emp_email,emp_phone from employes where emp_id=?",array($emp_id));
-		$empfullname = $empdetail[0]['emp_fullname'];
-		$empfullname = explode(' ',$empfullname);
-		$emp_first_name = $empfullname[0];
-		$emp_last_name = $empfullname[1];
+		$empdetail = $this->Common_model->get_data_by_query_pdo("select emp_fname,emp_lname,emp_email,emp_phone from employes where emp_id=?",array($emp_id));
+		$empfname = $empdetail[0]['emp_fname'];
+		$emplname = $empdetail[0]['emp_lname'];
+		$emp_first_name = $empfname;
+		$emp_last_name = $emplname;
         if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
         {
             redirect('auth', 'refresh');
