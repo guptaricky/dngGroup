@@ -189,9 +189,10 @@
                    var form_data = $('#checkout-form').serialize();
 				  
 			$.post('<?php echo base_url('admin/CUSTOMER/addCustomer'); ?>', form_data, function (response) {
-				$(".btn").button('reset');
-				$('#checkout-form')[0].reset();
-				$('#alert_check').removeclass('hide');
+				// $(".btn").button('reset');
+				// $('#checkout-form')[0].reset();
+				// $('#alert_check').removeclass('hide');
+				window.location.href = '<?php echo base_url(),"admin/CUSTOMRE/view_customers";?>';
 				
 			});
 		}

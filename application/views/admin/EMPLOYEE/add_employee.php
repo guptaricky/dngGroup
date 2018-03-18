@@ -157,7 +157,7 @@
 
 								<section>
 									<label class="textarea"> 										
-										<textarea rows="3" name="info" placeholder="Additional info"></textarea> 
+										<textarea rows="3" name="info" id="info" placeholder="Additional info"></textarea> 
 									</label>
 								</section>
 								<div class="row">
@@ -229,7 +229,7 @@
 								<div class="row">
 									<section class="col col-4">
 										<label class="select">
-										<select name="site">
+										<select name="site" id="site">
 											<option value="0" selected="" disabled="">Select site</option>
 											<?php foreach($sites as $st):?>
 											<option value="<?php echo $st['site_id'];?>"><?php echo $st['site_name'];?></option>
@@ -279,9 +279,9 @@
 				  
 			$.post('<?php echo base_url('admin/EMPLOYEE/addEmployee'); ?>', form_data, function (response) {
 				$(".btn").button('reset');
-				$('#checkout-form')[0].reset();
-				$('#alert_check').removeclass('hide');
-				
+				// $('#checkout-form')[0].reset();
+				// $('#alert_check').removeclass('hide');
+				window.location.href = '<?php echo base_url(),"admin/EMPLOYEE/view_employee";?>';
 			});
 		}
 		</script>
@@ -312,6 +312,7 @@
 					$("#aadhar").val(v.emp_aadhar);
 					$("#pan").val(v.emp_pan);
 					$("#info").val(v.emp_additional_info);
+					$("#site").val(v.emp_alloted_site);
 					
 					});	
 			});

@@ -22,8 +22,10 @@ class EMPLOYEE extends MY_Controller {
 	public function addEmployee(){
 		$userid = (array_slice($this->session->userdata, 9, 1));
 		// $uid = $userid['user_id'];
+		$emp_id = $_POST['emp_id'];
 		$data = array(
-			'emp_fullname' => ucwords(strtolower($_POST['fname'].' '.$_POST['lname'])),
+			'emp_fname' => ucwords(strtolower($_POST['fname'])),
+			'emp_lname' => ucwords(strtolower($_POST['lname'])),
 			'emp_address' => $_POST['address'],
 			'emp_city' => $_POST['city'],
 			'emp_state' => $_POST['state'],
@@ -37,15 +39,18 @@ class EMPLOYEE extends MY_Controller {
 			'emp_email' => $_POST['email'],
 			'emp_aadhar' => $_POST['aadhar'],
 			'emp_pan' => strtoupper($_POST['pan']),
-			'emp_bank' => strtoupper($_POST['bankname']),
-			'emp_bank_address' => strtoupper($_POST['bank_address']),
-			'emp_bank_acc_no' => $_POST['acc_no'],
-			'emp_bank_ifsc' => strtoupper($_POST['ifsc']),
+			// 'emp_bank' => strtoupper($_POST['bankname']),
+			// 'emp_bank_address' => strtoupper($_POST['bank_address']),
+			// 'emp_bank_acc_no' => $_POST['acc_no'],
+			// 'emp_bank_ifsc' => strtoupper($_POST['ifsc']),
 			'emp_user' => 1
 		);
-		
-		$this->Crud_model->insert_record('employes',$data);
-		
+		if(!empty($emp_id)){
+			$this->Crud_model-> edit_record_by_anyid('employes','emp_id',$emp_id,$data);
+		}
+		else{
+			$this->Crud_model->insert_record('employes',$data);
+		}
 	}
 	public function editEmployeeDetail(){
 		$id = $this->input->post('id');
