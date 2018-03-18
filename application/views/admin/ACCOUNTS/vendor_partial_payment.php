@@ -118,21 +118,21 @@
 								<div class="row">
 				<section class="col col-12">
 							<fieldset>
-									<section class="col col-12">
+							<input class="form-control" type="text" name="partial_type" id="partial_type" value="Vendor">
+									<section class="col col-12">Balance Amount:
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
 											<input class="form-control" type="text" name="partial_amt" id="partial_amt"  placeholder="Balance Amount" value="<?php echo $ledger[0]['ledger_balance_amt']; ?>">
 										</label>
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="text" name="partial_date" id="partial_date"  placeholder="yyyy-mm-dd">
+											<input type="text" name="partial_date" id="partial_date" class="datepicker" value="<?php echo date('Y-m-d')?>">
 										</label>
 									</section>
 									<section class="col col-12">
 										<label class="select"> 
 										<select name="partial_payment_type" id="partial_payment_type">
-											<option value=""> SELECT TYPE </option>
-											<option value="Cash">Cash</option>
+											<option value="Cash" selected>Cash</option>
 											<option value="Cheque">Cheque</option>
 											<option value="Bank">Bank</option>
 											</select><i></i>
@@ -140,7 +140,7 @@
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
-											<input type="text" name="partial_cheque_dd_no" id="partial_cheque_dd_no"  placeholder="Cheque / Transection No.">
+											<input type="text" name="partial_cheque_dd_no" id="partial_cheque_dd_no"  placeholder="Cheque / Transaction No.">
 										</label>
 									</section>
 									<section class="col col-12">
@@ -218,7 +218,7 @@
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
 		var lid = $('#partial_ledger_id').val();	
-		content +='<table class="table table-bordered"><thead><tr><th>Amount</th><th>Date</th><th>Payment Type</th><th>Transection/Cheque No.</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
+		content +='<table class="table table-bordered"><thead><tr><th>Amount</th><th>Date</th><th>Payment Type</th><th>Transaction/Cheque No.</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getVendor_partial_payment'); ?>','lid='+lid, function(res){
 					$.each(res, function (k, v) {
 					  content +='<tr><td>'+ v.partial_amt +'</td><td>'+ v.partial_date +'</td><td>'+ v.partial_payment_type +'</td><td>'+ v.partial_cheque_dd_no +'</td><td>'+ v.partial_remark +'</td><td><span title="Delete" style="cursor:pointer;" onclick="DeleteVendorLedger('+ v.partial_id +')" ><i class="fa fa-remove"></i></span></td></tr>';

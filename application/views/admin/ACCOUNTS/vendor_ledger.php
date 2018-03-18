@@ -68,7 +68,7 @@
 								// print_r($emp_site);
 								$group = $this->session->userdata('group');
 								?>
-									<section class="col col-12 <?php if(count($emp_site)>0){echo "hide";}?>">
+									<section class="col col-12 <?php if($emp_site>0){echo "hide";}?>">
 										<label class="select">
 										<select name="ledger_site_id" id="ledger_site_id">
 											<option value=""> SELECT SITE </option>

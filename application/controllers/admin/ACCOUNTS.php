@@ -261,7 +261,7 @@ class ACCOUNTS extends MY_Controller {
 			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where ledger_site_id = ? and ledger_type=? and ledger_status=?",array($site,'Vendor',1));	
 		}
 		else{
-			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where ledger_type=? and ledger_status=?",array('Vendor',1));
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name, v.vendor_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where ledger_type=? and ledger_status=?",array('Vendor',1));
 		}
 		// $group = $this->session->userdata('group');
 		
@@ -313,6 +313,7 @@ class ACCOUNTS extends MY_Controller {
 		'partial_ledger_id' 	=> $_POST['partial_ledger_id'],
 		'partial_date' 			=> $_POST['partial_date'],
 		'partial_amt' 			=> $_POST['partial_amt'],
+		'partial_type'			=> $_POST['partial_type'],
 		'partial_payment_type'	=> $_POST['partial_payment_type'],
 		'partial_cheque_dd_no'	=> $_POST['partial_cheque_dd_no'],
 		'partial_remark'		=> $_POST['partial_remark'],
@@ -711,9 +712,28 @@ class ACCOUNTS extends MY_Controller {
 		$this->load->view('admin/ACCOUNTS/getReports',$data);
 		$this->load->view('default_admin/footer');
 		
+		}	
 		
+	}
 		
+	public function reports(){		
+		
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$userid = (array_slice($this->session->userdata, 10, 1));
+		$uid = $userid['emp_id'];
+		$alloted_site = @$this->Common_model->get_alloted_site($uid);
+		$group = $this->session->userdata('group');
+		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
+		if($group == 'admin'){
+			$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
+			where partial_status=?",array(1	));
+			// echo $this->db->last_query();die;
 		}
+		$this->load->view('admin/ACCOUNTS/reports',$data);
+		$this->load->view('default_admin/footer');
+		
 	}
 
 	
