@@ -262,7 +262,8 @@ class MASTERS extends MY_Controller {
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
-		$this->load->view('admin/MASTERS/company_bank_accounts');
+		$data['banks'] = $this->Common_model->get_data_by_query_pdo("select * from bank_master where 1",array());
+		$this->load->view('admin/MASTERS/company_bank_accounts',$data);
 		$this->load->view('default_admin/footer');
 	}
 	public function add_company_bank_accounts(){
@@ -271,6 +272,7 @@ class MASTERS extends MY_Controller {
 		$data = array(
 			'bank_name' => $_POST['bank_name'],
 			'bank_branch_name' => $_POST['bank_branch_name'],
+			'bank_acc_name' => $_POST['acc_name'],
 			'bank_acc_no' => $_POST['bank_acc_no'],
 			'bank_ifsc_code' => $_POST['bank_ifsc_code'],
 			'bank_status' => 1,
@@ -284,7 +286,7 @@ class MASTERS extends MY_Controller {
 		}
 	}
 	public function get_company_bank_accounts(){
-		$bank = $this->Common_model->get_data_by_query_pdo("select * from company_bank_accounts where 1 and bank_status=?",array(1));
+		$bank = $this->Common_model->get_data_by_query_pdo("select * from company_bank_accounts ba left join bank_master bm on ba.bank_name = bm.bank_id where 1 and bank_status=?",array(1));
 		echo json_encode($bank);
 	}
 	public function edit_company_bank_accounts(){

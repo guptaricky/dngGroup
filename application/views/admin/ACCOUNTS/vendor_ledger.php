@@ -124,6 +124,11 @@
 											<input type="text" name="ledger_amount" id="ledger_amount" onkeyup="CalculateAmt()"  placeholder="Total Price">
 										</label>
 									</section>
+									<section class="col col-12">Loading-Unloading (Extra charges)
+										<label class="input"> <i class="icon-prepend fa fa-money"></i>
+											<input type="text" name="extra_amount" id="extra_amount" onkeyup="CalculateAmt()"  placeholder="Extra Charges" value="0.00">
+										</label>
+									</section>
 								</div>
 
 								
@@ -325,6 +330,7 @@ $(document).ready(function(){
 					$("#ledger_qty").val(v.ledger_qty);
 					$("#ledger_rate").val(v.ledger_rate);
 					$("#ledger_amount").val(v.ledger_amount);
+					$("#extra_amount").val(v.ledger_extra_amount);
 					$("#ledger_discount").val(v.ledger_discount);
 					$("#ledger_payable_amt").val(v.ledger_payable_amt);
 					$("#ledger_paid_amt").val(v.ledger_paid_amt);
@@ -354,6 +360,7 @@ $(document).ready(function(){
 		function  CalculateAmt(){
 			var qty = $("#ledger_qty").val();
 			var rate = $("#ledger_rate").val();
+			var extra_amount = $("#extra_amount").val();
 			var total = parseFloat(qty) * parseFloat(rate);
 			if(isNaN(total)) {
 			var total = 0;
@@ -362,7 +369,7 @@ $(document).ready(function(){
 			}
 			$("#ledger_amount").val(total);
 			var disc = $("#ledger_discount").val();
-			var payble = parseFloat(total) - parseFloat(disc);			
+			var payble = parseFloat(total) +  parseFloat(extra_amount) - parseFloat(disc);			
 			if(isNaN(payble)) {
 			var payble = 0;
 			}else{

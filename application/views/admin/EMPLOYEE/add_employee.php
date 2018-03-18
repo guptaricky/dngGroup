@@ -74,15 +74,16 @@
 							</p>
 						</div>
 							<fieldset>
+							<input type="hidden" name="emp_id" id="emp_id">
 								<div class="row">
 									<section class="col col-6">
 										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<input type="text" name="fname" placeholder="First name" style="text-transform: capitalize;">
+											<input type="text" name="fname" id="fname" placeholder="First name" style="text-transform: capitalize;">
 										</label>
 									</section>
 									<section class="col col-6">
 										<label class="input"> <i class="icon-prepend fa fa-user"></i>
-											<input type="text" name="lname" placeholder="Last name" style="text-transform: capitalize;">
+											<input type="text" name="lname" id="lname" placeholder="Last name" style="text-transform: capitalize;">
 										</label>
 									</section>
 								</div>
@@ -90,12 +91,12 @@
 								<div class="row">
 									<section class="col col-6">
 										<label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
-											<input type="email" name="email" placeholder="E-mail">
+											<input type="email" name="email" id="email" placeholder="E-mail">
 										</label>
 									</section>
 									<section class="col col-6">
 										<label class="input"> <i class="icon-prepend fa fa-phone"></i>
-											<input type="tel" name="phone" placeholder="Phone" data-mask="(999) 999-9999">
+											<input type="tel" name="phone" id="phone" placeholder="Phone" data-mask="(999) 999-9999">
 										</label>
 									</section>
 								</div>
@@ -106,28 +107,53 @@
 									
 									<section class="col col-5">
 										<label class="input">
-											<input type="text" name="state" placeholder="State">
+											<input type="text" name="state" id="state" placeholder="State">
 										</label>
 									</section>
 									
 									<section class="col col-4">
 										<label class="input">
-											<input type="text" name="city" placeholder="City">
+											<input type="text" name="city" id="city" placeholder="City">
 										</label>
 									</section>
 
 									<section class="col col-3">
 										<label class="input">
-											<input type="text" name="code" placeholder="Post code">
+											<input type="text" name="code" id="code" placeholder="Post code">
 										</label>
 									</section>
 								</div>
 
 								<section>
 									<label for="address" class="input">
-										<input type="text" name="address" placeholder="Address"  style="text-transform: capitalize;">
+										<input type="text" name="address" id="address" placeholder="Address"  style="text-transform: capitalize;">
 									</label>
 								</section>
+								<div class="row">
+									
+									<section class="col col-3">
+										<label class="input">Designation
+											<input type="text" name="designation" id="designation" placeholder="Designation">
+										</label>
+									</section>
+									
+									<section class="col col-3">
+										<label class="input">Monthly Salary
+											<input type="text" name="salary" id="salary" placeholder="Salary">
+										</label>
+									</section>
+
+									<section class="col col-3">
+										<label class="input">Security Deposited
+											<input type="text" name="security" id="security" placeholder="Security">
+										</label>
+									</section>
+									<section class="col col-3">
+										<label class="input">Advance Owned
+											<input type="text" name="advance" id="advance" placeholder="Advance">
+										</label>
+									</section>
+								</div>
 
 								<section>
 									<label class="textarea"> 										
@@ -147,6 +173,7 @@
 									</label>
 								</section>
 								</div>
+								
 							</fieldset>
 							
 							<fieldset style="display:none">
@@ -255,6 +282,38 @@
 				$('#checkout-form')[0].reset();
 				$('#alert_check').removeclass('hide');
 				
+			});
+		}
+		</script>
+		<script>
+		$(document).ready(function(){
+			editCustomerDetail();
+		
+		});
+		function editCustomerDetail(){
+			var id = '<?php echo $this->uri->segment(4);?>';
+			// alert(id);
+			$.post('<?php echo base_url('admin/EMPLOYEE/editEmployeeDetail'); ?>', {'id':id}, function(response){
+			var res = jQuery.parseJSON(response);
+				$.each(res, function (k, v) {
+					$("#emp_id").val(v.emp_id);
+					$("#fname").val(v.emp_fname);
+					$("#lname").val(v.emp_lname);
+					$("#email").val(v.emp_email);
+					$("#phone").val(v.emp_phone);
+					$("#state").val(v.emp_state);
+					$("#city").val(v.emp_city);
+					$("#code").val(v.emp_pincode);
+					$("#designation").val(v.emp_desig);
+					$("#salary").val(v.emp_salary);
+					$("#security").val(v.emp_security);
+					$("#advance").val(v.emp_advance);
+					$("#address").val(v.emp_address);
+					$("#aadhar").val(v.emp_aadhar);
+					$("#pan").val(v.emp_pan);
+					$("#info").val(v.emp_additional_info);
+					
+					});	
 			});
 		}
 </script>

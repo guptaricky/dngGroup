@@ -11,9 +11,7 @@ class CUSTOMER extends MY_Controller {
 		$this->load->view('admin/CUSTOMER/view_customers',$data);
 		$this->load->view('default_admin/footer');
 	}
-	
-	public function add_customers(){
-		
+	public function add_customers(){	
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
@@ -30,6 +28,7 @@ class CUSTOMER extends MY_Controller {
 			'cust_address' => $_POST['address'],
 			'cust_city' => $_POST['city'],
 			'cust_state' => $_POST['state'],
+			'cust_pincode' => $_POST['code'],
 			'cust_phone' => $_POST['phone'],
 			'cust_additional_info' => $_POST['info'],
 			'cust_email' => $_POST['email'],
@@ -59,6 +58,7 @@ class CUSTOMER extends MY_Controller {
 			'cust_address' => $_POST['address'],
 			'cust_city' => $_POST['city'],
 			'cust_state' => $_POST['state'],
+			'cust_pincode' => $_POST['code'],
 			'cust_phone' => $_POST['phone'],
 			'cust_additional_info' => $_POST['info'],
 			'cust_email' => $_POST['email'],

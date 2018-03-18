@@ -63,6 +63,7 @@
 							  <tr>
 								<th>S.No.</th>
 								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Name</th>
+								<th><i class="fa fa-fw fa-star text-muted hidden-md hidden-sm hidden-xs"></i> Designation</th>
 								<th><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Phone</th>
 								<th><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> City</th>
 								<th><i class="fa fa-fw fa-edit txt-color-blue hidden-md hidden-sm hidden-xs"></i> Actions</th>
@@ -72,12 +73,13 @@
 							  <?php $sno=0;foreach ($employee as $emp):$sno++;?>
 							  <tr align="left">
 								<td><?php echo $sno;?>.</td>
-								<td><?php echo ucwords(strtolower($emp['emp_fullname']));?></td>
+								<td><?php echo ucwords(strtolower($emp['emp_fname'].' '.$emp['emp_lname']));?></td>
+								<td><?php echo $emp['emp_desig'];?></td>
 								<td><?php echo $emp['emp_phone']?></td>
 								<td><?php echo $emp['emp_city']?></td>
 								<td data-title="Action">
-								<button class="btn btn-primary btn-xs" id="add_tab">Send sms</button>
-								<button class="btn btn-warning btn-xs">More Info.</button>
+								<button class="btn btn-primary btn-xs hide" id="add_tab">Send sms</button>
+								<a href="<?php echo base_url().'admin/EMPLOYEE/add_employee/'.$emp['emp_id'];?>" class="btn btn-warning btn-xs">View / Edit</a>
 								</td>
 							  </tr>
 							  <?php endforeach;?>

@@ -212,6 +212,8 @@
 					$("#lname").val(v.cust_lname);
 					$("#email").val(v.cust_email);
 					$("#phone").val(v.cust_phone);
+					$("#state").val(v.cust_state);
+					$("#code").val(v.cust_pincode);
 					$("#city").val(v.cust_city);
 					$("#address").val(v.cust_address);
 					$("#aadhar").val(v.cust_aadhar);

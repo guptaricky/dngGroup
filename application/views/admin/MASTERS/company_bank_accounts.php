@@ -62,19 +62,29 @@
 								<input type="hidden" name="bank_id" id="bank_id" >
 							<fieldset>
 								<div class="row">
+									
+									<section class="col col-12" >
+										<label class="select"> 
+										<select id="bank_name" name="bank_name" >
+										<option value="">  Select Bank </option>
+											<?php foreach($banks as $bk):?>
+											<option value="<?php echo $bk['bank_id'];?>"><?php echo $bk['bank_name'];?></option>
+											<?php endforeach; ?>
+										</select> <i></i> </label>
+									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-bank"></i>
-											<input type="text" name="bank_name" id="bank_name" placeholder="Bank Name">
+											<input type="text" name="acc_name" id="acc_name" placeholder="Bank Account Name">
 										</label>
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-bank"></i>
-											<input type="text" name="bank_branch_name" id="bank_branch_name" placeholder="Bank Branch Name">
+											<input type="text" style="text-transform:uppercase" name="bank_branch_name" id="bank_branch_name" placeholder="Bank Branch Name">
 										</label>
 									</section>
 									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-bank"></i>
-											<input type="text" name="bank_ifsc_code" id="bank_ifsc_code" placeholder="Bank IFSC Code">
+											<input type="text" style="text-transform:uppercase" name="bank_ifsc_code" id="bank_ifsc_code" placeholder="Bank IFSC Code">
 										</label>
 									</section>
 									<section class="col col-12">
@@ -158,8 +168,9 @@ $(document).ready(function(){
 				async:false,
 				success: function(data){
 					$(".btn").button('reset');
-					$('#checkout-form')[0].reset();
-					Getbank();
+					// $('#checkout-form')[0].rese	t();
+					// Getbank();
+					location.reload();
 				}
 			});
 	}); 
@@ -168,10 +179,10 @@ $(document).ready(function(){
 		function Getbank(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Bank name</th><th>Bank Branch Name</th><th>Account No.</th><th>IFSC Code</th><th>Action</th></tr></thead><tbody>';			
+		content +='<table class="table table-bordered"><thead><tr><th>Bank / Branch</th><th>Bank Account Name</th><th>Account No.</th><th>IFSC Code</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/MASTERS/get_company_bank_accounts'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.bank_name +'</td><td>'+ v.bank_branch_name +'</td><td>'+ v.bank_acc_no +'</td><td>'+ v.bank_ifsc_code +'</td><td><span style="cursor:pointer;" title="Edit" onclick="Editbank('+ v.bank_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="Deletebank('+ v.bank_id +')"><i class="fa fa-remove"></i></span></td></tr>';
+					  content +='<tr><td>'+ v.bank_name +'</br>'+ v.bank_branch_name +'</td><td>'+ v.bank_acc_name +'</td><td>'+ v.bank_acc_no +'</td><td>'+ v.bank_ifsc_code +'</td><td><span style="cursor:pointer;" title="Edit" onclick="Editbank('+ v.bank_id +')"><i class="fa fa-edit"></i></span>&nbsp;<span title="Delete" style="cursor:pointer;" onclick="Deletebank('+ v.bank_id +')"><i class="fa fa-remove"></i></span></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);

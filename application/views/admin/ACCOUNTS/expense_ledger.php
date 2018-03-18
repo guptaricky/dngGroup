@@ -106,7 +106,7 @@
 														<select name="ledger_payment_type" id="ledger_payment_type">
 														<option value="0" selected> SELECT BANK ACCOUNT </option>
 														<?php foreach($bank_accounts as $ba){?>
-														<option value="<?php echo $ba['bank_id'];?>" ><?php echo $ba['bank_name']." - ".$ba['bank_acc_no'];?></option>
+														<option value="<?php echo $ba['bank_id'];?>" ><?php echo $ba['bank_acc_name']." - ".$ba['bank_acc_no'];?></option>
 														<?php } ?>
 														</select><i></i>
 													</label>
@@ -251,7 +251,7 @@
 		var site = $("#ledger_site_id").val();
 		var vendor = $("#ledger_vendor_id").val();
 		var voch = $("#ledger_voucher_no").val();
-			if(site=='' || vendor=='' || voch==''){
+			if(site=='' || vendor==''){
 				alert("Please Enter Valid Details....?");
 			}
 			else if(balance < ledger_amount ){

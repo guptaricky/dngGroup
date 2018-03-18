@@ -12,7 +12,7 @@ class ACCOUNTS extends MY_Controller {
 		$data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
 		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
 		$data['expense'] = $this->Common_model->get_data_by_query_pdo("select cat_id,cat_name from expense_category where 1 and cat_status=?",array(1));
-		$data['bank_accounts'] = $this->Common_model->get_data_by_query_pdo("select * from company_bank_accounts where bank_status = ?",array(1));
+		$data['bank_accounts'] = $this->Common_model->get_data_by_query_pdo("select * from company_bank_accounts ba left join bank_master bm on ba.bank_name = bm.bank_id where 1 and bank_status=?",array(1));
 		$this->load->view('admin/ACCOUNTS/expense_ledger',$data);
 		$this->load->view('default_admin/footer');
 	}
@@ -190,6 +190,7 @@ class ACCOUNTS extends MY_Controller {
 		'ledger_qty'   			=> $_POST['ledger_qty'],
 		'ledger_rate' 			=> $_POST['ledger_rate'],
 		'ledger_amount'  		=> $_POST['ledger_amount'],
+		'ledger_extra_amount'  	=> $_POST['extra_amount'],
 		'ledger_discount'  		=> $_POST['ledger_discount'],
 		'ledger_payable_amt'    => $_POST['ledger_payable_amt'],
 		'ledger_paid_amt' 		=> $_POST['ledger_paid_amt'],

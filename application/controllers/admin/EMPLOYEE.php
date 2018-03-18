@@ -15,7 +15,7 @@ class EMPLOYEE extends MY_Controller {
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$data['banks'] = $this->Common_model->get_data_by_query_pdo("select * from bank_master where 1 ",array());
-		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where 1 ",array());
+		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_status = 1 ",array());
 		$this->load->view('admin/EMPLOYEE/add_employee',$data);
 		$this->load->view('default_admin/footer');
 	}
@@ -28,6 +28,10 @@ class EMPLOYEE extends MY_Controller {
 			'emp_city' => $_POST['city'],
 			'emp_state' => $_POST['state'],
 			'emp_phone' => $_POST['phone'],
+			'emp_desig' => $_POST['designation'],
+			'emp_salary' => $_POST['salary'],
+			'emp_security' => $_POST['security'],
+			'emp_advance' => $_POST['advance'],
 			'emp_additional_info' => $_POST['info'],
 			'emp_alloted_site' => $_POST['site'],
 			'emp_email' => $_POST['email'],
@@ -42,6 +46,12 @@ class EMPLOYEE extends MY_Controller {
 		
 		$this->Crud_model->insert_record('employes',$data);
 		
+	}
+	public function editEmployeeDetail(){
+		$id = $this->input->post('id');
+		$customer = $this->Common_model->get_data_by_query_pdo("select * from employes where emp_id=?",array($id));
+		// print_r($customer);die;
+		echo json_encode($customer);
 	}
 
 
