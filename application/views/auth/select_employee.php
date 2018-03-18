@@ -66,7 +66,7 @@
 							<select name="employee" id="employee">
 								<option value="0" selected="" disabled="">Select any Employee</option>
 								<?php foreach($employee as $emp):?>
-								<option value="<?php echo $emp['emp_id'];?>"><?php echo $emp['emp_fullname'];?></option>
+								<option value="<?php echo $emp['emp_id'];?>"><?php echo $emp['emp_fname']." ".$emp['emp_lname'];?></option>
 								<?php endforeach; ?>
 								
 							</select> <i></i> </label>

@@ -112,7 +112,6 @@
 													</label>
 													</label>
 												</section>
-												
 											</div>
 											<div class="row">
 												<section class="col col-6">
@@ -223,7 +222,6 @@
 
 								</div>
 								<!-- end widget content -->
-								
 							</div>
 							<!-- end widget div -->
 							
