@@ -254,9 +254,9 @@
 			if(site=='' || vendor==''){
 				alert("Please Enter Valid Details....?");
 			}
-			else if(balance < ledger_amount ){
-				alert("Insufficient Site Balance..!!");
-			}
+			// else if(balance < ledger_amount ){
+				// alert("Insufficient Site Balance..!!");
+			// }
 			else{
 				$(".btn").button('loading');
 			 $.ajax({
