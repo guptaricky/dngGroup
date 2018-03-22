@@ -164,7 +164,7 @@
 														
 														<div class="input-group">
 															<span class="input-group-addon"><i class="">Booking Date</i></span>
-															<input class="datepicker form-control" name="" value="<?php echo $dateToday = date('d-m-Y')?>" type="text" onchange="">
+															<input class="datepicker form-control" id="fakedate" value="<?php echo $dateToday = date('d-m-Y')?>" type="text" onchange="$('#prepend_'+<?php echo $i;?>).val(this.value)">
 															
 														</div>
 													</div>
