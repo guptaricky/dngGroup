@@ -30,9 +30,10 @@
 
 			<!-- #MAIN CONTENT -->
 			<div id="content">
+			<?php $paymentType = $this->uri->segment(5);?>
 				<div class="row">
 	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> Purchase Detail <span></span></h1>
+		<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-edit"></i> <?php echo $paymentType;?> Payment Detail <span></span></h1>
 	</div>
 		
 </div>
@@ -49,7 +50,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>Purchase Detail</h2>			
+					<h2><?php echo $paymentType;?> Payment Detail</h2>			
 					<div class="jarviswidget-ctrls" role="menu">  </div>				
 					
 				</header>
@@ -61,28 +62,51 @@
 					<div class="widget-body no-padding">
 						
 						<div class="table-responsive">
+						<?php 
+						if($paymentType=='Vendor'){?>
 						<table class="table table-bordered">
 						<tbody>
 						<tr>
-						<td><?php echo "Site Name : ".$ledger[0]['site_name']; ?></td>
-						<td><?php echo "Vendor Name : ".$ledger[0]['vendor_name']; ?></td>
-						<td><?php echo "Vendor Firm Name : ".$ledger[0]['vendor_firm_name']; ?></td>
-						<td><?php echo "Vendor Contact No. : ".$ledger[0]['vendor_contact_no']; ?></td>
-						<td><?php echo "Vendor GSTN No. : ".$ledger[0]['vendor_gstn_no']; ?></td>
+						<td><?php echo "<strong>Site Name :</strong> </br>".$ledger[0]['site_name']; ?></td>
+						<td><?php echo "<strong>Vendor Name :</strong></br> ".$ledger[0]['vendor_name']; ?></td>
+						<td><?php echo "<strong>Vendor Firm Name :</strong> </br>".$ledger[0]['vendor_firm_name']; ?></td>
+						<td><?php echo "<strong>Vendor Contact No. : </strong></br>".$ledger[0]['vendor_contact_no']; ?></td>
+						<td><?php echo "<strong>Vendor GSTN No. :</strong> </br>".$ledger[0]['vendor_gstn_no']; ?></td>
 						</tr><tr>
-						<td><?php echo "Voucher No. : ".$ledger[0]['ledger_voucher_no']; ?></td>
-						<td><?php echo "Item Name : ".$ledger[0]['ledger_goods_name']; ?></td>
-						<td><?php echo "Quantity : ".$ledger[0]['ledger_qty']." ".$ledger[0]['ledger_unit']; ?></td>
-						<td><?php echo "Rate Per QTY : ".$ledger[0]['ledger_rate']; ?></td>
-						<td><?php echo "Total Price : ".$ledger[0]['ledger_amount']; ?></td>
+						<td><?php echo "<strong>Voucher No. :</strong> ".$ledger[0]['ledger_voucher_no']; ?></td>
+						<td><?php echo "<strong>Item Name :</strong> ".$ledger[0]['ledger_goods_name']; ?></td>
+						<td><?php echo "<strong>Quantity : </strong>".$ledger[0]['ledger_qty']." ".$ledger[0]['ledger_unit']; ?></td>
+						<td><?php echo "<strong>Rate Per QTY : </strong>".$ledger[0]['ledger_rate']; ?></td>
+						<td><?php echo "<strong>Total Price :</strong> ".$ledger[0]['ledger_amount']; ?></td>
 						</tr><tr>
-						<td><?php echo "Discount Amount : ".$ledger[0]['ledger_discount']; ?></td>
-						<td><?php echo "Payable Amount : ".$ledger[0]['ledger_payable_amt']; ?></td>
-						<td><?php echo "Balance Amount : <span id='partial_amt_html'>".$ledger[0]['ledger_balance_amt']."</span>"; ?></td>
-						<td colspan='2'><?php echo "Remark : ".$ledger[0]['ledger_remark']; ?></td>
+						<td><?php echo "<strong>Discount Amount :</strong> ".$ledger[0]['ledger_discount']; ?></td>
+						<td><?php echo "<strong>Payable Amount : </strong>".$ledger[0]['ledger_payable_amt']; ?></td>
+						<td><?php echo "<strong>Balance Amount :</strong> <span id='partial_amt_html'>".$ledger[0]['ledger_balance_amt']."</span>"; ?></td>
+						<td colspan='2'><?php echo "<strong>Remark :</strong> ".$ledger[0]['ledger_remark']; ?></td>
 						</tr>
 						</tbody>
 						</table>
+						<?php }else{?>
+						<table class="table table-bordered">
+						<tbody>
+						<tr>
+						<td><?php echo "<strong>Site Name : </strong>".$ledger[0]['site_name']; ?></td>
+						<td><?php echo "<strong>Expense category : </strong>".$this->Common_model->findfield('expense_category','cat_id',$ledger[0]['ledger_vendor_id'],'cat_name'); ?></td>
+						<td><?php echo "<strong>Receipt No. :</strong> ".$ledger[0]['ledger_voucher_no']; ?></td>
+						<td><?php echo "<strong>Date : </strong>".$ledger[0]['ledger_payment_date']; ?></td>
+						</tr><tr>
+						<td><?php echo "<strong>Voucher No. : </strong>".$ledger[0]['ledger_voucher_no']; ?></td>
+						<td><?php echo "<strong>Payment From Account :</strong> ".$ledger[0]['ledger_goods_name']; ?></td>
+						
+						<td><?php echo "<strong>Amount : </strong>".$ledger[0]['ledger_amount']; ?></td>
+						<td><?php echo "<strong>Mode of Payment :</strong> ".$ledger[0]['ledger_payment_type']; ?></td>
+						</tr><tr>
+						
+						<td colspan='4'><?php echo "<strong>Remark :</strong> ".$ledger[0]['ledger_remark']; ?></td>
+						</tr>
+						</tbody>
+						</table>
+						<?php } ?>
 						</div>
 
 					</div>
@@ -115,10 +139,11 @@
 						
 						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate">
 								<input type="hidden" name="partial_ledger_id" id="partial_ledger_id" value="<?php echo $ledger[0]['ledger_id']; ?>">
+								<input type="hidden" name="partial_type" id="partial_type" value="<?php echo $paymentType;?>">
 								<div class="row">
-				<section class="col col-12">
+							<section class="col col-12">
 							<fieldset>
-							<input class="form-control" type="text" name="partial_type" id="partial_type" value="Vendor">
+							
 									<section class="col col-12">Balance Amount:
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
 											<input class="form-control" type="text" name="partial_amt" id="partial_amt"  placeholder="Balance Amount" value="<?php echo $ledger[0]['ledger_balance_amt']; ?>">

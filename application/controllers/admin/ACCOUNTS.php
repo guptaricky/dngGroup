@@ -89,10 +89,10 @@ class ACCOUNTS extends MY_Controller {
 		if($data['emp_site']>0){
 		$site = $data['emp_site'];}
 		if($group == 'admin'){
-			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id where 1 and ledger_type=? and ledger_status=?",array("Expense",1));
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id where 1 and ledger_type=? and ledger_status=?",array("Expense",1));
 		}
 		else{
-			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id where ledger_site_id = ? and ledger_type=? and ledger_status=?",array($site,"Expense",1));
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id where ledger_site_id = ? and ledger_type=? and ledger_status=?",array($site,"Expense",1));
 		}
 		echo json_encode($vendor);
 	}

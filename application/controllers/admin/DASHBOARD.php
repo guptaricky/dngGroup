@@ -27,6 +27,9 @@ class DASHBOARD extends MY_Controller {
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
 		$site = 0 ;
+		$cury = date('Y') ;
+		$curm = date('m') ;
+		$site = 0 ;
 		$site_by_admin = $this->uri->segment(4);
 		if($site_by_admin >0 && $site_by_admin !=''){ $site = $site_by_admin; }
 		else{
@@ -38,7 +41,9 @@ class DASHBOARD extends MY_Controller {
 		$this->data['site'] = $site;
 		$this->data['expensesCat'] = $this->Common_model->get_data_by_query_pdo("select * from expense_category where cat_status=?",array(1));
 		$this->data['vendorlist'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_master where vendor_status=?",array(1));
-		$this->data['expenses'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=?",array($site,'Expense',1));
+		$this->data['expensesongraph'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=? and date_format(ledger_payment_date,'%Y-%m') = '$cury-$curm' group by ledger_vendor_id",array($site,'Expense',1));
+		$this->data['expenses'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=? and date_format(ledger_payment_date,'%Y-%m') = '$cury-$curm' ",array($site,'Expense',1));
+		$this->data['expensesthismonth'] = $this->Common_model->get_data_by_query_pdo("select sum(ledger_paid_amt) as totalexpensethismonth from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=? and date_format(ledger_payment_date,'%Y-%m') = '$cury-$curm' ",array($site,'Expense',1));
 		$this->data['vendor'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=?",array($site,'Vendor',1));
 		// echo $this->db->last_query();die;
 		$this->load->view('admin/DASHBOARD/user-dashboard',$this->data);

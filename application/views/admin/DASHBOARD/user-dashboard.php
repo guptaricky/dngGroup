@@ -65,12 +65,12 @@
 								<h5> Balance <span class="txt-color-blue"><i class="fa fa-rupee"></i> 47,171</span></h5>
 								
 							</li>
-							<li class="sparks-info">
+							<li class="sparks-info hide">
 								<h5> Site Value <span class="txt-color-purple"><i class="fa fa-arrow-circle-up" data-rel="bootstrap-tooltip" title="Increased"></i>&nbsp;45%</span></h5>
 								
 							</li>
 							<li class="sparks-info">
-								<h5> Today's Expenses <span class="txt-color-greenDark"><i class="fa fa-rupee"></i>&nbsp;2447.00</span></h5>
+								<h5> Month Expenses <span class="txt-color-greenDark"><i class="fa fa-rupee"></i>&nbsp;<?php  print_r($expensesthismonth[0]['totalexpensethismonth']);?></span></h5>
 								
 							</li>
 						</ul>
@@ -361,9 +361,12 @@ var chart = AmCharts.makeChart("chartdiv", {
     }]
   },
   "dataProvider": [
-  <?php foreach($expenses as $exp){?>
+  <?php foreach($expensesongraph as $exp){?>
   {
-    "country": "<?php echo $this->Common_model->findfield('expense_category','cat_id',$exp['ledger_vendor_id'],'cat_name');?>",
+	<?php  
+	$category =$this->Common_model->findfield('expense_category','cat_id',$exp['ledger_vendor_id'],'cat_name');
+	?>
+    "country": "<?php  if($category !=''){echo $category;}else{echo 'Uncategorized';} ?>",
     "Rupees": <?php echo $exp['ledger_paid_amt'];?>
   },<?php } ?>],
   "valueField": "Rupees",
