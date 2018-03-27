@@ -20,7 +20,7 @@ class ACCOUNTS extends MY_Controller {
 	public function addReceive_ledger(){
 		$data = array(
 		'ledger_site_id'  		=> $_POST['ledger_site_id'],
-		'ledger_type' 			=> "Receive",
+		'ledger_type' 			=> "Income",
 		'ledger_receive_from'  		=> $_POST['ledger_receive_from'],
 		'ledger_amount'  		=> $_POST['ledger_amount'],
 		'ledger_discount'  		=> $_POST['ledger_discount'],
@@ -38,7 +38,7 @@ class ACCOUNTS extends MY_Controller {
 		
 		$data1 = array(
 		'partial_date' 			=> $_POST['ledger_payment_date'],
-		'partial_type' 			=> "Receive",
+		'partial_type' 			=> "Income",
 		'partial_amt' 			=> $_POST['ledger_paid_amt'],
 		'partial_payment_type'	=> $_POST['ledger_payment_type'],
 		'partial_cheque_dd_no'	=> $_POST['ledger_cheque_dd_no'],
@@ -68,10 +68,10 @@ class ACCOUNTS extends MY_Controller {
 		if($data['emp_site']>0){
 		$site = $data['emp_site'];}
 		if($group == 'admin'){
-			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_receive_from, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_remark, s.site_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id where 1 and ledger_type=? and ledger_status=?",array("Receive",1));
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_receive_from, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_remark, s.site_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id where 1 and ledger_type=? and ledger_status=?",array("Income",1));
 		}
 		else{
-			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_receive_from, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_remark, s.site_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id where ledger_site_id = ? and ledger_type=? and ledger_status=?",array($site,"Receive",1));
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_receive_from, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_remark, s.site_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id where ledger_site_id = ? and ledger_type=? and ledger_status=?",array($site,"Income",1));
 		}
 		echo json_encode($vendor);
 	}

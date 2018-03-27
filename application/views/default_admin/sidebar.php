@@ -53,6 +53,9 @@
 						<a href="<?php echo base_url().'admin/ACCOUNTS/expense_ledger'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-edit"></i> <span class="menu-item-parent">Expenses</span></a>
 					</li>
 					<li class="">
+						<a href="<?php echo base_url().'admin/ACCOUNTS/receive_ledger'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Receive Payment</span></a>
+					</li>
+					<li class="">
 						<a href="<?php echo base_url().'admin/ACCOUNTS/vendor_ledger'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-rupee"></i> <span class="menu-item-parent">Vendor's Payment</span></a>
 					</li>
 					<li class="">
@@ -81,9 +84,6 @@
 					</li>
 					<li class="">
 						<a href="<?php echo base_url().'admin/ACCOUNTS/expense_ledger'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Expense Details</span></a>
-					</li>
-					<li class="">
-						<a href="<?php echo base_url().'admin/ACCOUNTS/receive_ledger'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-credit-card"></i> <span class="menu-item-parent">Receive Payment</span></a>
 					</li>
 					<li class="">
 						<a href="<?php echo base_url().'admin/EMPLOYEE/view_employee'?>" title="Dashboard"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Employee</span></a>

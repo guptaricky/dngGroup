@@ -130,22 +130,29 @@
 								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Date</th>
 								<th><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> Credit</th>
 								<th><i class="fa fa-fw fa-edit txt-color-blue hidden-md hidden-sm hidden-xs"></i> Debit</th>
-								<th><i class="fa fa-fw fa-money txt-color-blue hidden-md hidden-sm hidden-xs"></i> Balance</th>
 							  </tr>
 							</thead>
 							<tbody>
-							  <?php $sno=0;foreach ($transactions as $ctm):$sno++;?>
+							  <?php $sno=0;
+							  $creditTotal = 0;
+							  $debitTotal = 0;
+							  foreach ($transactions as $ctm):$sno++;?>
 							  <tr align="left">
 								<td><?php echo $sno;?>.</td>
 								<td><?php echo sprintf("%04d",$ctm['partial_id']);?></td>
 								<td><?php echo $ctm['partial_type'];?></td>
 								<td><?php echo $ctm['partial_payment_type'];?></td>
 								<td><?php echo $ctm['partial_date'];?></td>
-								<td><?php //echo $ctm['partial_amt'];?></td>
-								<td><?php echo $ctm['partial_amt'];?></td>
-								<td><?php //echo $ctm['partial_amt'];?></td>
+								<td align="right"><?php if($ctm['partial_type']=='Income'){echo $ctm['partial_amt'];$creditTotal += $ctm['partial_amt'];}?></td>
+								<td align="right"><?php if($ctm['partial_type']=='Expense' || $ctm['partial_type']=='Vendor' ){echo $ctm['partial_amt'];$debitTotal += $ctm['partial_amt'];}?></td>
 							  </tr>
 							  <?php endforeach;?>
+							  <tr align="left">
+								<td colspan="4" ></td>
+								<td align="right"><b>Total : </b></td>
+								<td align="right"><b><?php echo number_format($creditTotal,2);?></b></td>
+								<td align="right"><b><?php echo number_format($debitTotal,2);?></b></td>
+							  </tr>
 							</tbody>
 						  </table>
 							
