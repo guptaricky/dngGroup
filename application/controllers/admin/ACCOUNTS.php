@@ -87,8 +87,12 @@ class ACCOUNTS extends MY_Controller {
 		$id = $this->input->post('id');
 		$data = array(
 			'ledger_status' => 0
+		);
+		$data1 = array(
+			'vendor_partial_payment' => 0
 		);	
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$id,$data);
+		$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$id,$data1);
 	}
 
 	
@@ -817,7 +821,7 @@ class ACCOUNTS extends MY_Controller {
 		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
 		if($group == 'admin'){
 			$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
-			where partial_status=?",array(1	));
+			where partial_status=?",array(1));
 			// echo $this->db->last_query();die;
 		}
 		$this->load->view('admin/ACCOUNTS/reports',$data);
