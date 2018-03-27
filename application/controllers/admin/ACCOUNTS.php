@@ -3,6 +3,95 @@ class ACCOUNTS extends MY_Controller {
 
 	
 	
+	public function receive_ledger(){
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+		$data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
+		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
+		$data['expense'] = $this->Common_model->get_data_by_query_pdo("select cat_id,cat_name from expense_category where 1 and cat_status=?",array(1));
+		$data['bank_accounts'] = $this->Common_model->get_data_by_query_pdo("select * from company_bank_accounts ba left join bank_master bm on ba.bank_name = bm.bank_id where 1 and bank_status=?",array(1));
+		$this->load->view('admin/ACCOUNTS/receive_ledger',$data);
+		$this->load->view('default_admin/footer');
+	}
+	
+	public function addReceive_ledger(){
+		$data = array(
+		'ledger_site_id'  		=> $_POST['ledger_site_id'],
+		'ledger_type' 			=> "Receive",
+		'ledger_receive_from'  		=> $_POST['ledger_receive_from'],
+		'ledger_amount'  		=> $_POST['ledger_amount'],
+		'ledger_discount'  		=> $_POST['ledger_discount'],
+		'ledger_payable_amt'    => $_POST['ledger_payable_amt'],
+		'ledger_paid_amt' 		=> $_POST['ledger_paid_amt'],
+		'ledger_balance_amt'    => $_POST['ledger_balance_amt'],
+		'ledger_payment_date'   => $_POST['ledger_payment_date'],
+		'ledger_payment_type'   => $_POST['ledger_payment_type'],
+		'ledger_cheque_dd_no'   => $_POST['ledger_cheque_dd_no'],
+		'ledger_remark'         => $_POST['ledger_remark'],
+		'ledger_status'         => 1,
+		'ledger_added_by'       => 1,
+		'ledger_entrydt'        => date('Y-m-d H:i:s'),
+		);
+		
+		$data1 = array(
+		'partial_date' 			=> $_POST['ledger_payment_date'],
+		'partial_type' 			=> "Receive",
+		'partial_amt' 			=> $_POST['ledger_paid_amt'],
+		'partial_payment_type'	=> $_POST['ledger_payment_type'],
+		'partial_cheque_dd_no'	=> $_POST['ledger_cheque_dd_no'],
+		'partial_remark'		=> $_POST['ledger_remark'],
+		'partial_status'		=> 1,
+		'partial_added_by'		=> 1,
+		'partial_entrydt'		=> date('Y-m-d H:i:s'),
+		);	
+		
+		if(!empty($_POST['ledger_id'])){
+		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$_POST['ledger_id'],$data);
+		// $data1['partial_ledger_id']		=> $_POST['ledger_id'];
+		// $this->Crud_model->edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$data1);
+		}else{
+		$insert_id = $this->Crud_model->insert_record('vendor_ledger',$data);
+		$data1['partial_ledger_id']		= $insert_id;
+		$this->Crud_model->insert_record('vendor_partial_payment',$data1);
+		}
+	}
+
+	public function getReceive_ledger(){
+		$group = $this->session->userdata('group');
+		$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+
+		$data['emp_site'] =  $this->Common_model->get_alloted_site($empid);
+		if($data['emp_site']>0){
+		$site = $data['emp_site'];}
+		if($group == 'admin'){
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_receive_from, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_remark, s.site_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id where 1 and ledger_type=? and ledger_status=?",array("Receive",1));
+		}
+		else{
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_receive_from, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_remark, s.site_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id where ledger_site_id = ? and ledger_type=? and ledger_status=?",array($site,"Receive",1));
+		}
+		echo json_encode($vendor);
+	}
+	
+	
+	public function editReceive_ledger(){
+		$id = $this->input->post('id');
+		$vendor = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_id=?",array($id));
+		echo json_encode($vendor);
+	}
+	
+	public function deleteReceive_ledger(){
+		$id = $this->input->post('id');
+		$data = array(
+			'ledger_status' => 0
+		);	
+		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$id,$data);
+	}
+
+	
 	public function expense_ledger(){
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
