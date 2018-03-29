@@ -88,7 +88,7 @@
 										?>
 										<div class="form-group">
 											<label class="sr-only" >Show From</label>
-											<select class="form-control input-sm" name="ledger_site_id" id="ledger_site_id" onchange="ledgerSiteWise(this.value)">
+											<select class="form-control input-sm" name="ledger_site_id" id="ledger_site_id" onchange="ledgerSiteWise()">
 											<option value=""> All </option>
 											<?php foreach($sites as $site){ ?>
 											<option value="<?php echo $site['site_id']; ?>" ><?php echo $site['site_name']; ?></option>
@@ -107,7 +107,7 @@
 										</div>
 
 										<div class="btn-group hidden-phone">
-											<a class="btn btn-primary" onclick="ledgerSiteWise(ledger_site_id.value)" > Search <span class="fa fa-search"> </span> </a>
+											<a class="btn btn-primary" onclick="ledgerSiteWise()" > Search <span class="fa fa-search"> </span> </a>
 										</div>
 										
 										<div class="btn-group hidden-phone pull-right">
@@ -266,7 +266,8 @@
 		</div>
 		<!-- END #MAIN PANEL -->
 <script>
-	function ledgerSiteWise(site_id){
+	function ledgerSiteWise(){
+		var site_id = $('#ledger_site_id').val();
 		var fromdate = $('#s123').val();
 		var todate = $('#s124').val();
 		$("#ledger").html('<center><img src="<?php echo base_url().'../assets/img/loading_spinner.gif'; ?>" /> </center>');
