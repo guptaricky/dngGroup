@@ -39,6 +39,7 @@ class ACCOUNTS extends MY_Controller {
 		$data1 = array(
 		'partial_date' 			=> $_POST['ledger_payment_date'],
 		'partial_type' 			=> "Income",
+		'partial_site_id' 			=> $_POST['ledger_site_id'],
 		'partial_amt' 			=> $_POST['ledger_paid_amt'],
 		'partial_payment_type'	=> $_POST['ledger_payment_type'],
 		'partial_cheque_dd_no'	=> $_POST['ledger_cheque_dd_no'],
@@ -153,6 +154,7 @@ class ACCOUNTS extends MY_Controller {
 		$data1 = array(
 		'partial_date' 			=> $_POST['ledger_payment_date'],
 		'partial_type' 			=> "Expense",
+		'partial_site_id' 			=> $_POST['ledger_site_id'],
 		'partial_amt' 			=> $_POST['ledger_paid_amt'],
 		'partial_payment_type'	=> $_POST['ledger_payment_type'],
 		'partial_cheque_dd_no'	=> $_POST['ledger_cheque_dd_no'],
@@ -320,6 +322,7 @@ class ACCOUNTS extends MY_Controller {
 		$data1 = array(
 		'partial_date' 			=> $_POST['ledger_payment_date'],
 		'partial_type' 			=> "Vendor",
+		'partial_site_id' 			=> $_POST['ledger_site_id'],
 		'partial_amt' 			=> $_POST['ledger_paid_amt'],
 		'partial_payment_type'	=> $_POST['ledger_payment_type'],
 		'partial_cheque_dd_no'	=> $_POST['ledger_cheque_dd_no'],
@@ -404,6 +407,7 @@ class ACCOUNTS extends MY_Controller {
 	public function addVendor_partial_payment(){
 		$data = array(
 		'partial_ledger_id' 	=> $_POST['partial_ledger_id'],
+		'partial_site_id' 			=> $_POST['partial_site_id'],
 		'partial_date' 			=> $_POST['partial_date'],
 		'partial_amt' 			=> $_POST['partial_amt'],
 		'partial_type'			=> $_POST['partial_type'],
@@ -824,8 +828,30 @@ class ACCOUNTS extends MY_Controller {
 			where partial_status=?",array(1));
 			// echo $this->db->last_query();die;
 		}
+		else{
+			$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
+			where partial_site_id=?",array($alloted_site));
+		}
 		$this->load->view('admin/ACCOUNTS/reports',$data);
 		$this->load->view('default_admin/footer');
+		
+	}
+	
+	//only for updation of site id in partial table (one time use)
+	public function do_site_id_in_partial(){		
+		
+		$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select partial_ledger_id from vendor_partial_payment where 1",array());
+			// echo $this->db->last_query();die;
+		foreach($data['transactions'] as $tran){
+			$ledger_id = $tran['partial_ledger_id'];
+			$data['siteids'] = $this->Common_model->get_data_by_query_pdo("select ledger_site_id from vendor_ledger where ledger_id = $ledger_id",array());
+			
+			@$data1['partial_site_id'] = @$data['siteids'][0]['ledger_site_id'];
+			echo $ledger_id.'--'.$data1['partial_site_id'];
+			echo "</br>";
+			$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$ledger_id,$data1);
+		}
+		
 		
 	}
 

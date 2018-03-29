@@ -139,6 +139,7 @@
 						
 						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate">
 								<input type="hidden" name="partial_ledger_id" id="partial_ledger_id" value="<?php echo $ledger[0]['ledger_id']; ?>">
+								<input type="hidden" name="partial_site_id" id="partial_site_id" value="<?php echo $ledger[0]['ledger_site_id']; ?>">
 								<input type="hidden" name="partial_type" id="partial_type" value="<?php echo $paymentType;?>">
 								<div class="row">
 							<section class="col col-12">
