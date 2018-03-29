@@ -215,7 +215,7 @@ class MASTERS extends MY_Controller {
 		$group = $this->session->userdata('group');
 			
 			if($group == 'admin'){
-				$data['sites'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where 1",array(0));
+				$data['sites'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_status=?",array(1));
 			}
 			else{
 			// $data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
