@@ -826,15 +826,60 @@ class ACCOUNTS extends MY_Controller {
 		if($group == 'admin'){
 			$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
 			where partial_status=?",array(1));
-			// echo $this->db->last_query();die;
 		}
 		else{
 			$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
-			where partial_site_id=?",array($alloted_site));
+			where partial_status=? and partial_site_id=?",array(1,$alloted_site));
 		}
 		$this->load->view('admin/ACCOUNTS/reports',$data);
 		$this->load->view('default_admin/footer');
 		
+	}
+		
+	public function ledgerSiteWise(){		
+		$site_id = $this->input->post('site_id');
+		$fromdate = date("Y-m-d", strtotime($this->input->post('fromdate')));
+		$todate = date("Y-m-d", strtotime($this->input->post('todate')));
+		if($fromdate == "1970-01-01")$fromdate='';
+		if($todate == "1970-01-01")$todate='';
+		
+		$querry = '';
+		if($fromdate !='' and $todate != '' )
+		{
+			$querry .= " and date_format(partial_date,'%Y-%m-%d') between '$fromdate' and '$todate'";	
+		}
+		// echo $site_id;
+		if($site_id!=''){
+		$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
+			where partial_status=? and partial_site_id=? $querry",array(1,$site_id));
+		}
+		else{
+			$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
+			where partial_status=? $querry",array(1));
+		}
+		// echo $this->db->last_query();
+		// die;
+		$sno=0;
+		$creditTotal = 0;
+		$debitTotal = 0;
+		foreach ($data['transactions'] as $ctm):$sno++;?>
+		<tr align="left">
+		<td><?php echo $sno;?>.</td>
+		<td><?php echo sprintf("%04d",$ctm['partial_id']);?></td>
+		<td><?php echo $ctm['partial_type'];?></td>
+		<td><?php echo $ctm['partial_payment_type'];?></td>
+		<td><?php echo $ctm['partial_date'];?></td>
+		<td align="right"><?php if($ctm['partial_type']=='Income'){echo $ctm['partial_amt'];$creditTotal += $ctm['partial_amt'];}?></td>
+		<td align="right"><?php if($ctm['partial_type']=='Expense' || $ctm['partial_type']=='Vendor' ){echo $ctm['partial_amt'];$debitTotal += $ctm['partial_amt'];}?></td>
+		</tr>
+		<?php endforeach;?>
+		<tr align="left">
+		<td colspan="4"></td>
+		<td align="right"><b>Total : </b></td>
+		<td align="right"><b><?php echo number_format($creditTotal,2);?></b></td>
+		<td align="right"><b><?php echo number_format($debitTotal,2);?></b></td>
+		</tr>
+		<?php	
 	}
 	
 	//only for updation of site id in partial table (one time use)

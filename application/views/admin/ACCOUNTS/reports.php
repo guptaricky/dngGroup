@@ -55,13 +55,13 @@
 							<a data-toggle="tab" href="#s1"><i class="fa fa-clock-o"></i> <span class="hidden-mobile hidden-tablet">Expenses</span></a>
 						</li>
 
-						<li>
+						<!--<li>
 							<a data-toggle="tab" href="#s2"><i class="fa fa-facebook"></i> <span class="hidden-mobile hidden-tablet">Vendors Payments</span></a>
 						</li>
 
 						<li>
 							<a data-toggle="tab" href="#s3"><i class="fa fa-dollar"></i> <span class="hidden-mobile hidden-tablet">Overall</span></a>
-						</li>
+						</li>-->
 					</ul>
 
 				</header>
@@ -82,17 +82,22 @@
 								<div class="widget-body-toolbar bg-color-white">
 
 									<form class="form-inline" role="form">
-
+										<?php 
+										$group = $this->session->userdata('group');
+										if($group == 'admin'){
+										?>
 										<div class="form-group">
 											<label class="sr-only" >Show From</label>
-												<select class="form-control input-sm"  name="ledger_site_id" id="ledger_site_id">
-												<option value=""> SELECT SITE </option>
-												<?php foreach($sites as $site){ ?>
-												<option value="<?php echo $site['site_id']; ?>" <?php if($site['site_id']===@$emp_site[0]['emp_alloted_site']){echo "selected";}?> ><?php echo $site['site_name']; ?></option>
-												<?php } ?>
-												</select><i></i>
-											
+											<select class="form-control input-sm" name="ledger_site_id" id="ledger_site_id" onchange="ledgerSiteWise(this.value)">
+											<option value=""> All </option>
+											<?php foreach($sites as $site){ ?>
+											<option value="<?php echo $site['site_id']; ?>" ><?php echo $site['site_name']; ?></option>
+											<?php } ?>
+											</select><i></i>
 										</div>
+										<?php }
+										?>
+										
 										<div class="form-group">
 											<label class="sr-only" for="s123">Show From</label>
 											<input type="text" class="form-control input-sm datepicker" id="s123" placeholder="Show From">
@@ -101,6 +106,10 @@
 											<input type="text" class="form-control input-sm datepicker" id="s124" placeholder="To">
 										</div>
 
+										<div class="btn-group hidden-phone">
+											<a class="btn btn-primary" onclick="ledgerSiteWise(ledger_site_id.value)" > Search <span class="fa fa-search"> </span> </a>
+										</div>
+										
 										<div class="btn-group hidden-phone pull-right">
 											<a class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown"><i class="fa fa-cog"></i> More <span class="caret"> </span> </a>
 											<ul class="dropdown-menu pull-right">
@@ -132,7 +141,7 @@
 								<th><i class="fa fa-fw fa-edit txt-color-blue hidden-md hidden-sm hidden-xs"></i> Debit</th>
 							  </tr>
 							</thead>
-							<tbody>
+							<tbody id="ledger">
 							  <?php $sno=0;
 							  $creditTotal = 0;
 							  $debitTotal = 0;
@@ -256,5 +265,19 @@
 
 		</div>
 		<!-- END #MAIN PANEL -->
-
+<script>
+	function ledgerSiteWise(site_id){
+		var fromdate = $('#s123').val();
+		var todate = $('#s124').val();
+		$("#ledger").html('<center><img src="<?php echo base_url().'../assets/img/loading_spinner.gif'; ?>" /> </center>');
+		$.ajax({  
+			type: "POST",
+			url: "<?php echo base_url('admin/ACCOUNTS/ledgerSiteWise'); ?>",
+			data: {'site_id':site_id,'fromdate':fromdate,'todate':todate},
+			success: function(msg){
+				$('#ledger').html(msg);
+			}  
+		});	
+	}
+</script>
 		
