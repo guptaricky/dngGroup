@@ -50,7 +50,14 @@
 						<?php } } ?>
 						</ul>
 					</div>
+					<hr
+					<div class="row">
+						<div class="col-lg-12" id="edit_prop_sell">
+						
+						</div>
+						</div>
 					<hr>
+					
 					<div id="myTabContent" class="tab-content">
 					<?php 
 						// for($i=0;$i<count($prop);$i++){
@@ -76,7 +83,7 @@
 							<p><strong>Sold on: </strong> <?php echo $booking_date;?></p>
 							<p><strong>Property price </strong> <?php echo number_format($prop_price);?></p>
 							<br>
-							<h4 class="alert alert-info"> Payment Description</h4>
+							<h4 class="alert alert-info"> <div class="row"><div class="col-lg-12"> <div class="pull-left"> Payment Description </div> <div class="pull-right"> <button type="button" class="btn btn-xs btn-primary" onclick="EditPropertySell(<?php echo $ptd['prop_detail_id']; ?>)"> Edit Sell Detail </button> <div><div><div></h4>
 								<div class="table-responsive">
 						
 							
@@ -120,7 +127,7 @@
 							<button type="button" class="btn btn-sm btn-primary">
 								Proceed for Payment
 							</button>
-							
+						
 						</div>
 						<?php } 
 						elseif($ptd['property_status']=='Available'){	?>
@@ -323,19 +330,71 @@
 														
 														<section class="col col-4">
 															<label class="input">
-																<input type="text" name="actualprice" placeholder="Actual Price">
-															</label>
-														</section>
-														
-														<section class="col col-4">
-															<label class="input">
-																<input type="text" name="sellprice" placeholder="Sell Price">
+																<input type="text" id="actualprice_<?php echo $i;?>" name="actualprice" placeholder="Actual Price" onkeyup="CalculateAmt(<?php echo $i;?>)">
 															</label>
 														</section>
 
 														<section class="col col-4">
 															<label class="input">
-																<input type="text" name="discount" placeholder="Discount">
+																<input type="text" id="discount_<?php echo $i;?>" name="discount" placeholder="Discount" onkeyup="CalculateAmt(<?php echo $i;?>)">
+															</label>
+														</section>
+														
+														<section class="col col-4">
+															<label class="input">
+																<input type="text" id="sellprice_<?php echo $i;?>" name="sellprice" placeholder="Sell Price" onkeyup="CalculateAmt(<?php echo $i;?>)">
+															</label>
+														</section>
+														
+														<section class="col col-4">
+															<label class="input">
+																<input type="text" id="booking_amt_<?php echo $i;?>" name="booking_amt" placeholder="Booking Amount" onkeyup="CalculateAmt(<?php echo $i;?>)">
+															</label>
+														</section>
+														
+														<section class="col col-4">
+															<label class="input">
+																<input type="text" id="remaining_amt_<?php echo $i;?>" name="remaining_amt" placeholder="Remaining Amount" >
+															</label>
+														</section>
+														
+														<section class="col col-4">
+															<!--<label class="label">Payment Mode: </label>-->
+															<label class="select"> 
+																<select name="payment_mode" id="payment_mode">
+																<option value=""> Payment Mode </option>
+																<option value="Cash" selected >Cash</option>
+																<option value="Cheque">Cheque</option>
+																<option value="Bank">Bank</option>
+																</select><i></i>
+															</label>
+														</section>
+														
+														<section class="col col-4">
+															<!--<label class="label">EMI Duration: </label>-->
+															<label class="select"> 
+																<select name="emi_duration" id="emi_duration_<?php echo $i;?>" onchange="CalculateAmt(<?php echo $i;?>)">
+																<option value=""> EMI Duration </option>
+																<option value="3" > 3 Months </option>
+																<option value="6" > 6 Months </option>
+																<option value="9" > 9 Months </option>
+																<option value="12" > 12 Months </option>
+																<option value="15" > 15 Months </option>
+																<option value="18" > 18 Months </option>
+																<option value="21" > 21 Months </option>
+																<option value="24" > 24 Months </option>
+																<option value="36" > 36 Months </option>
+																<option value="48" > 48 Months </option>
+																<option value="60" > 60 Months </option>
+																<option value="120" > 120 Months </option>
+																<option value="160" > 160 Months </option>
+																</select><i></i>
+															</label>
+														</section>
+														
+														<section class="col col-4">
+															<label class="input">
+																<input type="text" id="emi_amount_<?php echo $i;?>" name="emi_amount" placeholder="Emi Amount">
 															</label>
 														</section>
 														
@@ -400,9 +459,40 @@
 			</div>
 			<?php } ?>
 			
-<script>
+	<script>
+
+		function  CalculateAmt(c){
+			var total = $("#actualprice_" +c).val();
+			var disc = $("#discount_" +c).val();
+			var payble = parseFloat(total) - parseFloat(disc);			
+			if(isNaN(payble)) {
+				var payble = 0;
+			}else{
+				var payble = payble;
+			}
+			$("#sellprice_" +c).val(payble);
+			$("#remaining_amt_" +c).val(payble);
+			var paid = $("#booking_amt_" +c).val();
+			var balance = parseFloat(payble) - parseFloat(paid);			
+			if(isNaN(balance)) {
+				var balance = 0;
+			}else{
+				var balance = balance;
+			}
+			$("#remaining_amt_" +c).val(balance);
+			var emi_duration = $("#emi_duration_" +c).val();
+			var emi_amt = parseFloat(balance) / parseFloat(emi_duration);			
+			if(isNaN(emi_amt)) {
+				var emi_amt = 0;
+			}else{
+				var emi_amt = emi_amt.toFixed(2);;
+			}
+			$("#emi_amount_" +c).val(emi_amt);
+		}	
 
 		function GetDetail(sno, prop_type, prop_no, prop_status){
+			$('#edit_prop_sell').html("");
+		document.getElementById('myTabContent').scrollIntoView();
 		// document.getElementById('checkout-form_'+sno).scrollIntoView();
 		// $("#prop_detail_print").html("");
 		$("#prop_detail_print_"+sno).html(prop_type + " : <strong>" + prop_no + "</strong>");
@@ -450,6 +540,14 @@
 				$(".btn").button('reset');
 				$('#checkout-form_'+sno)[0].reset();
 				$('#alert_check').removeclass('hide');
+			});
+		}
+		
+		
+		function EditPropertySell(id){  
+		
+			$.post('<?php echo base_url('admin/CUSTOMER/editPropertySell'); ?>', {'id':id}, function (response) {
+				$('#edit_prop_sell').html(response);
 			});
 		}
 		

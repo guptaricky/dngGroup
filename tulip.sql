@@ -239,3 +239,18 @@ CREATE TABLE `company_bank_accounts` (
   `bank_added_by` int(11),
   `bank_entrydt` datetime
 ) ENGINE=InnoDB;
+
+----------Vendor Partial Payment------------
+
+CREATE TABLE IF NOT EXISTS `customer_emi_payment` (
+  `emi_id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  `emi_prop_detail_id` int(11) DEFAULT NULL,
+  `emi_date` date DEFAULT NULL,
+  `emi_amt` decimal(12,2) DEFAULT NULL,
+  `emi_payment_type` varchar(200) DEFAULT NULL,
+  `emi_cheque_dd_no` varchar(200) DEFAULT NULL,
+  `emi_remark` text,
+  `emi_status` int(11) NOT NULL DEFAULT '1',
+  `emi_added_by` int(11),
+  `emi_entrydt` datetime
+) ENGINE=InnoDB;
