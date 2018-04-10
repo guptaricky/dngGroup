@@ -296,7 +296,7 @@
 		}	
 		
 		function DeleteReceiveLedger(id){
-			var r = confirm("Are you sure you want to Delete this vendor ?");
+			var r = confirm("Are you sure you want to Delete this Entry ?");
 			if(r==true){
 		$.ajax({  
 				type: "POST",

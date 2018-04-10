@@ -90,10 +90,14 @@ class ACCOUNTS extends MY_Controller {
 			'ledger_status' => 0
 		);
 		$data1 = array(
-			'vendor_partial_payment' => 0
-		);	
+			'partial_status' => 0
+		);
+		$data3['partial_id'] = $this->Common_model->get_data_by_query_pdo("select partial_id from vendor_partial_payment where partial_ledger_id = $id",array());
+			
+			$partial_id = @$data3['partial_id'][0]['partial_id'];
+			
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$id,$data);
-		$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$id,$data1);
+		$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_id',$partial_id,$data1);
 	}
 
 	
@@ -203,7 +207,15 @@ class ACCOUNTS extends MY_Controller {
 		$id = $this->input->post('id');
 		$data = array(
 			'ledger_status' => 0
-		);	
+		);
+		$data1 = array(
+			'partial_status' => 0
+		);
+		$data3['partial_id'] = $this->Common_model->get_data_by_query_pdo("select partial_id from vendor_partial_payment where partial_ledger_id = $id",array());
+			
+			$partial_id = @$data3['partial_id'][0]['partial_id'];
+			
+		$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_id',$partial_id,$data1);		
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$id,$data);
 	}
 
@@ -388,6 +400,14 @@ class ACCOUNTS extends MY_Controller {
 		$data = array(
 			'ledger_status' => 0
 		);	
+		$data1 = array(
+			'partial_status' => 0
+		);
+		$data3['partial_id'] = $this->Common_model->get_data_by_query_pdo("select partial_id from vendor_partial_payment where partial_ledger_id = $id",array());
+			
+			$partial_id = @$data3['partial_id'][0]['partial_id'];
+			
+		$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_id',$partial_id,$data1);		
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$id,$data);
 	}
 
@@ -894,13 +914,27 @@ class ACCOUNTS extends MY_Controller {
 			@$data1['partial_site_id'] = @$data['siteids'][0]['ledger_site_id'];
 			echo $ledger_id.'--'.$data1['partial_site_id'];
 			echo "</br>";
-			$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$ledger_id,$data1);
+			// $this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$ledger_id,$data1);
 		}
 		
 		
 	}
-
-	
+	//UPDATE status in partial table as in vendor_ledger (one time use)
+	public function update_status_in_partial(){		
+		
+		$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select ledger_id from vendor_ledger where ledger_status = 1",array());
+			// echo $this->db->last_query();die;
+		foreach($data['transactions'] as $tran){
+			$ledger_id = $tran['ledger_id'];
+			$data['partial_id'] = $this->Common_model->get_data_by_query_pdo("select partial_id from vendor_partial_payment where partial_ledger_id = $ledger_id",array());
+			
+			$partial_id = @$data['partial_id'][0]['partial_id'];
+			$data1['partial_status'] = 1;
+			// echo $ledger_id.'--'.$data1['partial_site_id'];
+			// echo "</br>";
+			$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_id',$partial_id,$data1);
+		}
+	}
 
 	
 }
