@@ -19,8 +19,8 @@ class CUSTOMER extends MY_Controller {
 		$this->load->view('default_admin/footer');
 	}
 	public function addCustomer(){
-		// $userid = (array_slice($this->session->userdata, 9, 1));
-		// $uid = $userid['user_id'];
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$cust_id = $_POST['cust_id'];
 		$data = array(
 			'cust_fname' => ucwords(strtoupper($_POST['fname'])),
@@ -34,13 +34,15 @@ class CUSTOMER extends MY_Controller {
 			'cust_email' => $_POST['email'],
 			'cust_aadhar' => $_POST['aadhar'],
 			'cust_pan' => strtoupper($_POST['pan']),
-			'cust_user' => 1
+			'cust_user' => $uid
 		);
 		if(!empty($cust_id)){
 			$this->Crud_model-> edit_record_by_anyid('customers','cust_id',$cust_id,$data);
+			$notify = $this->Common_model->insert_notification($uid,'edit',$cust_id,'Customer Details Edited');	
 		}
 		else{
-			$this->Crud_model->insert_record('customers',$data);
+			$id = $this->Crud_model->insert_record('customers',$data);
+			$notify = $this->Common_model->insert_notification($uid,'insert',$id,'New Customer Entry');	
 		}
 		
 	}
@@ -50,8 +52,8 @@ class CUSTOMER extends MY_Controller {
 		echo json_encode($customer);
 	}
 	public function addCustomerSellProperty(){
-		$userid = (array_slice($this->session->userdata, 9, 1));
-		// $uid = $userid['user_id'];
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 			'cust_fname' => ucwords(strtolower($_POST['fname'])),
 			'cust_lname' => ucwords(strtolower($_POST['lname'])),
@@ -64,10 +66,8 @@ class CUSTOMER extends MY_Controller {
 			'cust_email' => $_POST['email'],
 			'cust_aadhar' => $_POST['aadhar'],
 			'cust_pan' => strtoupper($_POST['pan']),
-			'cust_user' => 1
+			'cust_user' => $uid
 		);
-
-		
 
 		$data_prop_update = array(
 			'property_status' => 'Sold',
@@ -78,9 +78,11 @@ class CUSTOMER extends MY_Controller {
 		// die;
 		if(!empty($_POST['cust_id'])){
 		$this->Crud_model->edit_record_by_anyid('customers','cust_id',$_POST['cust_id'],$data);
+		$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['cust_id'],'Customer Details Edited & property sold');	
 		$customer = $_POST['cust_id'];
 		}else{
-		$this->Crud_model->insert_record('customers',$data);
+		$id = $this->Crud_model->insert_record('customers',$data);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'New Customer Entry');	
 		$cust = $this->Common_model->get_data_by_query_pdo("select max(cust_id) as cust_id from customers",array(0));
 		$customer = $cust[0]['cust_id'];
 		}
@@ -109,8 +111,9 @@ class CUSTOMER extends MY_Controller {
 		
 		
 		// $this->Crud_model->insert_record('property_detail',$data_prop_sold);
-		$this->Crud_model->insert_record('property_other_detail',$data_prop);
+		$id = $this->Crud_model->insert_record('property_other_detail',$data_prop);
 		$this->Crud_model->edit_record_by_anyid('property_detail','property_id',$_POST['prop_id'],$data_prop_update);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'Property Sold');
 		// echo $this->db->last_query();
 		// die;
 		
@@ -124,8 +127,8 @@ class CUSTOMER extends MY_Controller {
 
 	
 	public function updateCustomerSellProperty(){
-		$userid = (array_slice($this->session->userdata, 9, 1));
-		// $uid = $userid['user_id'];
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 			'cust_fname' => ucwords(strtolower($_POST['fname'])),
 			'cust_lname' => ucwords(strtolower($_POST['lname'])),
@@ -140,6 +143,7 @@ class CUSTOMER extends MY_Controller {
 			'cust_pan' => strtoupper($_POST['pan']),
 		);
 		$this->Crud_model->edit_record_by_anyid('customers','cust_id',$_POST['cust_id'],$data);
+		$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['cust_id'],'Customer Details Edited by Property Sold Edit');
 		
 		// $cust = $this->Common_model->get_data_by_query_pdo("select max(cust_id) as cust_id from customers",array(0));
 		$data_prop = array(
@@ -166,6 +170,7 @@ class CUSTOMER extends MY_Controller {
 		
 		// $this->Crud_model->insert_record('property_detail',$data_prop_sold);
 		$this->Crud_model->edit_record_by_anyid('property_other_detail','prop_detail_id',$_POST['prop_detail_id'],$data_prop);
+		$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['prop_detail_id'],'Property Sold Edited');
 		// echo $this->db->last_query();
 		// die;
 		
@@ -193,6 +198,8 @@ class CUSTOMER extends MY_Controller {
 	}
 	
 	public function addEmi_payment(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 		'emi_prop_detail_id' 	=> $_POST['emi_prop_detail_id'],
 		'emi_date' 			=> $_POST['emi_date'],
@@ -202,14 +209,16 @@ class CUSTOMER extends MY_Controller {
 		'emi_cheque_dd_no'	=> $_POST['emi_cheque_dd_no'],
 		'emi_remark'		=> $_POST['emi_remark'],
 		'emi_status'		=> 1,
-		'emi_added_by'		=> 1,
+		'emi_added_by'		=> $uid,
 		'emi_entrydt'		=> date('Y-m-d H:i:s'),
 		);	
 		
 		if(!empty($_POST['emi_id'])){
 		$this->Crud_model->edit_record_by_anyid('customer_emi_payment','emi_id',$_POST['emi_id'],$data);
+		$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['emi_id'],'Emi Payment Edited');	
 		}else{
-		$this->Crud_model->insert_record('customer_emi_payment',$data);
+		$id = $this->Crud_model->insert_record('customer_emi_payment',$data);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'Emi Payment done');	
 		}
 		echo $amt;
 		

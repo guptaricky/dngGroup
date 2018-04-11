@@ -18,6 +18,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function addReceive_ledger(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 		'ledger_site_id'  		=> $_POST['ledger_site_id'],
 		'ledger_type' 			=> "Income",
@@ -32,7 +34,7 @@ class ACCOUNTS extends MY_Controller {
 		'ledger_cheque_dd_no'   => $_POST['ledger_cheque_dd_no'],
 		'ledger_remark'         => $_POST['ledger_remark'],
 		'ledger_status'         => 1,
-		'ledger_added_by'       => 1,
+		'ledger_added_by'       => $uid,
 		'ledger_entrydt'        => date('Y-m-d H:i:s'),
 		);
 		
@@ -45,16 +47,18 @@ class ACCOUNTS extends MY_Controller {
 		'partial_cheque_dd_no'	=> $_POST['ledger_cheque_dd_no'],
 		'partial_remark'		=> $_POST['ledger_remark'],
 		'partial_status'		=> 1,
-		'partial_added_by'		=> 1,
+		'partial_added_by'		=> $uid,
 		'partial_entrydt'		=> date('Y-m-d H:i:s'),
 		);	
 		
 		if(!empty($_POST['ledger_id'])){
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$_POST['ledger_id'],$data);
+		$notify = $this->Common_model->insert_notification($uid,'edit',$id,'Receive Payment Edited');
 		// $data1['partial_ledger_id']		=> $_POST['ledger_id'];
 		// $this->Crud_model->edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$data1);
 		}else{
 		$insert_id = $this->Crud_model->insert_record('vendor_ledger',$data);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$insert_id,'New Receive Payment');
 		$data1['partial_ledger_id']		= $insert_id;
 		$this->Crud_model->insert_record('vendor_partial_payment',$data1);
 		}
@@ -85,6 +89,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function deleteReceive_ledger(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'ledger_status' => 0
@@ -98,6 +104,7 @@ class ACCOUNTS extends MY_Controller {
 			
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$id,$data);
 		$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_id',$partial_id,$data1);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Receive Payment Deleted');
 	}
 
 	
@@ -116,6 +123,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function addExpense_ledger(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 		'ledger_site_id'  		=> $_POST['ledger_site_id'],
 		'ledger_vendor_id' 		=> $_POST['ledger_expense_id'],
@@ -131,7 +140,7 @@ class ACCOUNTS extends MY_Controller {
 		'ledger_cheque_dd_no'   => $_POST['ledger_cheque_dd_no'],
 		'ledger_remark'         => $_POST['ledger_remark'],
 		'ledger_status'         => 1,
-		'ledger_added_by'       => 1,
+		'ledger_added_by'       => $uid,
 		'ledger_entrydt'        => date('Y-m-d H:i:s'),
 		);
 		if(!empty($_FILES['ledger_voucher_image'])){
@@ -164,16 +173,18 @@ class ACCOUNTS extends MY_Controller {
 		'partial_cheque_dd_no'	=> $_POST['ledger_cheque_dd_no'],
 		'partial_remark'		=> $_POST['ledger_remark'],
 		'partial_status'		=> 1,
-		'partial_added_by'		=> 1,
+		'partial_added_by'		=> $uid,
 		'partial_entrydt'		=> date('Y-m-d H:i:s'),
 		);	
 		
 		if(!empty($_POST['ledger_id'])){
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$_POST['ledger_id'],$data);
+		$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['ledger_id'],'Expense Edited');
 		// $data1['partial_ledger_id']		=> $_POST['ledger_id'];
 		// $this->Crud_model->edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$data1);
 		}else{
 		$insert_id = $this->Crud_model->insert_record('vendor_ledger',$data);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$insert_id,'New Expense');
 		$data1['partial_ledger_id']		= $insert_id;
 		$this->Crud_model->insert_record('vendor_partial_payment',$data1);
 		}
@@ -204,6 +215,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function deleteExpense_ledger(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'ledger_status' => 0
@@ -217,6 +230,7 @@ class ACCOUNTS extends MY_Controller {
 			
 		$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_id',$partial_id,$data1);		
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Expense Deleted');
 	}
 
 	public function vendor(){
@@ -228,6 +242,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 
 	public function addVendor(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 		'vendor_name' => $_POST['vendor_name'],
 		'vendor_firm_name' => $_POST['vendor_firm_name'],
@@ -242,13 +258,15 @@ class ACCOUNTS extends MY_Controller {
 		'vendor_acc_no' => $_POST['vendor_acc_no'],
 		'vendor_ifsc_code' => $_POST['vendor_ifsc_code'],
 		'vendor_status' => 1,
-		'vendor_added_by' => 1,
+		'vendor_added_by' => $uid,
 		'vendor_entrydt' => date('Y-m-d H:i:s'),
 		);	
 		if(!empty($_POST['vendor_id'])){
 		$this->Crud_model-> edit_record_by_anyid('vendor_master','vendor_id',$_POST['vendor_id'],$data);
+		$notify = $this->Common_model->insert_notification($uid,'edited',$_POST['vendor_id'],'Vendor Edited');
 		}else{
-		$this->Crud_model->insert_record('vendor_master',$data);
+		$id = $this->Crud_model->insert_record('vendor_master',$data);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'New Vendor Created');
 		}
 	}
 
@@ -264,11 +282,14 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function deleteVendor(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'vendor_status' => 0
 		);	
 		$this->Crud_model-> edit_record_by_anyid('vendor_master','vendor_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Vendor Deleted');
 	}
 
 	public function vendor_ledger(){
@@ -287,6 +308,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function addVendor_ledger(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 		'ledger_site_id'  		=> $_POST['ledger_site_id'],
 		'ledger_vendor_id' 		=> $_POST['ledger_vendor_id'],
@@ -307,7 +330,7 @@ class ACCOUNTS extends MY_Controller {
 		'ledger_cheque_dd_no'   => $_POST['ledger_cheque_dd_no'],
 		'ledger_remark'         => $_POST['ledger_remark'],
 		'ledger_status'         => 1,
-		'ledger_added_by'       => 1,
+		'ledger_added_by'       => $uid,
 		'ledger_entrydt'        => date('Y-m-d H:i:s'),
 		);
 		if(!empty($_FILES['ledger_voucher_image'])){
@@ -340,18 +363,20 @@ class ACCOUNTS extends MY_Controller {
 		'partial_cheque_dd_no'	=> $_POST['ledger_cheque_dd_no'],
 		'partial_remark'		=> $_POST['ledger_remark'],
 		'partial_status'		=> 1,
-		'partial_added_by'		=> 1,
+		'partial_added_by'		=> $uid,
 		'partial_entrydt'		=> date('Y-m-d H:i:s'),
 		);	
 		
 		if(!empty($_POST['ledger_id'])){
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$_POST['ledger_id'],$data);
+		$notify = $this->Common_model->insert_notification($uid,'edited',$_POST['ledger_id'],'Vendor Payment Edited');
 		// $data1['partial_ledger_id']		=> $_POST['ledger_id'];
 		// $this->Crud_model->edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$data1);
 		}else{
 		$insert_id = $this->Crud_model->insert_record('vendor_ledger',$data);
 		$data1['partial_ledger_id']		= $insert_id;
 		$this->Crud_model->insert_record('vendor_partial_payment',$data1);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$insert_id,'New Vendor Payment Done');
 		}
 		
 		
@@ -396,6 +421,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function deleteVendor_ledger(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'ledger_status' => 0
@@ -409,6 +436,7 @@ class ACCOUNTS extends MY_Controller {
 			
 		$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_id',$partial_id,$data1);		
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Vendor Payment Deleted');
 	}
 
 	public function vendor_partial_payment(){
@@ -425,6 +453,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function addVendor_partial_payment(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 		'partial_ledger_id' 	=> $_POST['partial_ledger_id'],
 		'partial_site_id' 			=> $_POST['partial_site_id'],
@@ -435,7 +465,7 @@ class ACCOUNTS extends MY_Controller {
 		'partial_cheque_dd_no'	=> $_POST['partial_cheque_dd_no'],
 		'partial_remark'		=> $_POST['partial_remark'],
 		'partial_status'		=> 1,
-		'partial_added_by'		=> 1,
+		'partial_added_by'		=> $uid,
 		'partial_entrydt'		=> date('Y-m-d H:i:s'),
 		);	
 		
@@ -444,11 +474,12 @@ class ACCOUNTS extends MY_Controller {
 		// $data1['partial_ledger_id']		=> $_POST['ledger_id'];
 		// $this->Crud_model->edit_record_by_anyid('vendor_partial_payment','partial_ledger_id',$data1);
 		}else{
-		$this->Crud_model->insert_record('vendor_partial_payment',$data);
+		$id = $this->Crud_model->insert_record('vendor_partial_payment',$data);
 		$ledger = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where 1 and ledger_id=?",array($_POST['partial_ledger_id']));
 		$amt = $ledger[0]['ledger_balance_amt'] - $_POST['partial_amt'];
 		$data1['ledger_balance_amt']	= $amt;
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$_POST['partial_ledger_id'],$data1);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'New Part Payment Done');
 		}
 		echo $amt;
 		
@@ -468,6 +499,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function deleteVendor_partial_payment(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'partial_status' => 0
@@ -478,6 +511,7 @@ class ACCOUNTS extends MY_Controller {
 		$data1['ledger_balance_amt']	= $amt;
 		$this->Crud_model-> edit_record_by_anyid('vendor_ledger','ledger_id',$ledger[0]['ledger_id'],$data1);
 		$this->Crud_model-> edit_record_by_anyid('vendor_partial_payment','partial_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Part Payment Deleted');
 		echo $amt;
 	}
 
@@ -503,6 +537,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function add_fund_transfer(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$transfer_amt = $_POST['transfer_amt'];
 		$data = array(
 		'transfer_from'			=> $_POST['transfer_from'],
@@ -515,7 +551,7 @@ class ACCOUNTS extends MY_Controller {
 		'transfer_type'    		=> 2,
 		'transfer_remark'    	=> $_POST['transfer_remark'],
 		'transfer_status'   	=> 1,
-		'transfer_added_by'   	=> 1,
+		'transfer_added_by'   	=> $uid,
 		'transfer_entrydt'   	=> date('Y-m-d H:i:s'),
 		);
 		if(!empty($_FILES['transfer_receipt'])){
@@ -544,10 +580,12 @@ class ACCOUNTS extends MY_Controller {
 		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where 1 and transfer_id=?",array($_POST['transfer_id']));
 		$data1['acc_balance'] = ($acc_balance + $transfer[0]['transfer_amt']) - $transfer_amt;
 		$this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$_POST['transfer_id'],$data);
+		$notify = $this->Common_model->insert_notification($uid,'edited',$_POST['transfer_id'],'Fund Transfer Edited');
 		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
 		}else{
 		$data1['acc_balance'] = $acc_balance - $transfer_amt;
-		$this->Crud_model->insert_record('company_account_fund_transfer',$data);
+		$id = $this->Crud_model->insert_record('company_account_fund_transfer',$data);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'New Fund has been Transfered');
 		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
 		}
 	}
@@ -576,11 +614,14 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function delete_fund_transfer(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'transfer_status' => 0
 		);	
 		$this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Fund Transfer Deleted');			
 	}	
 	
 	public function account_balance(){
@@ -594,6 +635,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function add_balance_to_account(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];		
 		$transfer_amt = $_POST['transfer_amt'];
 		$data = array(
 		'transfer_from'			=> '0',
@@ -606,7 +649,7 @@ class ACCOUNTS extends MY_Controller {
 		'transfer_type'    		=> 1,
 		'transfer_remark'    	=> $_POST['transfer_remark'],
 		'transfer_status'   	=> 1,
-		'transfer_added_by'   	=> 1,
+		'transfer_added_by'   	=> $uid,
 		'transfer_entrydt'   	=> date('Y-m-d H:i:s'),
 		);
 		if(!empty($_FILES['transfer_receipt'])){
@@ -638,7 +681,8 @@ class ACCOUNTS extends MY_Controller {
 		// $this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
 		}else{
 		$data1['acc_balance'] = $acc_balance + $transfer_amt;
-		$this->Crud_model->insert_record('company_account_fund_transfer',$data);
+		$id = $this->Crud_model->insert_record('company_account_fund_transfer',$data);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'Balance Edited');	
 		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
 		}
 	}
@@ -666,11 +710,14 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function delete_balance_to_account(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];			
 		$id = $this->input->post('id');
 		$data = array(
 			'transfer_status' => 0
 		);	
 		$this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Balance Deleted');
 	}
 	
 	////STARTS ACCOUNT DETAILS///
@@ -683,6 +730,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function insert_account(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 		'acc_name'			=> $_POST['acc_name'],
 		'acc_short_name' 			=> $_POST['acc_short_name']
@@ -691,8 +740,10 @@ class ACCOUNTS extends MY_Controller {
 		
 		if(!empty($_POST['acc_id'])){
 		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['acc_id'],$data);
+		$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['acc_id'],'Account Edited');
 		}else{
-		$this->Crud_model->insert_record('accounts',$data);
+		$id = $this->Crud_model->insert_record('accounts',$data);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'Account Created');
 		}
 	}
 
@@ -710,11 +761,14 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function delete_account(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'acc_status' => 0
 		);	
 		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Account Deleted');
 	}
 	////END ACCOUNT DETAILS///
 	
@@ -730,6 +784,8 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function add_account_balance(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$transfer_amt = $_POST['transfer_amt'];
 		$data = array(
 		'transfer_to' 			=> $_POST['transfer_to'],
@@ -738,7 +794,7 @@ class ACCOUNTS extends MY_Controller {
 		'transfer_type'    		=> 1,
 		'transfer_remark'    	=> $_POST['transfer_remark'],
 		'transfer_status'   	=> 1,
-		'transfer_added_by'   	=> 1,
+		'transfer_added_by'   	=> $uid,
 		'transfer_entrydt'   	=> date('Y-m-d H:i:s'),
 		);
 		$accounts = $this->Common_model->get_data_by_query_pdo("select * from accounts where 1 and acc_id=?",array($_POST['transfer_from']));
@@ -748,10 +804,12 @@ class ACCOUNTS extends MY_Controller {
 		$data1['acc_balance'] = ($acc_balance + $transfer[0]['transfer_amt']) - $transfer_amt;
 		$this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$_POST['transfer_id'],$data);
 		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
+		$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['transfer_id'],'Account Balance Edited');
 		}else{
 		$data1['acc_balance'] = $acc_balance - $transfer_amt;
-		$this->Crud_model->insert_record('company_account_fund_transfer',$data);
+		$id = $this->Crud_model->insert_record('company_account_fund_transfer',$data);
 		$this->Crud_model-> edit_record_by_anyid('accounts','acc_id',$_POST['transfer_to'],$data1);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'New Account Balance');
 		}
 	}
 
@@ -779,11 +837,14 @@ class ACCOUNTS extends MY_Controller {
 	}
 	
 	public function delete_account_transection(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'transfer_status' => 0
 		);	
 		$this->Crud_model-> edit_record_by_anyid('company_account_fund_transfer','transfer_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Account Transaction Deleted');
 	}
 	
 	public function get_balance(){		
@@ -883,9 +944,10 @@ class ACCOUNTS extends MY_Controller {
 		$creditTotal = 0;
 		$debitTotal = 0;
 		foreach ($data['transactions'] as $ctm):$sno++;?>
-		<tr align="left">
+		<tr align="left" title="<?php echo $ctm['partial_remark'];?>">
 		<td><?php echo $sno;?>.</td>
 		<td><?php echo sprintf("%04d",$ctm['partial_id']);?></td>
+		<td><?php echo $this->Common_model->findfield('site_detail', 'site_id', $ctm['partial_site_id'], 'site_name');?></td>
 		<td><?php echo $ctm['partial_type'];?></td>
 		<td><?php echo $ctm['partial_payment_type'];?></td>
 		<td><?php echo $ctm['partial_date'];?></td>
@@ -894,7 +956,7 @@ class ACCOUNTS extends MY_Controller {
 		</tr>
 		<?php endforeach;?>
 		<tr align="left">
-		<td colspan="4"></td>
+		<td colspan="5"></td>
 		<td align="right"><b>Total : </b></td>
 		<td align="right"><b><?php echo number_format($creditTotal,2);?></b></td>
 		<td align="right"><b><?php echo number_format($debitTotal,2);?></b></td>

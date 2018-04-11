@@ -49,6 +49,14 @@ class DASHBOARD extends MY_Controller {
 		$this->load->view('admin/DASHBOARD/user-dashboard',$this->data);
 		$this->load->view('default_admin/footer');
 	}
+	public function emp_activity(){
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$this->data['logs'] = $this->Common_model->get_data_by_query_pdo("select * from notifications n left join users u on u.id = n.notify_user order by notify_id desc limit 500",array(0));
+		$this->load->view('admin/DASHBOARD/emp_activity',$this->data);
+		$this->load->view('default_admin/footer');
+	}
 
 	public function filter_expense(){
 		

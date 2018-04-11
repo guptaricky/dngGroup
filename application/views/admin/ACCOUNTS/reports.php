@@ -134,6 +134,7 @@
 							  <tr>
 								<th>S.No.</th>
 								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Ref No.</th>
+								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Site</th>
 								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Type</th>
 								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Mode</th>
 								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Date</th>
@@ -146,9 +147,10 @@
 							  $creditTotal = 0;
 							  $debitTotal = 0;
 							  foreach ($transactions as $ctm):$sno++;?>
-							  <tr align="left">
+							  <tr align="left" title="<?php echo $ctm['partial_remark'];?>">
 								<td><?php echo $sno;?>.</td>
 								<td><?php echo sprintf("%04d",$ctm['partial_id']);?></td>
+								<td><?php echo $this->Common_model->findfield('site_detail', 'site_id', $ctm['partial_site_id'], 'site_name');?></td>
 								<td><?php echo $ctm['partial_type'];?></td>
 								<td><?php echo $ctm['partial_payment_type'];?></td>
 								<td><?php echo $ctm['partial_date'];?></td>
@@ -157,7 +159,7 @@
 							  </tr>
 							  <?php endforeach;?>
 							  <tr align="left">
-								<td colspan="4" ></td>
+								<td colspan="5" ></td>
 								<td align="right"><b>Total : </b></td>
 								<td align="right"><b><?php echo number_format($creditTotal,2);?></b></td>
 								<td align="right"><b><?php echo number_format($debitTotal,2);?></b></td>

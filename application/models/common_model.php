@@ -8,6 +8,16 @@
 			parent::__construct();
 		}
 		
+		public function insert_notification($user,$type,$ref,$msg)
+		{
+			$data = array(
+			'notify_user' => $user,
+			'notify_type' => $type,
+			'notify_ref_id' => $ref,
+			'notify_msg'  => $msg,
+			);
+			$this->Crud_model->insert_record('notifications',$data);
+		}
 		public function findfield($table, $fieldname1, $fieldvalue1, $returnfield)
 		{
 			$this->db->select($returnfield);

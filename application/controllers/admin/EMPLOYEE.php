@@ -20,8 +20,8 @@ class EMPLOYEE extends MY_Controller {
 		$this->load->view('default_admin/footer');
 	}
 	public function addEmployee(){
-		$userid = (array_slice($this->session->userdata, 9, 1));
-		// $uid = $userid['user_id'];
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$emp_id = $_POST['emp_id'];
 		$data = array(
 			'emp_fname' => ucwords(strtolower($_POST['fname'])),
@@ -43,13 +43,15 @@ class EMPLOYEE extends MY_Controller {
 			// 'emp_bank_address' => strtoupper($_POST['bank_address']),
 			// 'emp_bank_acc_no' => $_POST['acc_no'],
 			// 'emp_bank_ifsc' => strtoupper($_POST['ifsc']),
-			'emp_user' => 1
+			'emp_user' => $uid
 		);
 		if(!empty($emp_id)){
 			$this->Crud_model-> edit_record_by_anyid('employes','emp_id',$emp_id,$data);
+			$notify = $this->Common_model->insert_notification($uid,'edit',$emp_id,'Employee Details Edited');
 		}
 		else{
-			$this->Crud_model->insert_record('employes',$data);
+			$id = $this->Crud_model->insert_record('employes',$data);
+			$notify = $this->Common_model->insert_notification($uid,'insert',$id,'New Employee Registered');
 		}
 	}
 	public function editEmployeeDetail(){

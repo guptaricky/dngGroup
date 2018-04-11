@@ -10,20 +10,25 @@ class MASTERS extends MY_Controller {
 		$this->load->view('default_admin/footer');
 	}
 	public function addCategory(){
-		$userid = (array_slice($this->session->userdata, 9, 1));
-		// $uid = $userid['user_id'];
+		// print_r($this->session->userdata);die;
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 			'cat_name' => $_POST['catgName'],
 			'cat_desc' => $_POST['catgDesc'],
 			'cat_status' => 1,
-			'cat_added_by' => 1,//$uid,
+			'cat_added_by' => $uid,
 			'cat_entrydt' => date('Y-m-d H:i:s'),
 		);
 		if(!empty($_POST['cat_id'])){
 			$this->Crud_model-> edit_record_by_anyid('expense_category','cat_id',$_POST['cat_id'],$data);
+			$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['cat_id'],'Expense Category Edited');
 		}else{
-			$this->Crud_model->insert_record('expense_category',$data);
+			$id = $this->Crud_model->insert_record('expense_category',$data);
+			$notify = $this->Common_model->insert_notification($uid,'insert',$id,'New Expense Category Created');
 		}
+		
+		
 	}
 	public function getCatg(){
 		$catg = $this->Common_model->get_data_by_query_pdo("select * from expense_category where 1 and cat_status=?",array(1));
@@ -35,11 +40,14 @@ class MASTERS extends MY_Controller {
 		echo json_encode($cat);
 	}
 	public function deleteCatg(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'cat_status' => 0
 		);	
 		$this->Crud_model-> edit_record_by_anyid('expense_category','cat_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Expense Category Deleted');
 	}
 	//*****Category code Ends****//
 		
@@ -57,11 +65,14 @@ class MASTERS extends MY_Controller {
 		echo json_encode($data['navigations']);
 	}
 	public function generateLink(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
+		
 		$data = array(
 			'nav_name' => $_POST['linkname'],
 			'nav_icon' => $_POST['linkicon'],
 			'nav_url' => $_POST['linkurl'],
-			//'nav_user' => $_POST['linkuser'],
+			'nav_user' => $uid,
 			'nav_status' => 1
 		);	
 		$this->Crud_model->insert_record('nav_master',$data);
@@ -76,8 +87,8 @@ class MASTERS extends MY_Controller {
 		$this->load->view('default_admin/footer');
 	}
 	public function addsite(){
-		$userid = (array_slice($this->session->userdata, 9, 1));
-		// $uid = $userid['user_id'];
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 			'site_name' => $_POST['site_name'],
 			'site_manager_name' => $_POST['site_manager_name'],
@@ -85,7 +96,7 @@ class MASTERS extends MY_Controller {
 			'site_address' => $_POST['site_address'],
 			'site_remark' => $_POST['site_remark'],
 			'site_status' => 1,
-			'site_added_by' => 1,//$uid,
+			'site_added_by' => $uid,
 			'site_entrydt' => date('Y-m-d H:i:s'),
 		);
 		if(!empty($_FILES['site_banner'])){
@@ -110,8 +121,10 @@ class MASTERS extends MY_Controller {
 		}			
 		if(!empty($_POST['site_id'])){
 			$this->Crud_model-> edit_record_by_anyid('site_detail','site_id',$_POST['site_id'],$data);
+			$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['site_id'],'Site Edited');
 		}else{
-			$this->Crud_model->insert_record('site_detail',$data);
+			$id = $this->Crud_model->insert_record('site_detail',$data);
+			$notify = $this->Common_model->insert_notification($uid,'insert',$id,'New Site Category Created');
 		}
 	}
 	public function getsite(){
@@ -124,11 +137,14 @@ class MASTERS extends MY_Controller {
 		echo json_encode($site);
 	}
 	public function deletesite(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'site_status' => 0
 		);	
 		$this->Crud_model-> edit_record_by_anyid('site_detail','site_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'Site Deleted');			
 	}
 
 
@@ -141,8 +157,8 @@ class MASTERS extends MY_Controller {
 		$this->load->view('default_admin/footer');
 	}
 	public function add_site_otherdetail(){
-		$userid = (array_slice($this->session->userdata, 9, 1));
-		// $uid = $userid['user_id'];
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$data = array(
 			'detail_site_id'     => $_POST['detail_site_id'],
 			'detail_sector'      => $_POST['detail_sector'],
@@ -153,15 +169,17 @@ class MASTERS extends MY_Controller {
 			'detail_price'        => $_POST['detail_price'],
 			'detail_site_nos'    => $_POST['detail_site_nos'],
 			'detail_isactive'    => 1,
-			'detail_added_by'    => 1,//$uid,
+			'detail_added_by'    => $uid,
 			'detail_entrydt'     => date('Y-m-d H:i:s'),
 		);
 		
 		if(!empty($_POST['detail_id'])){
 			$this->Crud_model-> edit_record_by_anyid('site_other_detail','detail_id',$_POST['detail_id'],$data);
 			$inserted_id = $_POST['detail_id'];
+			$notify = $this->Common_model->insert_notification($uid,'insert',$_POST['detail_id'],'Site Other Details Edited');
 		}else{
-			$inserted_id = $this->Crud_model->insert_record('site_other_detail',$data);	
+			$id = $inserted_id = $this->Crud_model->insert_record('site_other_detail',$data);	
+			$notify = $this->Common_model->insert_notification($uid,'edit',$id,'Site Other Details Created');
 		}
 		
 			$sites = explode(",",$_POST['detail_site_nos']);
@@ -188,11 +206,14 @@ class MASTERS extends MY_Controller {
 		echo json_encode($site);
 	}
 	public function delete_site_otherdetail(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'detail_isactive' => 0,
 		);	
-		$this->Crud_model-> edit_record_by_anyid('site_other_detail','detail_id',$id,$data);
+		$this->Crud_model->edit_record_by_anyid('site_other_detail','detail_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Site Other Details Deleted');
 	}
 	
 	public function site_otherdetail_user(){
@@ -268,7 +289,7 @@ class MASTERS extends MY_Controller {
 	}
 	public function add_company_bank_accounts(){
 		$userid = (array_slice($this->session->userdata, 9, 1));
-		// $uid = $userid['user_id'];
+		$uid = $userid['user_id'];
 		$data = array(
 			'bank_name' => $_POST['bank_name'],
 			'bank_branch_name' => $_POST['bank_branch_name'],
@@ -276,13 +297,15 @@ class MASTERS extends MY_Controller {
 			'bank_acc_no' => $_POST['bank_acc_no'],
 			'bank_ifsc_code' => $_POST['bank_ifsc_code'],
 			'bank_status' => 1,
-			'bank_added_by' => 1,//$uid,
+			'bank_added_by' => $uid,
 			'bank_entrydt' => date('Y-m-d H:i:s'),
 		);		
 		if(!empty($_POST['bank_id'])){
 			$this->Crud_model-> edit_record_by_anyid('company_bank_accounts','bank_id',$_POST['bank_id'],$data);
+			$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['bank_id'],'Bank Account Edited');
 		}else{
-			$this->Crud_model->insert_record('company_bank_accounts',$data);
+			$id = $this->Crud_model->insert_record('company_bank_accounts',$data);
+			$notify = $this->Common_model->insert_notification($uid,'insert',$id,'Bank Account Created');
 		}
 	}
 	public function get_company_bank_accounts(){
@@ -295,11 +318,14 @@ class MASTERS extends MY_Controller {
 		echo json_encode($bank);
 	}
 	public function delete_company_bank_accounts(){
+		$userid = (array_slice($this->session->userdata, 9, 1));
+		$uid = $userid['user_id'];
 		$id = $this->input->post('id');
 		$data = array(
 			'bank_status' => 0
 		);	
 		$this->Crud_model-> edit_record_by_anyid('company_bank_accounts','bank_id',$id,$data);
+		$notify = $this->Common_model->insert_notification($uid,'deleted',$id,'Bank Account Deleted');
 	}
 
 
