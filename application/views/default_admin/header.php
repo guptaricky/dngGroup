@@ -60,32 +60,36 @@
 
 					<!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
 					<div class="btn-group btn-group-justified" data-toggle="buttons">
-						<label class="btn btn-default">
-							<input type="radio" name="activity" id="ajax/notify/mail.html">
-							Msgs (14) </label>
-						<label class="btn btn-default">
-							<input type="radio" name="activity" id="ajax/notify/notifications.html">
-							notify (3) </label>
-						<label class="btn btn-default">
-							<input type="radio" name="activity" id="ajax/notify/tasks.html">
-							Tasks (4) </label>
+						<span class="text-primary"><b>Notifications</b></span><span class="pull-right"><a href="#">Mark all as read</a></span>
 					</div>
 
 					<!-- notification content -->
 					<div class="ajax-notifications custom-scroll">
 
-						<div class="alert alert-transparent">
-							<h4>Click a button to show messages here</h4>
+						<!--<div class="alert alert-transparent">
+							<h4>No New Notifications</h4>
 							This blank page message helps protect your privacy, or you can show the first message here automatically.
+						</div>-->
+						<div class="">
+							<table class="table table-hover table-condensed">
+							
+							<tbody>
+							<?php $data['logs'] = $this->Common_model->get_data_by_query_pdo("select * from notifications n left join users u on u.id = n.notify_user order by notify_id desc limit 500",array(0));
+							foreach($data['logs'] as $ft){
+							?>
+								<tr style="background-color:#b9bec7">
+									<td style=""><img src="<?php echo base_url().'assets/img/avatars/male.png'; ?>" alt="img" class="offline img-circle"></td>
+									<td style="padding:10px !important"><?php echo $ft['notify_msg'];?> by <b><?php echo $this->Common_model->findfield('employes','emp_id',$ft['emp_id'],'emp_fname')." ".$this->Common_model->findfield('employes','emp_id',$ft['emp_id'],'emp_lname');?></b></th>
+								</tr>
+							<?php } ?>
+							</tbody>
+							</table>
 						</div>
-
-						<i class="fa fa-lock fa-4x fa-border"></i>
-
 					</div>
 					<!-- end notification content -->
 
 					<!-- footer: refresh area -->
-					<span> Last updated on: 12/12/2013 9:43AM
+					<span> <a href="<?php echo base_url().'admin/DASHBOARD/emp_activity'?>">See All </a>
 						<button type="button" data-loading-text="<i class='fa fa-refresh fa-spin'></i> Loading..." class="btn btn-xs btn-default pull-right">
 							<i class="fa fa-refresh"></i>
 						</button> </span>

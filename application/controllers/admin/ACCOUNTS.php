@@ -998,5 +998,55 @@ class ACCOUNTS extends MY_Controller {
 		}
 	}
 
+	public function addEmi(){
+		$userid = (array_slice($this->session->userdata, 8, 1));
+		$uid = $userid['user_id'];
+		$data = array(
+		'emi_prop_detail_id' 	=> $_POST['emi_prop_detail_id'],
+		'emi_number' 			=> $_POST['emi_number'],
+		'emi_date' 			    => date('Y-m-d',strtotime($_POST['emi_date'])),
+		'emi_amt' 			    => $_POST['emi_amount'],
+		'emi_payment_type'	    => $_POST['emi_payment_type'],
+		'emi_cheque_dd_no'	    => $_POST['emi_transaction_no'],
+		'emi_remark'		    => $_POST['emi_remark'],
+		'emi_status'		    => 1,
+		'emi_added_by'		    => $uid,
+		'emi_entrydt'		    => date('Y-m-d H:i:s'),
+		);	
+		
+		if(!empty($_POST['emi_id'])){
+		$this->Crud_model->edit_record_by_anyid('customer_emi_payment', 'emi_id', $_POST['emi_id'], $data);
+		//$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['emi_id'],'Customer Emi Updated');
+		}else{
+			
+		$data['emi_status']		    = 1;
+		$data['emi_added_by']		= $uid;
+		$data['emi_entrydt'	]	    = date('Y-m-d H:i:s');
+		$id = $this->Crud_model->insert_record('customer_emi_payment',$data);
+		//$notify = $this->Common_model->insert_notification($uid,'insert',$id,'Customer Emi Added');
+		}
+	}
+
+	public function getEmi(){
+		$detail_id = $this->input->get('detail_id');
+		$payment = $this->Common_model->get_data_by_query_pdo("select * from customer_emi_payment where emi_prop_detail_id=? and emi_status=?",array($detail_id,1));
+		echo json_encode($payment);
+	}
+	
+	public function editEmi(){
+		$id = $this->input->post('id');
+		$vendor = $this->Common_model->get_data_by_query_pdo("select * from customer_emi_payment where emi_id=?",array($id));
+		echo json_encode($vendor);
+	}
+	
+	public function deleteEmi(){
+		$id = $this->input->post('id');
+		$data = array(
+			'emi_status' => 0
+		);
+		$this->Crud_model-> edit_record_by_anyid('customer_emi_payment','emi_id',$id,$data);
+		//$notify = $this->Common_model->insert_notification($uid,'delete',$id,'Customer Emi Deleted');
+	}
+
 	
 }

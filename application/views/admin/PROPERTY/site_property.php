@@ -84,34 +84,131 @@
 							<p><strong>Property price </strong> <?php echo number_format($prop_price);?></p>
 							<br>
 							<h4 class="alert alert-info"> <div class="row"><div class="col-lg-12"> <div class="pull-left"> Payment Description </div> <div class="pull-right"> <button type="button" class="btn btn-xs btn-primary" onclick="EditPropertySell(<?php echo $ptd['prop_detail_id']; ?>)"> Edit Sell Detail </button> <div><div><div></h4>
+						<form action="#" id="checkout-form_<?php echo $ptd['prop_detail_id']; ?>" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
+							<input type="hidden" name="emi_id" id="emi_id_<?php echo $ptd['prop_detail_id']; ?>">
+							<input type="hidden" name="emi_prop_detail_id" id="emi_prop_detail_id_<?php echo $ptd['prop_detail_id']; ?>" value="<?php echo $ptd['prop_detail_id']; ?>">
+							<fieldset>
+								<div class="row">
+									<section class="col col-2">
+										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
+											<input type="text" id ="emi_number_<?php echo $ptd['prop_detail_id']; ?>" name="emi_number" placeholder="Installment" >
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
+											<input type="text" id ="emi_date_<?php echo $ptd['prop_detail_id']; ?>" name="emi_date" class="datepicker" placeholder="Date" >
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
+											<input type="number" id ="emi_amount_<?php echo $ptd['prop_detail_id']; ?>" name="emi_amount" placeholder="Amount">
+										</label>
+									</section>
+									<section class="col col-2">
+													<label class="select"> 
+														<select name="emi_payment_type" id="emi_payment_type_<?php echo $ptd['prop_detail_id']; ?>">
+														<option value=""> SELECT PAYMENT TYPE </option>
+														<option value="Cash" selected >Cash</option>
+														<option value="Cheque">Cheque</option>
+														<option value="Bank">Bank</option>
+														</select><i></i>
+													</label>
+													</label>
+												</section>
+												<section class="col col-2">
+										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
+											<input type="text" id ="emi_transaction_no_<?php echo $ptd['prop_detail_id']; ?>" name="emi_transaction_no" placeholder="Transection No">
+										</label>
+									</section>
+									<section class="col col-2">
+									<label class="textarea"> 										
+										<textarea rows="3" id="emi_remark_<?php echo $ptd['prop_detail_id']; ?>" name="emi_remark" placeholder="Remark"></textarea> 
+									</label>
+									</section>	
+								</div>
+
+								
+							</fieldset>
+
+
+							<button type="button" class="btn btn-primary btn-sm" onclick="addEmi(<?php echo $ptd['prop_detail_id']; ?>)" id="save_emi_btn" data-loading-text="Please Wait..."> Save </button>
+						</form><br>
+						<div class="col col-12" >
+						<div id="emi_data_<?php echo $ptd['prop_detail_id']; ?>">
+						
+						</div>
+						</div>
+						<script>
+		$(document).ready(function(){
+			<?php foreach($propertytypedetail as $ptd){ ?>
+			GetEmi(<?php echo $ptd['prop_detail_id']; ?>);
+			<?php } ?>
+		});
+		
+		function GetEmi(detail_id){
+		$("#emi_data_" + detail_id).html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
+		var content ='';	
+		content +='<table class="table table-bordered"><thead><tr><th>S.No.</th><th>Installment</th><th>Amount</th><th>Date</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
+		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getEmi'); ?>',{'detail_id':detail_id}, function(res){
+					$.each(res, function (k, v) {
+					  content +='<tr><td>'+ (k++) +'.</td><td>'+ v.emi_number +'</td><td>'+ v.emi_amt +'</td><td>'+ v.emi_date +'</td><td>'+ v.emi_remark +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="EditEmi('+ v.emi_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="DeleteEmi('+ v.emi_id +','+ v.emi_prop_detail_id +')">Delete</a></td></tr>';
+					});					
+					content +='</tbody></table>';	
+				$("#emi_data_" + detail_id).html(content);
+			});	 
+		}
+	
+
+		
+		function addEmi(detail_id){  
+		
+		$(".btn").button('loading');		
+                   var form_data = $('#checkout-form_' + detail_id).serialize();
+			$.post('<?php echo base_url('admin/ACCOUNTS/addEmi'); ?>', form_data, function (response) {
+				$("#emi_id_" + detail_id).val('');
+				$(".btn").button('reset');
+				$('#checkout-form_' + detail_id)[0].reset();
+				GetEmi(detail_id);
+			});
+		}	
+		
+		function EditEmi(id){
+		$.post('<?php echo base_url('admin/ACCOUNTS/editEmi'); ?>', {'id':id}, function(response){
+			var res = jQuery.parseJSON(response);
+				$.each(res, function (k, v) {
+					$("#emi_id_" + v.emi_prop_detail_id).val(v.emi_id);
+					$("#emi_prop_detail_id_" + v.emi_prop_detail_id).val(v.emi_prop_detail_id);
+					$("#emi_number_" + v.emi_prop_detail_id).val(v.emi_number);
+					$("#emi_amount_" + v.emi_prop_detail_id).val(v.emi_amt);
+					$("#emi_date_" + v.emi_prop_detail_id).val(v.emi_date);
+					$("#emi_payment_type_" + v.emi_prop_detail_id).val(v.emi_payment_type);
+					$("#emi_transaction_no_" + v.emi_prop_detail_id).val(v.emi_cheque_dd_no);
+					$("#emi_remark_" + v.emi_prop_detail_id).val(v.emi_remark);
+					});	
+			});	 
+		}	
+		
+		function DeleteEmi(id, detail_id){
+			var r = confirm("Are you sure you want to Delete this Installment ?");
+			if(r==true){
+		$.ajax({  
+				type: "POST",
+				url: "<?php echo base_url('admin/ACCOUNTS/deleteEmi'); ?>",
+				data: {'id':id},
+				success: function(msg){
+				GetEmi(detail_id);
+				$("#emi_id_" + detail_id).val('');
+				$(".btn").button('reset');
+				$('#checkout-form_' + detail_id)[0].reset();				
+				}  
+			});	
+			}else{}			
+		}
+		
+</script>
+						
 								<div class="table-responsive">
 						
-							
-							<table class="table table-bordered">
-							<thead>
-							  <tr>
-								<th>S.No.</th>
-								<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Booking Date</th>
-								<th><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Amount</th>
-								<th><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> 1st</th>
-								<th><i class="fa fa-fw fa-edit txt-color-blue hidden-md hidden-sm hidden-xs"></i> 2nd</th>
-								<th><i class="fa fa-fw fa-edit txt-color-blue hidden-md hidden-sm hidden-xs"></i> 3rd</th>
-								<th><i class="fa fa-fw fa-edit txt-color-blue hidden-md hidden-sm hidden-xs"></i> 4th</th>
-							  </tr>
-							</thead>
-							<tbody>
-							  
-							  <tr align="left">
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							  </tr>
-							  
-							</tbody>
-						  </table>
 							
 						</div>
 						</div>
