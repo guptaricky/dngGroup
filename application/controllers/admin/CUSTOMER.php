@@ -102,10 +102,13 @@ class CUSTOMER extends MY_Controller {
 			'prop_sell_price' => $_POST['sellprice'],
 			'prop_discount' => $_POST['discount'],
 			'prop_booking_amt' => $_POST['booking_amt'],
+			'prop_paid_amt' => $_POST['booking_amt'],
 			'prop_remaining_amt' => $_POST['remaining_amt'],
 			'prop_payment_mode' => $_POST['payment_mode'],
 			'prop_emi_duration' => $_POST['emi_duration'],
 			'prop_emi_amount' => $_POST['emi_amount'],
+			'prop_finance_by_bank' => $_POST['prop_finance_by_bank'],
+			'prop_remark' => $_POST['prop_remark'],
 			'prop_status' => 1,
 		);
 		
@@ -161,10 +164,13 @@ class CUSTOMER extends MY_Controller {
 			'prop_sell_price' => $_POST['sellprice'],
 			'prop_discount' => $_POST['discount'],
 			'prop_booking_amt' => $_POST['booking_amt'],
+			'prop_paid_amt' => $_POST['booking_amt'],
 			'prop_remaining_amt' => $_POST['remaining_amt'],
 			'prop_payment_mode' => $_POST['payment_mode'],
 			'prop_emi_duration' => $_POST['emi_duration'],
 			'prop_emi_amount' => $_POST['emi_amount'],
+			'prop_finance_by_bank' => $_POST['prop_finance_by_bank'],
+			'prop_remark' => $_POST['prop_remark'],
 		);
 		
 		
@@ -213,11 +219,28 @@ class CUSTOMER extends MY_Controller {
 		'emi_entrydt'		=> date('Y-m-d H:i:s'),
 		);	
 		
+		$property = $this->Common_model->get_data_by_query_pdo("select * from property_other_detail where 1 and prop_detail_id=?",array($_POST['emi_prop_detail_id']));
+		$remaining = $property[0]['prop_remaining_amt'];
+		$paid = $property[0]['prop_paid_amt'];
+		
 		if(!empty($_POST['emi_id'])){
+		$emi = $this->Common_model->get_data_by_query_pdo("select * from customer_emi_payment where 1 and emi_id=?",array($_POST['emi_id']));
+		$emi_amt = $emi[0]['emi_amt'];
+		$remaining_amt = ($remaining + $emi_amt) - $_POST['emi_amt'];
+		$paid_amt = ($paid - $emi_amt) + $_POST['emi_amt'];
+		
 		$this->Crud_model->edit_record_by_anyid('customer_emi_payment','emi_id',$_POST['emi_id'],$data);
+		$data1['prop_paid_amt'] = $paid_amt;
+		$data1['prop_remaining_amt'] = $remaining_amt;
+		$this->Crud_model->edit_record_by_anyid('property_other_detail','prop_detail_id',$_POST['emi_prop_detail_id'],$data1);
 		$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['emi_id'],'Emi Payment Edited');	
 		}else{
 		$id = $this->Crud_model->insert_record('customer_emi_payment',$data);
+		$remaining_amt = $remaining - $_POST['emi_amt'];
+		$paid_amt = $paid + $_POST['emi_amt'];
+		$data1['prop_paid_amt'] = $paid_amt;
+		$data1['prop_remaining_amt'] = $remaining_amt;
+		$this->Crud_model->edit_record_by_anyid('property_other_detail','prop_detail_id',$_POST['emi_prop_detail_id'],$data1);
 		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'Emi Payment done');	
 		}
 		echo $amt;
@@ -242,6 +265,26 @@ class CUSTOMER extends MY_Controller {
 		$data = array(
 			'emi_status' => 0
 		);
+	}
+	
+	public function customer_ledger(){
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$data['customer_ids'] = $this->Common_model->get_data_by_query_pdo("select DISTINCT(prop_sold_to) as c_id,prop_remaining_amt from property_other_detail where 1 and prop_status=?",array(1));
+		$this->load->view('admin/CUSTOMER/customer_ledger',$data);
+		$this->load->view('default_admin/footer');
+	}
+	
+	public function customers_ledger_detail(){
+        $cid = $this->uri->segment(4);
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$data['customer'] = $this->Common_model->get_data_by_query_pdo("select * from customers where 1 and cust_id=?",array($cid));
+		$data['propdetails'] = $this->Common_model->get_data_by_query_pdo("select * from property_other_detail where 1 and prop_sold_to=?",array($cid));
+		$this->load->view('admin/CUSTOMER/customer_ledger_detail',$data);
+		$this->load->view('default_admin/footer');
 	}
 	
 }

@@ -71,17 +71,27 @@
 						// echo $detail_type;
 						if($pt['detail_type'] == $detail_type){
 						if($ptd['property_status']=='Sold'){
+						$bank = $this->Common_model->findfield('bank_master','bank_id',$ptd['prop_finance_by_bank'],'bank_name') ;
 						$sold_to = $this->Common_model->findfield('customers','cust_id',$ptd['prop_sold_to'],'cust_fname') ;
-						$sold_to .= " ".$this->Common_model->findfield('customers','cust_id',$ptd['prop_sold_to'],'cust_lname') ;
+						$sold_to .= " ".$this->Common_model->findfield('customers','cust_id',$ptd['prop_sold_to'],'cust_lname');
 						$prop_price = $ptd['prop_price'];
 						$booking_date = date('d M Y', strtotime($ptd['prop_booking_date']));
 						$detail_id = $ptd['property_detail_id'];
 						?>
 						<div class="tab-pane fade <?php if($i==1)//echo "in active";?>" id="<?php echo $detail_type."_".$ptd['property_id'];?>">
+						<section class="col col-6">
 							<p><strong>Booked on: </strong> <?php echo $booking_date;?></p>
 							<p><strong>Sold To: </strong><?php echo $sold_to;?></p>
 							<p><strong>Sold on: </strong> <?php echo $booking_date;?></p>
 							<p><strong>Property price </strong> <?php echo number_format($prop_price);?></p>
+						</section>
+						<section class="col col-6">
+							<p><strong>Booking Amt: </strong> <?php echo $ptd['prop_booking_amt'];?></p>
+							<p><strong>Balance: </strong><?php echo $ptd['prop_remaining_amt'];?></p>
+							<p><strong>Emi Duration: </strong> <?php echo $ptd['prop_emi_duration'];?></p>
+							<p><strong>Installment Amt </strong> <?php echo number_format($ptd['prop_emi_amount']);?></p>
+							<p><strong>Finance By Bank </strong> <?php echo $bank;?></p>
+						</section>
 							<br>
 							<h4 class="alert alert-info"> <div class="row"><div class="col-lg-12"> <div class="pull-left"> Payment Description </div> <div class="pull-right"> <button type="button" class="btn btn-xs btn-primary" onclick="EditPropertySell(<?php echo $ptd['prop_detail_id']; ?>)"> Edit Sell Detail </button> <div><div><div></h4>
 						<form action="#" id="checkout-form_<?php echo $ptd['prop_detail_id']; ?>" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
@@ -90,40 +100,45 @@
 							<fieldset>
 								<div class="row">
 									<section class="col col-2">
+										<label class="label">Installment</label>
 										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
 											<input type="text" id ="emi_number_<?php echo $ptd['prop_detail_id']; ?>" name="emi_number" placeholder="Installment" >
 										</label>
 									</section>
 									<section class="col col-2">
+										<label class="label">Payment Date</label>
 										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
 											<input type="text" id ="emi_date_<?php echo $ptd['prop_detail_id']; ?>" name="emi_date" class="datepicker" placeholder="Date" >
 										</label>
 									</section>
 									<section class="col col-2">
+										<label class="label">Amount</label>
 										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
 											<input type="number" id ="emi_amount_<?php echo $ptd['prop_detail_id']; ?>" name="emi_amount" placeholder="Amount">
 										</label>
 									</section>
 									<section class="col col-2">
-													<label class="select"> 
-														<select name="emi_payment_type" id="emi_payment_type_<?php echo $ptd['prop_detail_id']; ?>">
-														<option value=""> SELECT PAYMENT TYPE </option>
-														<option value="Cash" selected >Cash</option>
-														<option value="Cheque">Cheque</option>
-														<option value="Bank">Bank</option>
-														</select><i></i>
-													</label>
-													</label>
-												</section>
-												<section class="col col-2">
+										<label class="label">Payment Type</label>
+										<label class="select"> 
+											<select name="emi_payment_type" id="emi_payment_type_<?php echo $ptd['prop_detail_id']; ?>">
+												<option value=""> SELECT PAYMENT TYPE </option>
+												<option value="Cash" selected >Cash</option>
+												<option value="Cheque">Cheque</option>
+												<option value="Bank">Bank</option>
+											</select><i></i>
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="label">Transaction No.</label>
 										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
 											<input type="text" id ="emi_transaction_no_<?php echo $ptd['prop_detail_id']; ?>" name="emi_transaction_no" placeholder="Transection No">
 										</label>
 									</section>
 									<section class="col col-2">
-									<label class="textarea"> 										
-										<textarea rows="3" id="emi_remark_<?php echo $ptd['prop_detail_id']; ?>" name="emi_remark" placeholder="Remark"></textarea> 
-									</label>
+										<label class="label">Remark</label>
+										<label class="textarea"> 										
+											<textarea rows="3" id="emi_remark_<?php echo $ptd['prop_detail_id']; ?>" name="emi_remark" placeholder="Remark"></textarea> 
+										</label>
 									</section>	
 								</div>
 
@@ -300,11 +315,13 @@
 														<section class="col col-6">
 															<input class="form-control" name="prop_id" value="<?php echo $ptd['property_id']; ?>" type="hidden">
 															<input class="form-control" id="prepend_<?php echo $i;?>" name="bookingDate" value="<?php echo $dateToday = date('d-m-Y')?>" type="hidden">
+															<label class="label">First Name</label>
 															<label class="input"> <i class="icon-prepend fa fa-user"></i>
 															<input type="text" id="fname_<?php echo $i;?>" name="fname" placeholder="First name" style="text-transform: capitalize;">
 															</label>
 														</section>
 														<section class="col col-6">
+														  <label class="label">Last Name</label>
 															<label class="input"> <i class="icon-prepend fa fa-user"></i>
 																<input type="text" id="lname_<?php echo $i;?>" name="lname" placeholder="Last name" style="text-transform: capitalize;">
 															</label>
@@ -313,11 +330,13 @@
 
 													<div class="row">
 														<section class="col col-6">
+														  <label class="label">Email ID</label>
 															<label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
 																<input type="email" id="email_<?php echo $i;?>" name="email" placeholder="E-mail">
 															</label>
 														</section>
 														<section class="col col-6">
+														  <label class="label">Contact No.</label>
 															<label class="input"> <i class="icon-prepend fa fa-phone"></i>
 																<input type="tel" id="phone_<?php echo $i;?>" name="phone" placeholder="Phone" data-mask="(999) 999-9999">
 															</label>
@@ -329,18 +348,21 @@
 													<div class="row">
 														
 														<section class="col col-5">
+														  <label class="label">State</label>
 															<label class="input">
 																<input type="text" id="state_<?php echo $i;?>" name="state" placeholder="State">
 															</label>
 														</section>
 														
 														<section class="col col-4">
+														  <label class="label">City</label>
 															<label class="input">
 																<input type="text" id="city_<?php echo $i;?>" name="city" placeholder="City">
 															</label>
 														</section>
 
 														<section class="col col-3">
+														  <label class="label">Email ID</label>
 															<label class="input">
 																<input type="text" id="code_<?php echo $i;?>" name="code" placeholder="Post code">
 															</label>
@@ -349,23 +371,27 @@
 
 													<section>
 														<label for="address" class="input">
+														  <label class="label">Address</label>
 															<input type="text" id="address_<?php echo $i;?>" name="address" placeholder="Address"  style="text-transform: capitalize;">
 														</label>
 													</section>
 
 													<section>
-														<label class="textarea"> 										
+														<label class="textarea">
+														  <label class="label">Additional Info</label> 										
 															<textarea rows="3" id="info_<?php echo $i;?>" name="info" placeholder="Additional info"></textarea> 
 														</label>
 													</section>
 													<div class="row">
 													<section class="col col-5">
+														  <label class="label">Aadhar Number</label>
 														<label class="input">
 															<input type="text" id="aadhar_<?php echo $i;?>" name="aadhar" placeholder="Aadhar Number">
 														</label>
 													</section>
 													
 													<section class="col col-4">
+														  <label class="label">PAN Number</label>
 														<label class="input">
 															<input type="text" id="pan_<?php echo $i;?>" name="pan" placeholder="PAN"  style="text-transform: uppercase;">
 														</label>
@@ -376,6 +402,7 @@
 												<fieldset>
 													<div class="row">
 														<section class="col col-6">
+														  <label class="label">Property Name</label>
 															<label class="input"> <i class="icon-prepend fa fa-user"></i>
 																<input type="text" name="propertyname" placeholder="Property name" style="text-transform: capitalize;">
 															</label>
@@ -387,6 +414,7 @@
 
 													<div class="row">
 														<section class="col col-6">
+														  <label class="label">Flat No.</label>
 															<label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
 																<input type="text" name="propertyNo" placeholder="Flat No.">
 															</label>
@@ -400,24 +428,28 @@
 													<div class="row">
 														
 														<section class="col col-3">
+														  <label class="label">Area / sqft.</label>
 															<label class="input">
 																<input type="text" name="area" placeholder="Area (per square feet)">
 															</label>
 														</section>
 														
 														<section class="col col-2">
+														  <label class="label">Carpet Area</label>
 															<label class="input">
 																<input type="text" name="carpetarea" placeholder="Carpet area">
 															</label>
 														</section>
 
 														<section class="col col-2">
+														  <label class="label">Build-up Area</label>
 															<label class="input">
 																<input type="text" name="builduparea" placeholder="Build-up Area">
 															</label>
 														</section>
 														
 														<section class="col col-5">
+														  <label class="label">Property Type</label>
 															<label class="input">
 																<input type="text" name="propertytype" placeholder="Property Type">
 															</label>
@@ -426,37 +458,42 @@
 													<div class="row">
 														
 														<section class="col col-4">
+														  <label class="label">Actual Price</label>
 															<label class="input">
 																<input type="text" id="actualprice_<?php echo $i;?>" name="actualprice" placeholder="Actual Price" onkeyup="CalculateAmt(<?php echo $i;?>)">
 															</label>
 														</section>
 
 														<section class="col col-4">
+														  <label class="label">Discount</label>
 															<label class="input">
 																<input type="text" id="discount_<?php echo $i;?>" name="discount" placeholder="Discount" onkeyup="CalculateAmt(<?php echo $i;?>)">
 															</label>
 														</section>
 														
 														<section class="col col-4">
+														  <label class="label">Sell Price</label>
 															<label class="input">
 																<input type="text" id="sellprice_<?php echo $i;?>" name="sellprice" placeholder="Sell Price" onkeyup="CalculateAmt(<?php echo $i;?>)">
 															</label>
 														</section>
 														
 														<section class="col col-4">
+														  <label class="label">Booking Amount</label>
 															<label class="input">
 																<input type="text" id="booking_amt_<?php echo $i;?>" name="booking_amt" placeholder="Booking Amount" onkeyup="CalculateAmt(<?php echo $i;?>)">
 															</label>
 														</section>
 														
 														<section class="col col-4">
+														  <label class="label">Remaining Amount</label>
 															<label class="input">
 																<input type="text" id="remaining_amt_<?php echo $i;?>" name="remaining_amt" placeholder="Remaining Amount" >
 															</label>
 														</section>
 														
 														<section class="col col-4">
-															<!--<label class="label">Payment Mode: </label>-->
+															<label class="label">Payment Mode: </label>
 															<label class="select"> 
 																<select name="payment_mode" id="payment_mode">
 																<option value=""> Payment Mode </option>
@@ -468,7 +505,7 @@
 														</section>
 														
 														<section class="col col-4">
-															<!--<label class="label">EMI Duration: </label>-->
+															<label class="label">EMI Duration: </label>
 															<label class="select"> 
 																<select name="emi_duration" id="emi_duration_<?php echo $i;?>" onchange="CalculateAmt(<?php echo $i;?>)">
 																<option value=""> EMI Duration </option>
@@ -490,16 +527,28 @@
 														</section>
 														
 														<section class="col col-4">
+														  <label class="label">Installment Amount</label>
 															<label class="input">
 																<input type="text" id="emi_amount_<?php echo $i;?>" name="emi_amount" placeholder="Emi Amount">
 															</label>
 														</section>
+														<section class="col col-4">
+															<label class="label">Finance By Bank: </label>
+															<label class="select">  
+																<select name="prop_finance_by_bank" id="bank_<?php echo $i;?>" >
+																<option value=""> SELECT BANK </option>
+																<?php foreach($this->Common_model->get_data_by_query_pdo("select * from bank_master",array()) as $bank) ?>
+																<option value="<?php echo $bank['bank_id']; ?>" > <?php echo $bank['bank_name']; ?></option>
+																</select><i></i>
+															</label>
+														</section>
+														
 														
 													</div>
 
 													<section>
 														<label class="textarea"> 										
-															<textarea rows="3" name="remark" placeholder="Additional Remark"></textarea> 
+															<textarea rows="3" name="prop_remark" placeholder="Additional Remark"></textarea> 
 														</label>
 													</section>
 													
@@ -643,7 +692,8 @@
 		
 		function EditPropertySell(id){  
 		
-			$.post('<?php echo base_url('admin/CUSTOMER/editPropertySell'); ?>', {'id':id}, function (response) {
+			$("#edit_prop_sell").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
+		$.post('<?php echo base_url('admin/CUSTOMER/editPropertySell'); ?>', {'id':id}, function (response) {
 				$('#edit_prop_sell').html(response);
 			});
 		}

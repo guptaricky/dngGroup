@@ -95,6 +95,9 @@
 						<a href="<?php echo base_url().'admin/CUSTOMER/view_customers'?>" title="Customers"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Customers</span></a>
 					</li>
 					<li class="">
+						<a href="<?php echo base_url().'admin/CUSTOMER/customer_ledger'?>" title="Customers"><i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">Customers Ledger</span></a>
+					</li>
+					<li class="">
 						<a href="<?php echo base_url().'admin/ACCOUNTS/vendor'?>" title="Add Vendors"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Add Vendors</span></a>
 					</li>
 					<li class="">
