@@ -75,7 +75,7 @@
 							  <tr align="left">
 								<td><?php echo $sno;?>.</td>
 								<td><?php echo date("d-m-Y / H:i:s", strtotime($ft['notify_entrydt']));?></td>
-								<td><?php echo $this->Common_model->findfield('employes','emp_id',$ft['emp_id'],'emp_fname')." ".$this->Common_model->findfield('employes','emp_id',$ft['emp_id'],'emp_lname');?></td>
+								<td><?php if($ft['id']==1){echo "Admin";}else{echo $this->Common_model->findfield('employes','emp_id',$ft['emp_id'],'emp_fname')." ".$this->Common_model->findfield('employes','emp_id',$ft['emp_id'],'emp_lname');}?></td>
 								<td><?php echo $ft['notify_msg'];?></td>
 							  </tr>
 							  <?php endforeach;?>

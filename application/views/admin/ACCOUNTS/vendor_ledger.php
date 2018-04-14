@@ -154,7 +154,7 @@
 									</section>
 									<section class="col col-12">Balance
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="text" name="ledger_balance_amt" id="ledger_balance_amt"  placeholder="Balance">
+											<input type="text" name="ledger_balance_amt" id="ledger_balance_amt"  placeholder="Balance" readonly>
 										</label>
 									</section>
 									<section class="col col-12">Payment Date

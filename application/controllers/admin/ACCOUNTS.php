@@ -853,13 +853,13 @@ class ACCOUNTS extends MY_Controller {
 		$balance = 0;
 		$transfer_amt = 0;
 		$expense_amt = 0;
-		$employee = @$this->Common_model->get_alloted_site($uid);
-		if($employee!=0){
-		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where transfer_to=?",array($employee));
+		$site = @$this->Common_model->get_alloted_site($uid);
+		if($site!=0){
+		$transfer = $this->Common_model->get_data_by_query_pdo("select * from company_account_fund_transfer where transfer_to=?",array($site));
 		foreach($transfer as $t){
 			$transfer_amt = $transfer_amt + $t['transfer_amt'];
 		}
-		$expense = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id=? and ledger_status = ?",array($employee,1));
+		$expense = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id=? and ledger_status = ?",array($site,1));
 		// print_r($expense);die;
 		// echo $transfer_amt;die;
 		
@@ -899,6 +899,9 @@ class ACCOUNTS extends MY_Controller {
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$cury = date('Y') ;
+		$curm = date('m') ;
+		
 		$userid = (array_slice($this->session->userdata, 10, 1));
 		$uid = $userid['emp_id'];
 		$alloted_site = @$this->Common_model->get_alloted_site($uid);
@@ -906,11 +909,11 @@ class ACCOUNTS extends MY_Controller {
 		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
 		if($group == 'admin'){
 			$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
-			where partial_status=? order by partial_date desc",array(1));
+			where partial_status=? and date_format(partial_date,'%Y-%m') = '$cury-$curm'",array(1));
 		}
 		else{
 			$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
-			where partial_status=? and partial_site_id=? order by partial_date desc",array(1,$alloted_site));
+			where partial_status=? and partial_site_id=? and date_format(partial_date,'%Y-%m') = '$cury-$curm'",array(1,$alloted_site));
 		}
 		$this->load->view('admin/ACCOUNTS/reports',$data);
 		$this->load->view('default_admin/footer');
@@ -923,6 +926,8 @@ class ACCOUNTS extends MY_Controller {
 		$todate = date("Y-m-d", strtotime($this->input->post('todate')));
 		if($fromdate == "1970-01-01")$fromdate='';
 		if($todate == "1970-01-01")$todate='';
+		$cury = date('Y') ;
+		$curm = date('m') ;
 		
 		$querry = '';
 		if($fromdate !='' and $todate != '' )
@@ -933,10 +938,12 @@ class ACCOUNTS extends MY_Controller {
 		if($site_id!=''){
 		$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
 			where partial_status=? and partial_site_id=? $querry",array(1,$site_id));
+			// and date_format(partial_date,'%Y-%m') = '$cury-$curm'
 		}
 		else{
 			$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
-			where partial_status=? $querry",array(1));
+			where partial_status=? $querry and date_format(partial_date,'%Y-%m') = '$cury-$curm'",array(1));
+			// and date_format(partial_date,'%Y-%m') = '$cury-$curm'
 		}
 		// echo $this->db->last_query();
 		// die;

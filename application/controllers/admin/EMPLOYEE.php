@@ -5,7 +5,7 @@ class EMPLOYEE extends MY_Controller {
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
-		$data['employee'] = $this->Common_model->get_data_by_query_pdo("select * from employes where 1 ",array());
+		$data['employee'] = $this->Common_model->get_data_by_query_pdo("select * from employes where cust_active = 1 ",array());
 		$this->load->view('admin/EMPLOYEE/view_employee',$data);
 		$this->load->view('default_admin/footer');
 	}

@@ -79,7 +79,9 @@
 							?>
 								<tr style="background-color:#b9bec7">
 									<td style=""><img src="<?php echo base_url().'assets/img/avatars/male.png'; ?>" alt="img" class="offline img-circle"></td>
-									<td style="padding:10px !important"><?php echo $ft['notify_msg'];?> by <b><?php echo $this->Common_model->findfield('employes','emp_id',$ft['emp_id'],'emp_fname')." ".$this->Common_model->findfield('employes','emp_id',$ft['emp_id'],'emp_lname');?></b></th>
+									<td style="padding:10px !important"><?php echo $ft['notify_msg'];?> by <b><?php 
+									if($ft['id']==1){echo "Admin";}else{
+									echo $this->Common_model->findfield('employes','emp_id',$ft['emp_id'],'emp_fname')." ".$this->Common_model->findfield('employes','emp_id',$ft['emp_id'],'emp_lname');}?></b></th>
 								</tr>
 							<?php } ?>
 							</tbody>
