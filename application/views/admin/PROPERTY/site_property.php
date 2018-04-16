@@ -342,16 +342,22 @@
 													</div>
 
 													<div class="row">
-														<section class="col col-6">
+														<section class="col col-4">
 														  <label class="label">Email ID</label>
 															<label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
 																<input type="email" id="email_<?php echo $i;?>" name="email" placeholder="E-mail">
 															</label>
 														</section>
-														<section class="col col-6">
-														  <label class="label">Contact No.</label>
+														<section class="col col-4">
+														  <label class="label">Contact 1</label>
 															<label class="input"> <i class="icon-prepend fa fa-phone"></i>
-																<input type="tel" id="phone_<?php echo $i;?>" name="phone" placeholder="Phone" data-mask="(999) 999-9999">
+																<input type="tel" id="phone_<?php echo $i;?>" name="phone1" placeholder="Phone" data-mask="(999) 999-9999">
+															</label>
+														</section>
+														<section class="col col-4">
+														  <label class="label">Contact 2</label>
+															<label class="input"> <i class="icon-prepend fa fa-phone"></i>
+																<input type="tel" id="phone_<?php echo $i;?>" name="phone2" placeholder="Phone" data-mask="(999) 999-9999">
 															</label>
 														</section>
 													</div>

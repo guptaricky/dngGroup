@@ -31,9 +31,15 @@ foreach($property as $prop){}
 					</label>
 				</section>
 				<section class="col col-6">
-					<label class="label">Contact No. </label>
+					<label class="label">Contact 1</label>
 					<label class="input"> <i class="icon-prepend fa fa-phone"></i>
-						<input type="tel" id="phone" name="phone" placeholder="Phone" data-mask="(999) 999-9999" value="<?php echo !empty($prop['cust_phone'])? $prop['cust_phone']:''; ?>">
+						<input type="tel" id="phone" name="phone" placeholder="Phone1" data-mask="(999) 999-9999" value="<?php echo !empty($prop['cust_phone'])? $prop['cust_phone']:''; ?>">
+					</label>
+				</section>
+				<section class="col col-6">
+					<label class="label">Contact 2</label>
+					<label class="input"> <i class="icon-prepend fa fa-phone"></i>
+						<input type="tel" id="phone" name="phone" placeholder="Phone2" data-mask="(999) 999-9999" value="<?php echo !empty($prop['cust_phone'])? $prop['cust_phone']:''; ?>">
 					</label>
 				</section>
 			</div>
