@@ -78,7 +78,7 @@
 							  <tr align="left">
 								<td><?php echo $sno;?>.</td>
 								<td><?php echo ucwords(strtolower($ctm['cust_fname'].' '.$ctm['cust_lname']));?></td>
-								<td><?php echo $ctm['cust_phone'];?></td>
+								<td><?php echo $ctm['cust_phone1']; echo ($ctm['cust_phone2']!='')? '</br>': ''; echo $ctm['cust_phone2'];?></td>
 								<td><?php echo $ctm['cust_address'];?></td>
 								<td><?php echo $ctm['cust_additional_info'];?></td>
 								<td><?php echo $c['prop_remaining_amt'];?></td>

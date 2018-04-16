@@ -40,6 +40,13 @@ foreach($property as $prop){}
 		</fieldset>
 
 		<fieldset>
+		
+			<section>
+				<label class="label">Address </label>
+				<label for="address" class="input">
+					<input type="text" id="address" name="address" placeholder="Address"  style="text-transform: capitalize "value="<?php echo !empty($prop['cust_address'])? $prop['cust_address']:''; ?>"/>
+				</label>
+			</section>
 			<div class="row">
 				
 				<section class="col col-5">
@@ -64,12 +71,7 @@ foreach($property as $prop){}
 				</section>
 			</div>
 
-			<section>
-				<label class="label">Address </label>
-				<label for="address" class="input">
-					<input type="text" id="address" name="address" placeholder="Address"  style="text-transform: capitalize "value="<?php echo !empty($prop['cust_address'])? $prop['cust_address']:''; ?>"/>
-				</label>
-			</section>
+			
 
 			<section>
 				<label class="label">Additional Info </label>
@@ -79,14 +81,14 @@ foreach($property as $prop){}
 			</section>
 			<div class="row">
 			<section class="col col-5">
-				<label class="label">Aadhar Number </label>
+				<label class="label">Aadhar:</label>
 				<label class="input">
 					<input type="text" id="aadhar" name="aadhar" placeholder="Aadhar Number" value="<?php echo !empty($prop['cust_aadhar'])? $prop['cust_aadhar']:''; ?>">
 				</label>
 			</section>
 			
 			<section class="col col-4">
-				<label class="label">PAN Number </label>
+				<label class="label">PAN:</label>
 				<label class="input">
 					<input type="text" id="pan" name="pan" placeholder="PAN"  style="text-transform: uppercase;" value="<?php echo !empty($prop['cust_pan'])? $prop['cust_pan']:''; ?>">
 				</label>
@@ -102,12 +104,7 @@ foreach($property as $prop){}
 						<input type="text" name="propertyname" placeholder="Property name" style="text-transform: capitalize;" value="<?php echo !empty($prop['prop_name'])? $prop['prop_name']:''; ?>">
 					</label>
 				</section>
-				<section class="col col-6">
-					
-				</section>
-			</div>
-
-			<div class="row">
+				
 				<section class="col col-6">
 				<label class="label">Flat No. </label>
 					<label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
@@ -232,13 +229,14 @@ foreach($property as $prop){}
 						</select><i></i>
 					</label>
 				</section>
-				<section>
+				
+			
+			</div>
+			<section>
 				<label class="textarea"> 										
 					<textarea rows="3" name="prop_remark" placeholder="Additional Remark"><?php echo $prop['prop_remark']; ?></textarea> 
 				</label>
 			</section>
-			
-			</div>
 
 			
 			

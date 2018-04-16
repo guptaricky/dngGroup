@@ -76,12 +76,16 @@
 							<fieldset>
 							<input type="hidden" name="cust_id" id="cust_id">
 								<div class="row">
+									
 									<section class="col col-6">
+									<label class="label">First Name</label>
 										<label class="input"> <i class="icon-prepend fa fa-user"></i>
 											<input type="text" name="fname" id="fname" placeholder="First name" style="text-transform: capitalize;">
 										</label>
 									</section>
+									
 									<section class="col col-6">
+									<label class="label">Last Name</label>
 										<label class="input"> <i class="icon-prepend fa fa-user"></i>
 											<input type="text" name="lname" id="lname" placeholder="Last name" style="text-transform: capitalize;">
 										</label>
@@ -89,60 +93,76 @@
 								</div>
 
 								<div class="row">
-									<section class="col col-6">
+									<section class="col col-4">
+									<label class="label">Email:</label>
 										<label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
 											<input type="email" name="email" id="email" placeholder="E-mail">
 										</label>
 									</section>
-									<section class="col col-6">
+									<section class="col col-4">
+									<label class="label">Contact 1:</label>
 										<label class="input"> <i class="icon-prepend fa fa-phone"></i>
-											<input type="tel" name="phone" id="phone" placeholder="Phone" data-mask="(999) 999-9999">
+											<input type="tel" name="phone1" id="phone1" placeholder="Phone" data-mask="(999) 999-9999">
+										</label>
+									</section>
+									<section class="col col-4">
+									<label class="label">Contact 2:</label>
+										<label class="input"> <i class="icon-prepend fa fa-phone"></i>
+											<input type="tel" name="phone2" id="phone2" placeholder="Phone" data-mask="(999) 999-9999">
 										</label>
 									</section>
 								</div>
 							</fieldset>
 
 							<fieldset>
+								<section>
+								<label class="label">Address:</label>
+									<label for="address" class="input">
+										<input type="text" name="address" id="address" placeholder="Address"  style="text-transform: capitalize;">
+									</label>
+								</section>
+							
 								<div class="row">
-									
 									<section class="col col-5">
+									<label class="label">State:</label>
 										<label class="input">
 											<input type="text" name="state" id="state" placeholder="State">
 										</label>
 									</section>
 									
 									<section class="col col-4">
+									<label class="label">District:</label>
 										<label class="input">
 											<input type="text" name="city" id="city" placeholder="City">
 										</label>
 									</section>
 
 									<section class="col col-3">
+									<label class="label">Pin Code:</label>
 										<label class="input">
 											<input type="text" name="code" id="code" placeholder="Post code">
 										</label>
 									</section>
 								</div>
 
-								<section>
-									<label for="address" class="input">
-										<input type="text" name="address" id="address" placeholder="Address"  style="text-transform: capitalize;">
-									</label>
-								</section>
+								
 
 								<section>
+								<label class="label">Remark (if any):</label>
 									<label class="textarea"> 										
 										<textarea rows="3" name="info" id="info" placeholder="Additional info"></textarea> 
 									</label>
 								</section>
 								<div class="row">
 								<section class="col col-5">
+								<label class="label">Aadhar:</label>
 									<label class="input">
 										<input type="text" name="aadhar" id="aadhar" placeholder="Aadhar Number">
 									</label>
 								</section>
 								
 								<section class="col col-4">
+								<label class="label">PAN:</label>
 									<label class="input">
 										<input type="text" name="pan" id="pan" placeholder="PAN" style="text-transform: uppercase;">
 									</label>
@@ -212,7 +232,8 @@
 					$("#fname").val(v.cust_fname);
 					$("#lname").val(v.cust_lname);
 					$("#email").val(v.cust_email);
-					$("#phone").val(v.cust_phone);
+					$("#phone1").val(v.cust_phone1);
+					$("#phone2").val(v.cust_phone2);
 					$("#state").val(v.cust_state);
 					$("#code").val(v.cust_pincode);
 					$("#city").val(v.cust_city);

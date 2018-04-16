@@ -72,7 +72,9 @@
 							  <?php $sno=0;foreach ($customers as $ctm):$sno++;?>
 							  <tr align="left">
 								<td><?php echo $sno;?>.</td>
-								<td><?php echo ucwords(strtolower($ctm['cust_fname'].' '.$ctm['cust_lname']));?></br><i class="fa fa-phone"></i> <?php echo $ctm['cust_phone'];?></td>
+								<td><strong><?php echo ucwords(strtolower($ctm['cust_fname'].' '.$ctm['cust_lname']));?></strong></br>
+								<?php echo ($ctm['cust_phone1']!='')? '<i class="fa fa-phone"></i>': '' ;?>
+								<?php echo $ctm['cust_phone1']; echo ($ctm['cust_phone2']!='')? ', ': ''; echo $ctm['cust_phone2'];?></td>
 								<td><?php echo $ctm['cust_address'];?></td>
 								<td><?php echo $ctm['cust_additional_info'];?></td>
 								<td data-title="Action">

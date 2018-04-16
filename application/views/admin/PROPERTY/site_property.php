@@ -88,14 +88,14 @@
 							<td><p><strong>Booked on: </strong> <?php echo $booking_date;?></p></td>
 							<td colspan="2"><p><strong>Booking Amt: </strong> <?php echo $ptd['prop_booking_amt'];?></p></td>
 						</tr><tr>
-							<td><p><strong>Property price </strong> <?php echo number_format($prop_price);?></p></td>
+							<td><p><strong>Property price: </strong> <?php echo number_format($prop_price);?></p></td>
 							<td colspan="2"><p><strong>Balance: </strong><?php echo $ptd['prop_remaining_amt'];?></p></td>
 						</tr><tr>
 							<td><p><strong>Paid Amt: </strong><?php echo $ptd['prop_paid_amt'];?></p></td>
 							<td colspan="2"><p><strong>Emi Duration: </strong> <?php echo $ptd['prop_emi_duration'];?></p></td>
 						</tr><tr>
-							<td><p><strong>Installment Amt </strong> <?php echo number_format($ptd['prop_emi_amount']);?></p></td>
-							<td colspan="2"><p><strong>Finance By Bank </strong> <?php echo $bank;?></p></td>
+							<td><p><strong>Installment Amt: </strong> <?php echo number_format($ptd['prop_emi_amount']);?></p></td>
+							<td colspan="2"><p><strong>Finance By Bank: </strong> <?php echo $bank;?></p></td>
 						</tr>
 					</tbody>
 				</table>
@@ -358,6 +358,13 @@
 												</fieldset>
 
 												<fieldset>
+												
+													<section>
+														<label for="address" class="input">
+														  <label class="label">Address</label>
+															<input type="text" id="address_<?php echo $i;?>" name="address" placeholder="Address"  style="text-transform: capitalize;">
+														</label>
+													</section>
 													<div class="row">
 														
 														<section class="col col-5">
@@ -382,12 +389,7 @@
 														</section>
 													</div>
 
-													<section>
-														<label for="address" class="input">
-														  <label class="label">Address</label>
-															<input type="text" id="address_<?php echo $i;?>" name="address" placeholder="Address"  style="text-transform: capitalize;">
-														</label>
-													</section>
+													
 
 													<section>
 														<label class="textarea">
@@ -397,14 +399,14 @@
 													</section>
 													<div class="row">
 													<section class="col col-5">
-														  <label class="label">Aadhar Number</label>
+														  <label class="label">Aadhar:</label>
 														<label class="input">
 															<input type="text" id="aadhar_<?php echo $i;?>" name="aadhar" placeholder="Aadhar Number">
 														</label>
 													</section>
 													
 													<section class="col col-4">
-														  <label class="label">PAN Number</label>
+														  <label class="label">PAN:</label>
 														<label class="input">
 															<input type="text" id="pan_<?php echo $i;?>" name="pan" placeholder="PAN"  style="text-transform: uppercase;">
 														</label>
@@ -420,12 +422,7 @@
 																<input type="text" name="propertyname" placeholder="Property name" style="text-transform: capitalize;">
 															</label>
 														</section>
-														<section class="col col-6">
-															
-														</section>
-													</div>
-
-													<div class="row">
+														
 														<section class="col col-6">
 														  <label class="label">Flat No.</label>
 															<label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
