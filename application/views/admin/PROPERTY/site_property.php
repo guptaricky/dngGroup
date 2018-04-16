@@ -56,7 +56,6 @@
 						
 						</div>
 						</div>
-					<hr>
 					
 					<div id="myTabContent" class="tab-content">
 					<?php 
@@ -84,29 +83,30 @@
 						<tr>
 							<td><p><strong>Sold To: </strong><?php echo $sold_to;?></p></td>
 							<td><p><strong>Sold on: </strong> <?php echo $booking_date;?></p></td>
+							<td><button type="button" class="btn btn-xs btn-primary pull-right" onclick="EditPropertySell(<?php echo $ptd['prop_detail_id']; ?>)"> Edit Sell Detail </button></td>
 						</tr><tr>
 							<td><p><strong>Booked on: </strong> <?php echo $booking_date;?></p></td>
-							<td><p><strong>Booking Amt: </strong> <?php echo $ptd['prop_booking_amt'];?></p></td>
+							<td colspan="2"><p><strong>Booking Amt: </strong> <?php echo $ptd['prop_booking_amt'];?></p></td>
 						</tr><tr>
 							<td><p><strong>Property price </strong> <?php echo number_format($prop_price);?></p></td>
-							<td><p><strong>Balance: </strong><?php echo $ptd['prop_remaining_amt'];?></p></td>
+							<td colspan="2"><p><strong>Balance: </strong><?php echo $ptd['prop_remaining_amt'];?></p></td>
 						</tr><tr>
 							<td><p><strong>Paid Amt: </strong><?php echo $ptd['prop_paid_amt'];?></p></td>
-							<td><p><strong>Emi Duration: </strong> <?php echo $ptd['prop_emi_duration'];?></p></td>
+							<td colspan="2"><p><strong>Emi Duration: </strong> <?php echo $ptd['prop_emi_duration'];?></p></td>
 						</tr><tr>
 							<td><p><strong>Installment Amt </strong> <?php echo number_format($ptd['prop_emi_amount']);?></p></td>
-							<td><p><strong>Finance By Bank </strong> <?php echo $bank;?></p></td>
+							<td colspan="2"><p><strong>Finance By Bank </strong> <?php echo $bank;?></p></td>
 						</tr>
 					</tbody>
 				</table>
 							<br>
-							<h4 class="alert alert-info"> <div class="row"><div class="col-lg-12"> <div class="pull-left"> Payment Description </div> <div class="pull-right"> <button type="button" class="btn btn-xs btn-primary" onclick="EditPropertySell(<?php echo $ptd['prop_detail_id']; ?>)"> Edit Sell Detail </button> <div><div><div></h4>
+							<h4 class="alert alert-info"> <div class="row"><div class="col-lg-12"> <div class="pull-left"> Customer EMI Payment</div> <div class="pull-right">  <div><div><div></h4>
 						<form action="#" id="checkout-form_<?php echo $ptd['prop_detail_id']; ?>" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
 							<input type="hidden" name="emi_id" id="emi_id_<?php echo $ptd['prop_detail_id']; ?>">
 							<input type="hidden" name="emi_prop_detail_id" id="emi_prop_detail_id_<?php echo $ptd['prop_detail_id']; ?>" value="<?php echo $ptd['prop_detail_id']; ?>">
 							<fieldset>
 								<div class="row">
-									<section class="col col-2">
+									<section class="col col-2 hide">
 										<label class="label">Installment</label>
 										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
 											<input type="text" id ="emi_number_<?php echo $ptd['prop_detail_id']; ?>" name="emi_number" placeholder="Installment" >
@@ -146,14 +146,18 @@
 										<label class="textarea"> 										
 											<textarea rows="3" id="emi_remark_<?php echo $ptd['prop_detail_id']; ?>" name="emi_remark" placeholder="Remark"></textarea> 
 										</label>
-									</section>	
+									</section>
+									<section class="col col-2">
+										<label class="label">&nbsp;</label>
+										<button type="button" class="btn btn-primary btn-sm" onclick="addEmi(<?php echo $ptd['prop_detail_id']; ?>)" id="save_emi_btn" data-loading-text="Please Wait..."> Save </button>
+									</section>										
 								</div>
 
 								
 							</fieldset>
 
 
-							<button type="button" class="btn btn-primary btn-sm" onclick="addEmi(<?php echo $ptd['prop_detail_id']; ?>)" id="save_emi_btn" data-loading-text="Please Wait..."> Save </button>
+							
 						</form><br>
 						<div class="col col-12" >
 						<div id="emi_data_<?php echo $ptd['prop_detail_id']; ?>">
@@ -170,10 +174,12 @@
 		function GetEmi(detail_id){
 		$("#emi_data_" + detail_id).html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
+		var c = 0;	
 		content +='<table class="table table-bordered"><thead><tr><th>S.No.</th><th>Installment</th><th>Amount</th><th>Date</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getEmi'); ?>',{'detail_id':detail_id}, function(res){
-					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ (k++) +'.</td><td>'+ v.emi_number +'</td><td>'+ v.emi_amt +'</td><td>'+ v.emi_date +'</td><td>'+ v.emi_remark +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="EditEmi('+ v.emi_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="DeleteEmi('+ v.emi_id +','+ v.emi_prop_detail_id +')">Delete</a></td></tr>';
+					$.each(res, function (k, v) { c++;
+					if(c==1){ inst= "1st"; }else if(c==2){ inst= "2nd"; }else if(c==3){ inst= "3rd"; }else{ inst= c  +"th"; }
+					  content +='<tr><td>'+ c +'.</td><td>'+ inst +' Installment</td><td>'+ v.emi_amt +'</td><td>'+ v.emi_date +'</td><td>'+ v.emi_remark +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="EditEmi('+ v.emi_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="DeleteEmi('+ v.emi_id +','+ v.emi_prop_detail_id +')">Delete</a></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#emi_data_" + detail_id).html(content);

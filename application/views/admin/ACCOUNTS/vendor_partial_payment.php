@@ -246,10 +246,10 @@
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
 		var lid = $('#partial_ledger_id').val();	
-		content +='<table class="table table-bordered"><thead><tr><th>Amount</th><th width="100px">Date</th><th>Payment Type</th><th>Transaction/Cheque No.</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
+		content +='<table class="table table-bordered"><thead><tr><th>Amount</th><th width="100px">Date</th><th>Mode</th><th>Tran / Cheque No.</th><th width="40%">Remark</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getVendor_partial_payment'); ?>','lid='+lid, function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.partial_amt +'</td><td>'+ v.partial_date +'</td><td>'+ v.partial_payment_type +'</td><td>'+ v.partial_cheque_dd_no +'</td><td>'+ v.partial_remark +'</td><td><span title="Delete" style="cursor:pointer;" onclick="DeleteVendorLedger('+ v.partial_id +')" ><i class="fa fa-remove"></i></span></td></tr>';
+					  content +='<tr><td>'+ v.partial_amt +'</td><td>'+ v.partial_date +'</td><td>'+ v.partial_payment_type +'</td><td>'+ v.partial_cheque_dd_no +'</td><td>'+ v.partial_remark +'</td><td><button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.partial_id +')" ><i class="fa fa-remove"></i></button></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);

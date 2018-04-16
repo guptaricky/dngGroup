@@ -278,10 +278,10 @@
 		function GetVendorLedger(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Expense Category</th><th>Reciept No.</th><th>Date</th><th>Amount</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
+		content +='<table class="table table-bordered"><thead><tr><th>Expense Category</th><th>Receipt No.</th><th width="100px">Date</th><th>Amount</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getExpense_ledger'); ?>','', function(res){
 				$.each(res, function (k, v) {
-				  content +='<tr><td>'+ v.cat_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_payable_amt +'</td><td>'+ v.ledger_balance_amt +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditVendorLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'/Expense" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
+				  content +='<tr><td>'+ v.cat_name +'</td><td>'+ v.ledger_voucher_no +'</td><td width="15%">'+ v.ledger_payment_date +'</td><td style="text-align:right">'+ v.ledger_payable_amt +'</td><td  style="text-align:right;color:red">'+ v.ledger_balance_amt +'</td><td>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'/Expense" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
 				});					
 				content +='</tbody></table>';	
 			$("#result_data").html(content);
@@ -289,6 +289,8 @@
 			GetBalance();			
 		}
 	
+	//commented edit button
+	////<button class="btn btn-info btn-xs" title="Edit" onclick="EditVendorLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>
 
 		// function AddVendorLedger(){  
 		// var site = $("#ledger_site_id").val();

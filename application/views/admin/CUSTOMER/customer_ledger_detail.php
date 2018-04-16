@@ -160,6 +160,10 @@
 										<label class="textarea"> 										
 											<textarea rows="3" id="emi_remark_<?php echo $detail['prop_detail_id']; ?>" name="emi_remark" placeholder="Remark"></textarea> 
 										</label>
+									</section>
+									<section class="col col-2">
+										<label class="label">&nbsp;</label>
+										<button type="button" class="btn btn-primary btn-sm" onclick="addEmi(<?php echo $detail['prop_detail_id']; ?>)" id="save_emi_btn" data-loading-text="Please Wait..."> Save </button>
 									</section>	
 								</div>
 
@@ -167,7 +171,7 @@
 							</fieldset>
 
 
-							<button type="button" class="btn btn-primary btn-sm" onclick="addEmi(<?php echo $detail['prop_detail_id']; ?>)" id="save_emi_btn" data-loading-text="Please Wait..."> Save </button>
+							
 						</form><br>
 						</div>
 						</td></tr>
@@ -258,15 +262,15 @@
 		content +='<table class="table table-bordered"><thead><tr><th>Installment</th><th>Amount</th><th>Date</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getEmi'); ?>',{'detail_id':detail_id}, function(res){
 					$.each(res, function (k, v) { c++;
-					if(c==1){ c= "1 st"; }else if(c==2){ c= "2 nd"; }else if(c==3){ c= "3 rd"; }else{ c= c  +" th"; }
-					  content +='<tr><td>'+ c +'.</td><td>'+ v.emi_amt +'</td><td>'+ v.emi_date +'</td><td>'+ v.emi_remark +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="EditEmi('+ v.emi_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="DeleteEmi('+ v.emi_id +','+ v.emi_prop_detail_id +')">Delete</a></td></tr>';
+					if(c==1){ c= "1st"; }else if(c==2){ c= "2nd"; }else if(c==3){ c= "3rd"; }else{ c= c  +"th"; }
+					  content +='<tr><td>'+ c +' Installment</td><td>'+ v.emi_amt +'</td><td>'+ v.emi_date +'</td><td>'+ v.emi_remark +'</td><td></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#emi_data_" + detail_id).html(content);
 			});	 
 		}
 	
-
+// <a class="btn btn-info btn-xs" title="Edit" onclick="EditEmi('+ v.emi_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="DeleteEmi('+ v.emi_id +','+ v.emi_prop_detail_id +')">Delete</a>
 		
 		function addEmi(detail_id){  
 		

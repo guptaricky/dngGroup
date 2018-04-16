@@ -145,6 +145,7 @@ class CUSTOMER extends MY_Controller {
 			'cust_aadhar' => $_POST['aadhar'],
 			'cust_pan' => strtoupper($_POST['pan']),
 		);
+		// print_r($data);die;
 		$this->Crud_model->edit_record_by_anyid('customers','cust_id',$_POST['cust_id'],$data);
 		$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['cust_id'],'Customer Details Edited by Property Sold Edit');
 		

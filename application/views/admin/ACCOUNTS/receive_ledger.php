@@ -30,7 +30,7 @@
 
 				<div class="row">
 
-					<article class="col-sm-12 col-md-12 col-lg-5">
+					<article class="col-sm-12 col-md-12 col-lg-12">
 						
 						<div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false">
 							
@@ -44,18 +44,19 @@
 								
 								<!-- widget content -->
 								<div class="widget-body no-padding">
-									
 									<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
 										<input type="hidden" name="ledger_id" id="ledger_id" >
 										<div class="row">
-										<section class="col col-12">
-										<fieldset>
-											<div class="row">
-											<?php 
-											// print_r($emp_site);
-											$group = $this->session->userdata('group');
-											?>
+										<section class="col col-6">
+											<fieldset>
+												<div class="row">
+												<?php 
+												// print_r($emp_site);
+												$group = $this->session->userdata('group');
+												?>
+												
 												<section class="col col-6 <?php if(count($emp_site)>0){echo "hide";}?>">
+												<label class="label">Select Site:: </label>
 													<label class="select">
 														<select name="ledger_site_id" id="ledger_site_id" readonly>
 														<option value=""> SELECT SITE </option>
@@ -65,23 +66,20 @@
 														</select><i></i>
 													</label>
 												</section>
-											</div>
-											
-											
-											<div class="row">
+												</div>
+												<div class="row">
 												<section class="col col-6">
+												<label class="label">Receive From: </label>
 													<label class="input"> <i class="icon-prepend fa fa-user"></i>
 														<input type="text" name="ledger_receive_from" id="ledger_receive_from" placeholder="Receive From">
 													</label>
 												</section>
 												<section class="col col-6">
+												<label class="label">Date: </label>
 													<label class="input"> <i class="icon-prepend fa fa-calendar"></i>
 														<input type="text" name="ledger_payment_date" id="ledger_payment_date"  placeholder="yyyy-mm-dd" class="datepicker" value="<?php echo date('Y-m-d');?>">
 													</label>
 												</section>
-											</div>
-											
-											<div class="row">
 												<section class="col col-6">
 												<label class="label">Amount: </label>
 													<label class="input"> <i class="icon-prepend fa fa-money"></i>
@@ -100,14 +98,39 @@
 													</label>
 													</label>
 												</section>
+												</div>
+											</fieldset>
+										</section>
+										
+										<section class="col col-6">
+											<fieldset>
+												<div class="row">
+												<section class="col col-12">
+												<label class="label">Transaction No. </label>
+													<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
+														<input type="text" name="ledger_cheque_dd_no" id="ledger_cheque_dd_no" placeholder="Cheque / Transaction No.">
+													</label>
+												</section>
+											
+											</div>
+											<div class="row">
+												
+												<section class="col col-6">
+												<label class="label">Remark: </label>
+												<label class="textarea">					
+													<textarea rows="6" name="ledger_remark" id="ledger_remark" placeholder="Remark"></textarea> 
+												</label>
+												</section>	
+											
+											</div>
+											<div class="row">
+												
 												<section class="col col-6 hide">
 												<label class="label">Discount: </label>
 													<label class="input"> <i class="icon-prepend fa fa-money"></i>
 														<input type="text" name="ledger_discount" id="ledger_discount" onkeyup="CalculateAmt()"  value="0.00" placeholder="Discount">
 													</label>
 												</section>
-											</div>
-											<div class="row">
 												<section class="col col-6 hide">
 												<label class="label">Payable Amount: </label>
 													<label class="input"> <i class="icon-prepend fa fa-money"></i>
@@ -120,32 +143,14 @@
 														<input type="text" name="ledger_paid_amt" id="ledger_paid_amt" onkeyup="CalculateAmt()"  placeholder="Paid Amount">
 													</label>
 												</section>
-											</div>
-											<div class="row">
 												<section class="col col-6 hide">
 												<label class="label">Balance: </label>
 													<label class="input"> <i class="icon-prepend fa fa-money"></i>
 														<input type="text" name="ledger_balance_amt" id="ledger_balance_amt"  placeholder="Balance">
 													</label>
 												</section>
-												
 											</div>
-											<div class="row">
-												<section class="col col-6">
-												<label class="label">Transaction No. </label>
-													<label class="input"> <i class="icon-prepend fa fa-credit-card"></i>
-														<input type="text" name="ledger_cheque_dd_no" id="ledger_cheque_dd_no"  placeholder="Cheque / Transaction No.">
-													</label>
-												</section>
-											
-												<section class="col col-6">
-												<label class="label">Remark: </label>
-												<label class="textarea">					
-													<textarea rows="3" name="ledger_remark" id="ledger_remark" placeholder="Remark"></textarea> 
-												</label>
-												</section>	
-											</div>
-										</fieldset>
+											</fieldset>
 										</section>
 										</div>
 
@@ -166,8 +171,10 @@
 
 
 					</article>
-					
-					<article class="col-sm-12 col-md-12 col-lg-7">
+				</div>	
+				<div class="row">
+				
+					<article class="col-sm-12 col-md-12 col-lg-12">
 						
 						<div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false">
 							
@@ -248,7 +255,7 @@
 		content +='<table class="table table-bordered"><thead><tr><th>Receive From</th><th>Date</th><th>Amount</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getReceive_ledger'); ?>','', function(res){
 				$.each(res, function (k, v) {
-				  content +='<tr><td>'+ v.ledger_receive_from +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_payable_amt +'</td><td>'+ v.ledger_remark +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditReceiveLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteReceiveLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'/Receive" title="Receive Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
+				  content +='<tr><td>'+ v.ledger_receive_from +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_payable_amt +'</td><td width="40%">'+ v.ledger_remark +'</td><td>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteReceiveLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'/Receive" title="Receive Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
 				});					
 				content +='</tbody></table>';	
 			$("#result_data").html(content);
@@ -256,6 +263,8 @@
 			GetBalance();			
 		}
 	
+	//commented Edit button
+	////<button class="btn btn-info btn-xs" title="Edit" onclick="EditReceiveLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>
 
 		// function AddVendorLedger(){  
 		// var site = $("#ledger_site_id").val();

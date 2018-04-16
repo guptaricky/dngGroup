@@ -89,13 +89,13 @@
 										</label>
 									</section>
 									<section class="col col-12">
-										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
-											<input type="text" name="ledger_voucher_no" id="ledger_voucher_no" placeholder="Voucher Number">
-										</label>
-									</section>
-									<section class="col col-12">
 										<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
 											<input type="file" name="ledger_voucher_image" id="ledger_voucher_image" placeholder="Voucher Image">
+										</label>
+									</section>
+									<section class="col col-12">Voucher Number
+										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
+											<input type="text" name="ledger_voucher_no" id="ledger_voucher_no" placeholder="Voucher Number">
 										</label>
 									</section>
 									<section class="col col-12">Purchased Item Name
@@ -114,11 +114,11 @@
 										</label>
 									</section>
 									
-									<section class="col col-12">Rate Per Unit
+									<!--<section class="col col-12">Rate Per Unit
 										<label class="input"> <i class="icon-prepend fa fa-gears"></i>
 											<input type="text" name="ledger_rate" id="ledger_rate" onkeyup="CalculateAmt()"  placeholder="Rate Per Unit">
 										</label>
-									</section>
+									</section>-->
 									<section class="col col-12">Total Price
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
 											<input type="text" name="ledger_amount" id="ledger_amount" onkeyup="CalculateAmt()"  placeholder="Total Price">
@@ -291,13 +291,16 @@ $(document).ready(function(){
 		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Vendor name</th><th>Voucher No.</th><th>Date</th><th>Item</th><th>Total Amount</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getVendor_ledger'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.vendor_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_goods_name +'</td><td>'+ v.ledger_payable_amt +'</td><td>'+ v.ledger_balance_amt +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditVendorLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
+					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.vendor_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_goods_name +'</td><td  style="text-align:right">'+ v.ledger_payable_amt +'</td><td style="text-align:right;color:red">'+ v.ledger_balance_amt +'</td><td>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'/Vendor" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
 			});	
 			GetBalance();
 		}
+	//Commented edit button
+	///<button class="btn btn-info btn-xs" title="Edit" onclick="EditVendorLedger('+ v.ledger_id +')"><i class="fa fa-edit"></i></button>
+	
 	
 
 		// function AddVendorLedger(){  
@@ -361,13 +364,14 @@ $(document).ready(function(){
 			var qty = $("#ledger_qty").val();
 			var rate = $("#ledger_rate").val();
 			var extra_amount = $("#extra_amount").val();
-			var total = parseFloat(qty) * parseFloat(rate);
-			if(isNaN(total)) {
-			var total = 0;
-			}else{
-			var total = total;
-			}
-			$("#ledger_amount").val(total);
+			var total = $("#ledger_amount").val();
+			// var total = parseFloat(qty) * parseFloat(rate);
+			// if(isNaN(total)) {
+			// var total = 0;
+			// }else{
+			// var total = total;
+			// }
+			// $("#ledger_amount").val(total);
 			var disc = $("#ledger_discount").val();
 			var payble = parseFloat(total) +  parseFloat(extra_amount) - parseFloat(disc);			
 			if(isNaN(payble)) {
