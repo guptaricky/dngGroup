@@ -74,6 +74,16 @@
 											<input type="text" name="acc_short_name" id="acc_short_name" placeholder="Account Short Name">
 										</label>
 									</section>
+									<section class="col col-12">
+										<label class="select"> 
+										<select name="acc_site_id" id="acc_site_id" >
+											<option value=""> Site Name </option>
+											<?php foreach($sites as $site){ ?>
+											<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
+											<?php } ?>
+											</select><i></i>
+											</label>
+									</section>
 								</div>
 							</fieldset>
 						</section>
@@ -165,10 +175,10 @@ GetAccounts();
 		function GetAccounts(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Account Name</th><th>Account Short Name</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
+		content +='<table class="table table-bordered"><thead><tr><th>Account Name</th><th>Account Short Name</th><th>Balance</th><th>Site Name</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/get_account'); ?>','', function(data){
-					$.each(data, function (k, v) {
-					  content +='<tr><td>'+ v.acc_name +'</td><td>'+ v.acc_short_name +'</td><td>'+ v.acc_balance +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditAccount('+ v.acc_id +')"><i class="fa fa-edit"></i></button>&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/acc_statement'); ?>/'+ v.acc_id +'" title="Account Transaction Details"><i class="fa fa-eye-open"></i> Transactions</a>&nbsp;<a class="btn btn-info btn-xs" href="<?php echo base_url('admin/ACCOUNTS/account_balance'); ?>/'+ v.acc_id +'" title="Account Balance Details"><i class="fa fa-eye-open"></i> Add Balance</a></td></tr>';
+					$.each(data.list, function (k, v) {
+					  content +='<tr><td>'+ v.acc_name +'</td><td>'+ v.acc_short_name +'</td><td>'+ v.acc_balance +'</td><td>'+ v.acc_site +'</td><td><button class="btn btn-info btn-xs" title="Edit" onclick="EditAccount('+ v.acc_id +')"><i class="fa fa-edit"></i></button>&nbsp;&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/acc_statement'); ?>/'+ v.acc_id +'" title="Account Transaction Details"><i class="fa fa-eye-open"></i> Transactions</a>&nbsp;<a class="btn btn-info btn-xs" href="<?php echo base_url('admin/ACCOUNTS/account_balance'); ?>/'+ v.acc_id +'" title="Account Balance Details"><i class="fa fa-eye-open"></i> Add Balance</a></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
@@ -182,9 +192,10 @@ GetAccounts();
 		$.post('<?php echo base_url('admin/ACCOUNTS/edit_account'); ?>', {'id':id}, function(response){
 			var res = jQuery.parseJSON(response);
 				$.each(res, function (k, v) {
-					$("#acc_id").val(v.transfer_id);
+					$("#acc_id").val(v.acc_id);
 					$("#acc_name").val(v.acc_name);
 					$("#acc_short_name").val(v.acc_short_name);
+					$("#acc_site_id").val(v.acc_site_id);
 					});	
 			});	 
 		}	

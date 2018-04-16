@@ -79,19 +79,26 @@
 						$detail_id = $ptd['property_detail_id'];
 						?>
 						<div class="tab-pane fade <?php if($i==1)//echo "in active";?>" id="<?php echo $detail_type."_".$ptd['property_id'];?>">
-						<section class="col col-6">
-							<p><strong>Booked on: </strong> <?php echo $booking_date;?></p>
-							<p><strong>Sold To: </strong><?php echo $sold_to;?></p>
-							<p><strong>Sold on: </strong> <?php echo $booking_date;?></p>
-							<p><strong>Property price </strong> <?php echo number_format($prop_price);?></p>
-						</section>
-						<section class="col col-6">
-							<p><strong>Booking Amt: </strong> <?php echo $ptd['prop_booking_amt'];?></p>
-							<p><strong>Balance: </strong><?php echo $ptd['prop_remaining_amt'];?></p>
-							<p><strong>Emi Duration: </strong> <?php echo $ptd['prop_emi_duration'];?></p>
-							<p><strong>Installment Amt </strong> <?php echo number_format($ptd['prop_emi_amount']);?></p>
-							<p><strong>Finance By Bank </strong> <?php echo $bank;?></p>
-						</section>
+				<table class="table table-bordered" >
+					<tbody>
+						<tr>
+							<td><p><strong>Sold To: </strong><?php echo $sold_to;?></p></td>
+							<td><p><strong>Sold on: </strong> <?php echo $booking_date;?></p></td>
+						</tr><tr>
+							<td><p><strong>Booked on: </strong> <?php echo $booking_date;?></p></td>
+							<td><p><strong>Booking Amt: </strong> <?php echo $ptd['prop_booking_amt'];?></p></td>
+						</tr><tr>
+							<td><p><strong>Property price </strong> <?php echo number_format($prop_price);?></p></td>
+							<td><p><strong>Balance: </strong><?php echo $ptd['prop_remaining_amt'];?></p></td>
+						</tr><tr>
+							<td><p><strong>Paid Amt: </strong><?php echo $ptd['prop_paid_amt'];?></p></td>
+							<td><p><strong>Emi Duration: </strong> <?php echo $ptd['prop_emi_duration'];?></p></td>
+						</tr><tr>
+							<td><p><strong>Installment Amt </strong> <?php echo number_format($ptd['prop_emi_amount']);?></p></td>
+							<td><p><strong>Finance By Bank </strong> <?php echo $bank;?></p></td>
+						</tr>
+					</tbody>
+				</table>
 							<br>
 							<h4 class="alert alert-info"> <div class="row"><div class="col-lg-12"> <div class="pull-left"> Payment Description </div> <div class="pull-right"> <button type="button" class="btn btn-xs btn-primary" onclick="EditPropertySell(<?php echo $ptd['prop_detail_id']; ?>)"> Edit Sell Detail </button> <div><div><div></h4>
 						<form action="#" id="checkout-form_<?php echo $ptd['prop_detail_id']; ?>" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">

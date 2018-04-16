@@ -127,7 +127,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-plus"></i> </span>
-					<h2>Vendor Partial Payment </h2>				
+					<h2><?php echo $paymentType;?> Partial Payment </h2>				
 					
 				</header>
 
@@ -136,7 +136,7 @@
 					
 					<!-- widget content -->
 					<div class="widget-body no-padding">
-						
+					<?php	if($ledger[0]['ledger_balance_amt']>0){ ?>
 						<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate">
 								<input type="hidden" name="partial_ledger_id" id="partial_ledger_id" value="<?php echo $ledger[0]['ledger_id']; ?>">
 								<input type="hidden" name="partial_site_id" id="partial_site_id" value="<?php echo $ledger[0]['ledger_site_id']; ?>">
@@ -184,7 +184,9 @@
 								<button type="button" class="btn btn-primary" onclick="SavePayment()" id="save_btn" data-loading-text="Please Wait..."> Save </button>
 							</footer>
 						</form>
-
+					<?php }else{ ?><br>
+					<h4 style="text-align:center;">All Payment is Clear.</h4>
+					<?php } ?>
 					</div>
 					<!-- end widget content -->
 					
@@ -203,7 +205,7 @@
 				
 				<header>
 					<span class="widget-icon"> <i class="fa fa-list"></i> </span>
-					<h2>Vendors List</h2>			
+					<h2><?php echo $paymentType;?> List</h2>			
 					<div class="jarviswidget-ctrls" role="menu">  <a href="javascript:void(0);" id="reloaddata" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="" data-placement="bottom" onclick="GetPartialPayment()" data-original-title="Refresh"><i class="fa fa-refresh"></i></a>   </div>				
 					
 				</header>

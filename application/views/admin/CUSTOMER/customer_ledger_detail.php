@@ -68,7 +68,7 @@
 						<table class="table table-bordered">
 						<tbody>
 						<tr>
-						<td><?php echo "<strong>Customer Name :</strong> ".$cust['cust_fname'].' '.$cust['cust_fname']; ?></td>
+						<td><?php echo "<strong>Customer Name :</strong> ".$cust['cust_fname'].' '.$cust['cust_lname']; ?></td>
 						<td><?php echo "<strong>Customer Contact Info :</strong> ".$cust['cust_phone'].' '.$cust['cust_email']; ?></td>
 						</tr><tr>
 						<td colspan='2'><?php echo "<strong>Customer Address :</strong> ".$cust['cust_address'].' '.$cust['cust_pincode']; ?></td>
@@ -93,17 +93,17 @@
 						<td><?php echo "<strong>Carpet Area :</strong> ".$detail['prop_carper_area']; ?></td>
 						<td><?php echo "<strong>Build-Up Area : </strong>".$detail['prop_buildup_area']; ?></td>
 						</tr><tr>
-						<td><?php echo "<strong>Actual Price. :</strong> ".$detail['prop_price']; ?></td>
-						<td><?php echo "<strong>Sell Price :</strong> ".$detail['prop_sell_price']; ?></td>
-						<td><?php echo "<strong>Discount :</strong> ".$detail['prop_discount']; ?></td>
+						<td><?php echo "<strong>Actual Price. :</strong> ".number_format($detail['prop_price']); ?></td>
+						<td><?php echo "<strong>Sell Price :</strong> ".number_format($detail['prop_sell_price']); ?></td>
+						<td><?php echo "<strong>Discount :</strong> ".number_format($detail['prop_discount']); ?></td>
 						</tr><tr>
 						<td><?php echo "<strong>Booking On :</strong> ".$detail['prop_booking_date']; ?></td>
-						<td><?php echo "<strong>Booking Amount :</strong> ".$detail['prop_booking_amt']; ?></td>
-						<td><?php echo "<strong>Paid Amount :</strong> ".$detail['prop_paid_amt']; ?></td>
+						<td><?php echo "<strong>Booking Amount :</strong> ".number_format($detail['prop_booking_amt']); ?></td>
+						<td><?php echo "<strong>Paid Amount :</strong> ".number_format($detail['prop_paid_amt']); ?></td>
 						</tr><tr>
-						<td><?php echo "<strong>Remaining Amount :</strong> ".$detail['prop_remaining_amt']; ?></td>
+						<td><?php echo "<strong>Remaining Amount :</strong> ".number_format($detail['prop_remaining_amt']); ?></td>
 						<td><?php echo "<strong>EMI Duration :</strong> ".$detail['prop_emi_duration']; ?></td>
-						<td><?php echo "<strong>Installment Amount :</strong> ".$detail['prop_emi_amount']; ?></td>
+						<td><?php echo "<strong>Installment Amount :</strong> ".number_format($detail['prop_emi_amount']); ?></td>
 						</tr><tr>
 						<td><?php echo "<strong>Finance By Bank :</strong> ".$detail['prop_finance_by_bank']; ?></td>
 						<td><?php echo "<strong>Remark :</strong> ".$detail['prop_remark']; ?></td>
@@ -120,12 +120,12 @@
 							<input type="hidden" name="emi_prop_detail_id" id="emi_prop_detail_id_<?php echo $detail['prop_detail_id']; ?>" value="<?php echo $detail['prop_detail_id']; ?>">
 							<fieldset>
 								<div class="row">
-									<section class="col col-2">
+									<!--<section class="col col-2">
 										<label class="label">Installment</label>
 										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
-											<input type="text" id ="emi_number_<?php echo $detail['prop_detail_id']; ?>" name="emi_number" placeholder="Installment" >
+											<input type="text" id ="emi_number_<?php //echo $detail['prop_detail_id']; ?>" name="emi_number" placeholder="Installment" >
 										</label>
-									</section>
+									</section>-->
 									<section class="col col-2">
 										<label class="label">Payment Date</label>
 										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
@@ -253,11 +253,13 @@
 		
 	function GetEmi(detail_id){
 		$("#emi_data_" + detail_id).html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
+		var c =0;	
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>S.No.</th><th>Installment</th><th>Amount</th><th>Date</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
+		content +='<table class="table table-bordered"><thead><tr><th>Installment</th><th>Amount</th><th>Date</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getEmi'); ?>',{'detail_id':detail_id}, function(res){
-					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ (k++) +'.</td><td>'+ v.emi_number +'</td><td>'+ v.emi_amt +'</td><td>'+ v.emi_date +'</td><td>'+ v.emi_remark +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="EditEmi('+ v.emi_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="DeleteEmi('+ v.emi_id +','+ v.emi_prop_detail_id +')">Delete</a></td></tr>';
+					$.each(res, function (k, v) { c++;
+					if(c==1){ c= "1 st"; }else if(c==2){ c= "2 nd"; }else if(c==3){ c= "3 rd"; }else{ c= c  +" th"; }
+					  content +='<tr><td>'+ c +'.</td><td>'+ v.emi_amt +'</td><td>'+ v.emi_date +'</td><td>'+ v.emi_remark +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="EditEmi('+ v.emi_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="DeleteEmi('+ v.emi_id +','+ v.emi_prop_detail_id +')">Delete</a></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#emi_data_" + detail_id).html(content);
@@ -284,7 +286,7 @@
 				$.each(res, function (k, v) {
 					$("#emi_id_" + v.emi_prop_detail_id).val(v.emi_id);
 					$("#emi_prop_detail_id_" + v.emi_prop_detail_id).val(v.emi_prop_detail_id);
-					$("#emi_number_" + v.emi_prop_detail_id).val(v.emi_number);
+					// $("#emi_number_" + v.emi_prop_detail_id).val(v.emi_number);
 					$("#emi_amount_" + v.emi_prop_detail_id).val(v.emi_amt);
 					$("#emi_date_" + v.emi_prop_detail_id).val(v.emi_date);
 					$("#emi_payment_type_" + v.emi_prop_detail_id).val(v.emi_payment_type);

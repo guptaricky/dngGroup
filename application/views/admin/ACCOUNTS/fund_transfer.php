@@ -66,10 +66,16 @@
 								<div class="row">
 									<section class="col col-12">
 										<label class="select"> 
-											<select name="transfer_from" id="transfer_from">
+											<!--<select name="transfer_from" id="transfer_from">
 											<option value=""> Transfer From </option>
 											<?php foreach($account as $acc){ ?>
 											<option value="<?php echo $acc['acc_id']; ?>"><?php echo $acc['acc_name']; ?></option>
+											<?php } ?>
+											</select><i></i>-->
+											<select name="transfer_from" id="transfer_from" >
+											<option value=""> Transfer To </option>
+											<?php foreach($sites as $site){ ?>
+											<option value="<?php echo $site['site_id']; ?>"><?php echo $site['site_name']; ?></option>
 											<?php } ?>
 											</select><i></i>
 										</label>

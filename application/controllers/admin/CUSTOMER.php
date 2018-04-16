@@ -210,7 +210,7 @@ class CUSTOMER extends MY_Controller {
 		'emi_prop_detail_id' 	=> $_POST['emi_prop_detail_id'],
 		'emi_date' 			=> $_POST['emi_date'],
 		'emi_amt' 			=> $_POST['emi_amt'],
-		'emi_type'			=> $_POST['emi_type'],
+		// 'emi_number'			=> $_POST['emi_number'],
 		'emi_payment_type'	=> $_POST['emi_payment_type'],
 		'emi_cheque_dd_no'	=> $_POST['emi_cheque_dd_no'],
 		'emi_remark'		=> $_POST['emi_remark'],
