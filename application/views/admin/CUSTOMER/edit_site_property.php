@@ -227,11 +227,12 @@ foreach($property as $prop){}
 				</section>
 				<section class="col col-4">
 					<label class="label">Finance By Bank: </label>
-					<label class="select">  
+					<label class="select"> 
+						<?php $banks = $this->Common_model->get_data_by_query("select * from bank_master"); ?>
 						<select name="prop_finance_by_bank" id="bank_<?php echo $i;?>" >
 							<option value=""> SELECT BANK </option>
-							<?php foreach($this->Common_model->get_data_by_query_pdo("select * from bank_master",array()) as $bank) ?>
-							<option value="<?php echo $bank['bank_id']; ?>"  <?php echo ($prop['prop_finance_by_bank']==$bank['bank_id'])? 'selected':''; ?>> <?php echo $bank['bank_name']; ?></option>
+							<?php foreach($banks as $bank) {?>
+							<option value="<?php echo $bank['bank_id']; ?>"  <?php echo ($prop['prop_finance_by_bank']==$bank['bank_id'])? 'selected':''; ?>> <?php echo $bank['bank_name']; ?></option><?php } ?>
 						</select><i></i>
 					</label>
 				</section>

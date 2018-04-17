@@ -46,7 +46,7 @@
 							$detail_type = $data['sitedetail'][0]['detail_type'];
 							if($pt['detail_type'] == $detail_type){
 						?>
-						<li><a href="#<?php echo $detail_type."_".$ptd['property_id'];?>" data-toggle="tab" onclick="GetDetail('<?php echo $prop_count;?>','<?php echo $detail_type;?>','<?php echo $ptd['property_sno'];?>','<?php echo $ptd['property_status'];?>')"><?php echo $ptd['property_sno'];?><span style="color:<?php if($ptd['property_status'] == 'Sold'){echo 'red';}elseif($ptd['property_status']=='Cancelled'){echo 'green';}elseif($ptd['property_status']=='Available'){echo '';}?>"><?php echo $ptd['property_status'];?></span></a></li>
+						<li style="margin:5px;width:10%"><a href="#<?php echo $detail_type."_".$ptd['property_id'];?>" data-toggle="tab" onclick="GetDetail('<?php echo $prop_count;?>','<?php echo $detail_type;?>','<?php echo $ptd['property_sno'];?>','<?php echo $ptd['property_status'];?>')"><?php echo $ptd['property_sno'];?><span style="color:<?php if($ptd['property_status'] == 'Sold'){echo 'red';}elseif($ptd['property_status']=='Cancelled'){echo 'green';}elseif($ptd['property_status']=='Available'){echo '';}?>"><?php echo $ptd['property_status'];?></span></a></li>
 						<?php } } ?>
 						</ul>
 					</div>
@@ -550,11 +550,12 @@
 														</section>
 														<section class="col col-4">
 															<label class="label">Finance By Bank: </label>
-															<label class="select">  
+															<label class="select"> 
 																<select name="prop_finance_by_bank" id="bank_<?php echo $i;?>" >
 																<option value=""> SELECT BANK </option>
-																<?php foreach($this->Common_model->get_data_by_query_pdo("select * from bank_master",array()) as $bank) ?>
-																<option value="<?php echo $bank['bank_id']; ?>" > <?php echo $bank['bank_name']; ?></option>
+																<?php foreach($banks as $bnk){ ?>
+																<option value="<?php echo $bnk['bank_id']; ?>" > <?php echo $bnk['bank_name']; ?></option>
+																<?php } ?>
 																</select><i></i>
 															</label>
 														</section>

@@ -83,6 +83,7 @@ class MASTERS extends MY_Controller {
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$data['banks'] = $this->Common_model->get_data_by_query("select * from bank_master");
 		$this->load->view('admin/MASTERS/site_master');
 		$this->load->view('default_admin/footer');
 	}
@@ -274,7 +275,7 @@ class MASTERS extends MY_Controller {
 		left join property_other_detail pod on pd.property_id = pod.prop_id
  		where pd.property_site_id=?",array($site_id));
 		@$detail_type = $data['propertytype'][0]['detail_type'];
-		
+		$data['banks'] = $this->Common_model->get_data_by_query_pdo("select * from bank_master",array());
 		$this->load->view('admin/PROPERTY/site_property',$data);
 	}
 	

@@ -98,17 +98,17 @@
 						<td><?php echo "<strong>Carpet Area :</strong> ".$detail['prop_carper_area']; ?></td>
 						<td><?php echo "<strong>Build-Up Area : </strong>".$detail['prop_buildup_area']; ?></td>
 						</tr><tr>
-						<td><?php echo "<strong>Actual Price. :</strong> ".number_format($detail['prop_price']); ?></td>
-						<td><?php echo "<strong>Sell Price :</strong> ".number_format($detail['prop_sell_price']); ?></td>
-						<td><?php echo "<strong>Discount :</strong> ".number_format($detail['prop_discount']); ?></td>
+						<td><?php echo "<strong>Actual Price. :</strong> ".$this->Common_model->moneyFormatIndia($detail['prop_price']); ?></td>
+						<td><?php echo "<strong>Sell Price :</strong> ".$this->Common_model->moneyFormatIndia($detail['prop_sell_price']); ?></td>
+						<td><?php echo "<strong>Discount :</strong> ".$this->Common_model->moneyFormatIndia($detail['prop_discount']); ?></td>
 						</tr><tr>
 						<td><?php echo "<strong>Booking On :</strong> ".$detail['prop_booking_date']; ?></td>
-						<td><?php echo "<strong>Booking Amount :</strong> ".number_format($detail['prop_booking_amt']); ?></td>
-						<td><?php echo "<strong>Paid Amount :</strong> ".number_format($detail['prop_paid_amt']); ?></td>
+						<td><?php echo "<strong>Booking Amount :</strong> ".$this->Common_model->moneyFormatIndia($detail['prop_booking_amt']); ?></td>
+						<td><?php echo "<strong>Paid Amount :</strong> ".$this->Common_model->moneyFormatIndia($detail['prop_paid_amt']); ?></td>
 						</tr><tr>
-						<td><?php echo "<strong>Remaining Amount :</strong> ".number_format($detail['prop_remaining_amt']); ?></td>
+						<td><?php echo "<strong>Remaining Amount :</strong> ".$this->Common_model->moneyFormatIndia($detail['prop_remaining_amt']); ?></td>
 						<td><?php echo "<strong>EMI Duration :</strong> ".$detail['prop_emi_duration']; ?></td>
-						<td><?php echo "<strong>Installment Amount :</strong> ".number_format($detail['prop_emi_amount']); ?></td>
+						<td><?php echo "<strong>Installment Amount :</strong> ".$this->Common_model->moneyFormatIndia($detail['prop_emi_amount']); ?></td>
 						</tr><tr>
 						<td><?php echo "<strong>Finance By Bank :</strong> ".$detail['prop_finance_by_bank']; ?></td>
 						<td><?php echo "<strong>Remark :</strong> ".$detail['prop_remark']; ?></td>
@@ -263,12 +263,13 @@
 	function GetEmi(detail_id){
 		$("#emi_data_" + detail_id).html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var c =0;	
+		var inst ='';	
 		var content ='';	
 		content +='<table class="table table-bordered"><thead><tr><th>Installment</th><th>Amount</th><th>Date</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getEmi'); ?>',{'detail_id':detail_id}, function(res){
 					$.each(res, function (k, v) { c++;
-					if(c==1){ c= "1st"; }else if(c==2){ c= "2nd"; }else if(c==3){ c= "3rd"; }else{ c= c  +"th"; }
-					  content +='<tr><td>'+ c +' Installment</td><td>'+ v.emi_amt +'</td><td>'+ v.emi_date +'</td><td>'+ v.emi_remark +'</td><td></td></tr>';
+					if(c==1){ inst= "1st"; }else if(c==2){ inst= "2nd"; }else if(c==3){ inst= "3rd"; }else{ inst= c  +"th"; }
+					  content +='<tr><td>'+ inst +' Installment</td><td>'+ v.emi_amt +'</td><td>'+ v.emi_date +'</td><td>'+ v.emi_remark +'</td><td></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#emi_data_" + detail_id).html(content);
