@@ -69,7 +69,12 @@
 						<tbody>
 						<tr>
 						<td><?php echo "<strong>Customer Name :</strong> ".$cust['cust_fname'].' '.$cust['cust_lname']; ?></td>
-						<td><?php echo "<strong>Customer Contact Info :</strong> ".$cust['cust_phone'].' '.$cust['cust_email']; ?></td>
+						<td><?php 
+						echo "<strong>Customer Contact Info :</strong> ". $cust['cust_phone1'];
+						echo ($cust['cust_phone2']!='')? ', ': '';
+						echo $cust['cust_phone2'];
+						echo ($cust['cust_email']!='')? ', ': '';
+						echo $cust['cust_email']; ?></td>
 						</tr><tr>
 						<td colspan='2'><?php echo "<strong>Customer Address :</strong> ".$cust['cust_address'].' '.$cust['cust_pincode']; ?></td>
 						</tr><tr>
