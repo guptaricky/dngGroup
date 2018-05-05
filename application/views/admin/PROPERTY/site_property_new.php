@@ -1,6 +1,6 @@
 <div class="modal fade" id="property_form">
 	<div class="modal-dialog modal-lg">
-		<div class="modal-content" style="padding:10px">
+		<div class="modal-content" style="padding:10px" id="modal-form">
 			<form action="#" id="checkout-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
 					
 			<div class="modal-header">
@@ -128,14 +128,14 @@
 					<section class="col col-6">
 					  <label class="label">Property Name</label>
 						<label class="input"> <i class="icon-prepend fa fa-user"></i>
-							<input type="text" name="propertyname" placeholder="Property name" style="text-transform: capitalize;">
+							<input type="text" id="propertyname" name="propertyname" placeholder="Property name" style="text-transform: capitalize;">
 						</label>
 					</section>
 					
 					<section class="col col-6">
 					  <label class="label">Flat No.</label>
 						<label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
-							<input type="text" name="propertyNo" placeholder="Flat No.">
+							<input type="text" id="propertyNo" name="propertyNo" placeholder="Flat No.">
 						</label>
 					</section>
 					
@@ -149,28 +149,28 @@
 					<section class="col col-3">
 					  <label class="label">Area / sqft.</label>
 						<label class="input">
-							<input type="text" name="area" placeholder="Area (per square feet)">
+							<input type="text" id="area" name="area" placeholder="Area (per square feet)">
 						</label>
 					</section>
 					
 					<section class="col col-2">
 					  <label class="label">Carpet Area</label>
 						<label class="input">
-							<input type="text" name="carpetarea" placeholder="Carpet area">
+							<input type="text" id="carpetarea" name="carpetarea" placeholder="Carpet area">
 						</label>
 					</section>
 
 					<section class="col col-2">
 					  <label class="label">Build-up Area</label>
 						<label class="input">
-							<input type="text" name="builduparea" placeholder="Build-up Area">
+							<input type="text" id="builduparea" name="builduparea" placeholder="Build-up Area">
 						</label>
 					</section>
 					
 					<section class="col col-5">
 					  <label class="label">Property Type</label>
 						<label class="input">
-							<input type="text" name="propertytype" placeholder="Property Type">
+							<input type="text" id="propertytype" name="propertytype" placeholder="Property Type">
 						</label>
 					</section>
 				</div>
@@ -268,7 +268,7 @@
 
 				<section>
 					<label class="textarea"> 										
-						<textarea rows="3" name="prop_remark" placeholder="Additional Remark"></textarea> 
+						<textarea rows="3" name="prop_remark" id="prop_remark" placeholder="Additional Remark"></textarea> 
 					</label>
 				</section>
 				
@@ -283,6 +283,29 @@
 				<a href="javascript:;" class="btn btn-sm btn-primary" data-dismiss="modal">Close</a>
 			</div>
 			</form>
+		</div>
+		<div class="modal-content" style="padding:10px" id="modal-data">
+			<table class="table table-bordered" >
+				<tbody>
+					<tr>
+						<td><p><strong>Sold To: </strong> <span id="sold_to">N/A</span></p></td>
+						<td><p><strong>Sold on: </strong> <span id="sold_on">N/A</span></p></td>
+						<td><button type="button" class="btn btn-xs btn-primary pull-right" onclick="EditPropertySell()"> Edit Sell Detail </button></td>
+					</tr><tr>
+						<td><p><strong>Booked on: </strong> <span id="booked_on">N/A</span></p></td>
+						<td colspan="2"><p><strong>Booking Amt: </strong> <span id="bookingamt">0.00</span></p></td>
+					</tr><tr>
+						<td><p><strong>Property price: </strong> <span id="prop_price">N/A</span></p></td>
+						<td colspan="2"><p><strong>Balance: </strong><span id="balance">0.00</span></p></td>
+					</tr><tr>
+						<td><p><strong>Paid Amt: </strong><span id="paid_amt">0.00</span></p></td>
+						<td colspan="2"><p><strong>Emi Duration: </strong> <span id="emi_dura">N/A</span></p></td>
+					</tr><tr>
+						<td><p><strong>Installment Amt: </strong> <span id="install_amt">N/A</span></p></td>
+						<td colspan="2"><p><strong>Finance By Bank: </strong> <span id="fin_bank">N/A</span></p></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>
@@ -368,7 +391,7 @@
 			
 	<script>
 
-		function  CalculateAmt(c){
+	function CalculateAmt(c){
 			var total = $("#actualprice_" +c).val();
 			var disc = $("#discount_" +c).val();
 			var payble = parseFloat(total) - parseFloat(disc);			
@@ -397,18 +420,45 @@
 			$("#emi_amount_" +c).val(emi_amt);
 		}	
 
-		function GetDetail(sno, prop_type, prop_no, prop_status, prop_id){
-		(prop_id != '' ? $("#prop_id").val(prop_id) : '');
-		$('#edit_prop_sell').html("");
+	function GetDetail(sno, prop_type, prop_no, prop_status, prop_id){
+			// alert(prop_status);
+			// alert(prop_id);
+		(prop_id != '') ? $("#prop_id").val(prop_id) : '';
+		if(prop_status=='Available'){
+			// $('#checkout-form').reset();
+			$('#checkout-form')[0].reset();
+			$('#modal-form').show();
+			$('#modal-data').hide();
+		}
+		else{
+			$('#modal-form').hide();
+			$('#modal-data').show();
+		}
+		$.post('<?php echo base_url('admin/MASTERS/getPropDetail'); ?>', {'prop_id':prop_id}, function(response){
+			var res = jQuery.parseJSON(response);
+				$.each(res, function (k, v) {
+					(v.cust_fname != '') ? $("#sold_to").html(v.cust_fname +' '+ v.cust_lname).css("text-transform", "uppercase") : '';
+					(v.prop_entrydt != '') ? $("#sold_on").html(v.prop_entrydt) : $("#sold_on").css("color", "red");
+					(v.prop_booking_date != '') ? $("#booked_on").html(v.prop_booking_date) : $("#booked_on").css("color", "red");
+					(v.prop_booking_amt != 0) ? $("#bookingamt").html(v.prop_booking_amt) : $("#bookingamt").css("color", "red");
+					(v.prop_price != 0) ? $("#prop_price").html(v.prop_price) : $("#prop_price").css("color", "red");
+					(v.prop_remaining_amt != 0) ? $("#balance").html(v.prop_remaining_amt) : $("#balance").css("color", "red");
+					(v.prop_paid_amt != 0) ? $("#paid_amt").html(v.prop_paid_amt) : $("#paid_amt").css("color", "red");
+					(v.prop_emi_duration != 0) ? $("#emi_dura").html(v.prop_emi_duration) : $("#emi_dura").css("color", "red");
+					(v.prop_emi_amount != 0) ? $("#install_amt").html(prop_emi_amount) : $("#install_amt").css("color", "red");
+					(v.prop_finance_by_bank != '') ? $("#fin_bank").html(v.prop_finance_by_bank) : $("#fin_bank").css("color", "red");
+					});	
+			});
+		// $('#edit_prop_sell').html("");
 		// document.getElementById('myTabContent').scrollIntoView();
 		// document.getElementById('checkout-form_'+sno).scrollIntoView();
 		// $("#prop_detail_print").html("");
-		$("#prop_detail_print_"+sno).html(prop_type + " : <strong>" + prop_no + "</strong>");
+		// $("#prop_detail_print_"+sno).html(prop_type + " : <strong>" + prop_no + "</strong>");
 		
 		
 		}
 		
-		function getCustDetail(cust_id){
+	function getCustDetail(cust_id){
 			if(cust_id!=''){
 			$.post('<?php echo base_url('admin/CUSTOMER/editCustomerDetail'); ?>', {'id':cust_id}, function(response){
 			var res = jQuery.parseJSON(response);
@@ -445,7 +495,7 @@
 		}
 		
 		
-		function addCustomer(){  
+	function addCustomer(){  
 		
 		// var prop_id = $("#prop_id").val();
 		// alert('#checkout-form');		
@@ -457,16 +507,55 @@
 				$('#alert_check').removeclass('hide');
 				$('#property_form').modal('hide');
 			});
-		}
+	}
 		
 		
-		function EditPropertySell(id){  
-		
-			$("#edit_prop_sell").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
-		$.post('<?php echo base_url('admin/CUSTOMER/editPropertySell'); ?>', {'id':id}, function (response) {
-				$('#edit_prop_sell').html(response);
+	function EditPropertySell(){  
+		var prop_id =$("#prop_id").val();
+		// alert(prop_id);
+		// $('#modal-form').show();
+		$('#modal-data').hide();
+		// $("#modal-form").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
+		// $.post('<?php echo base_url('admin/CUSTOMER/editPropertySell'); ?>', {'id':id}, function (response) {
+			// $('#modal-form').show();
+				// $('#modal-form').html(response);
+			// });
+		$.post('<?php echo base_url('admin/MASTERS/getPropDetail'); ?>', {'prop_id':prop_id}, function(response){
+			var res = jQuery.parseJSON(response);
+			$('#modal-form').show();
+			$.each(res, function (k, v) {
+				$("#cust_id").val(v.cust_id);
+				(v.cust_fname != '') ? $("#fname").val(v.cust_fname) : '';
+				(v.cust_lname != '') ? $("#lname").val(v.cust_lname) : '';
+				(v.cust_email != '') ? $("#email").val(v.cust_email) : $("#email").css("border-color", "red");
+				(v.cust_phone1 != '') ? $("#phone1").val(v.cust_phone1) : $("#phone1").css("border-color", "red");
+				(v.cust_phone2 != '') ? $("#phone2").val(v.cust_phone2) : $("#phone2").css("border-color", "red");
+				(v.cust_city != '') ? $("#city").val(v.cust_city) : $("#city").css("border-color", "red");
+				(v.cust_state != '') ? $("#state").val(v.cust_state) : $("#state").css("border-color", "red");
+				(v.cust_pincode != '') ? $("#code").val(v.cust_pincode) : $("#code").css("border-color", "red");
+				(v.cust_address != '') ? $("#address").val(v.cust_address) : $("#address").css("border-color", "red");
+				(v.cust_aadhar != 0) || v.cust_aadhar != ''? $("#aadhar").val(v.cust_aadhar) : $("#aadhar").css("border-color", "red");
+				(v.cust_pan != '') ? $("#pan").val(v.cust_pan) : $("#pan").css("border-color", "red");
+				(v.cust_additional_info != '') ? $("#info").val(v.cust_additional_info) : $("#info").css("border-color", "red");
+				(v.prop_name != '') ? $("#propertyname").val(v.prop_name) : $("#propertyname").css("border-color", "red");
+				(v.prop_no != '') ? $("#propertyNo").val(v.prop_no) : $("#propertyNo").css("border-color", "red");
+				(v.prop_area != '') ? $("#area").val(v.prop_area) : $("#area").css("border-color", "red");
+				(v.prop_carper_area != '') ? $("#carpetarea").val(v.prop_carper_area) : $("#carpetarea").css("border-color", "red");
+				(v.prop_buildup_area != '') ? $("#builduparea").val(v.prop_buildup_area) : $("#builduparea").css("border-color", "red");
+				(v.prop_type != '') ? $("#propertytype").val(v.prop_type) : $("#propertytype").css("border-color", "red");
+				(v.prop_price != '') ? $("#actualprice").val(v.prop_price) : $("#actualprice").css("border-color", "red");
+				//(v.cust_additional_info != '') ? $("#discount").val(v.cust_additional_info) : $("#discount").css("border-color", "red");
+				(v.prop_sell_price != '') ? $("#sellprice").val(v.prop_sell_price) : $("#sellprice").css("border-color", "red");
+				(v.prop_paid_amt != '') ? $("#booking_amt").val(v.prop_paid_amt) : $("#booking_amt").css("border-color", "red");
+				(v.prop_remaining_amt != '') ? $("#remaining_amt").val(v.prop_remaining_amt) : $("#remaining_amt").css("border-color", "red");
+				(v.prop_payment_mode != '') ? $("#payment_mode").val(v.prop_payment_mode) : $("#payment_mode").css("border-color", "red");
+				(v.prop_emi_duration != '') ? $("#emi_duration").val(v.prop_emi_duration) : $("#emi_duration").css("border-color", "red");
+				(v.prop_emi_amount != '') ? $("#emi_amount").val(v.prop_emi_amount) : $("#emi_amount").css("border-color", "red");
+				(v.prop_finance_by_bank != '') ? $("#bank").val(v.prop_finance_by_bank) : $("#bank").css("border-color", "red");
+				(v.prop_remark != '') ? $("#prop_remark").val(v.prop_remark) : $("#prop_remark").css("border-color", "red");
+				});	
 			});
-		}
+	}
 		
 </script>
 <script>

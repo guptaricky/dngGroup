@@ -1,7 +1,6 @@
 <?php if(!empty($property)){ 
 foreach($property as $prop){}
 ?>
-<div class="row">
 	<form action="#" id="edit_prop_form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
 		<fieldset>
 			<input type="hidden" id="cust_id" name="cust_id" value="<?php echo $prop['cust_id']; ?>">
@@ -10,7 +9,7 @@ foreach($property as $prop){}
 					<input class="form-control" name="prop_detail_id" value="<?php echo $prop['prop_detail_id']; ?>" type="hidden">
 					<input class="form-control" name="prop_id" value="<?php echo $prop['prop_id']; ?>" type="hidden">
 					<input class="form-control" id="prepend" name="bookingDate" value="<?php echo !empty($prop['prop_booking_date'])? $prop['prop_booking_date']:''; ?>" type="hidden">
-					<label class="label">First Name </label>
+					<label class="label">First Names </label>
 					<label class="input"> <i class="icon-prepend fa fa-user"></i>
 					<input type="text" id="fname" name="fname" placeholder="First name" style="text-transform: capitalize;" value="<?php echo !empty($prop['cust_fname'])? $prop['cust_fname']:''; ?>">
 					</label>
@@ -228,8 +227,8 @@ foreach($property as $prop){}
 				<section class="col col-4">
 					<label class="label">Finance By Bank: </label>
 					<label class="select"> 
-						<?php $banks = $this->Common_model->get_data_by_query("select * from bank_master"); ?>
-						<select name="prop_finance_by_bank" id="bank_<?php echo $i;?>" >
+						<?php $banks = $this->Common_model->get_data_by_query_pdo("select * from bank_master",array(0)); ?>
+						<select name="prop_finance_by_bank" id="bank" >
 							<option value=""> SELECT BANK </option>
 							<?php foreach($banks as $bank) {?>
 							<option value="<?php echo $bank['bank_id']; ?>"  <?php echo ($prop['prop_finance_by_bank']==$bank['bank_id'])? 'selected':''; ?>> <?php echo $bank['bank_name']; ?></option><?php } ?>
@@ -254,7 +253,7 @@ foreach($property as $prop){}
 			<!--<button type="reset" class="btn btn-default" > Reset </button>-->
 		</footer>
 	</form>
-</div>
+
 <?php } ?>
 
 

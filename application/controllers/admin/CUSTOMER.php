@@ -129,7 +129,11 @@ class CUSTOMER extends MY_Controller {
 	
 	public function editPropertySell(){
 		$id = $this->input->post('id');
-		$data['property'] = $this->Common_model->get_data_by_query_pdo("select * from property_other_detail p left join customers c on c.cust_id = p.prop_sold_to where p.prop_detail_id=?",array($id));
+		$data['property'] = $this->Common_model->get_data_by_query_pdo("select * from property_other_detail pod 
+		left join property_detail pd on pd.property_id = pod.prop_id
+		left join customers c on c.cust_id = pod.prop_sold_to
+ 		where pod.prop_id=?",array($id));
+		// echo $this->db->last_query();die;
 		$this->load->view('admin/CUSTOMER/edit_site_property',$data);
 	}
 

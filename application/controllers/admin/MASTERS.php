@@ -327,6 +327,17 @@ class MASTERS extends MY_Controller {
 		$this->load->view('admin/PROPERTY/site_property',$data);
 	}
 	
+		
+	public function getPropDetail(){
+	
+		$prop_id = $_POST['prop_id'];
+		$propertydetail = $this->Common_model->get_data_by_query_pdo("select * from property_other_detail pod 
+		left join property_detail pd on pd.property_id = pod.prop_id
+		left join customers c on c.cust_id = pod.prop_sold_to
+ 		where pod.prop_id=?",array($prop_id));
+		echo json_encode($propertydetail);
+	}
+	
 	
 	public function company_bank_accounts(){
 		$this->load->view('default_admin/head');
