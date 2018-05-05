@@ -147,15 +147,15 @@
 							  $creditTotal = 0;
 							  $debitTotal = 0;
 							  foreach ($transactions as $ctm):$sno++;?>
-							  <tr align="left" title="<?php echo $ctm['partial_remark'];?>">
-								<td><?php echo $sno;?>.</td>
-								<td><?php echo sprintf("%04d",$ctm['partial_id']);?></td>
-								<td><?php echo $this->Common_model->findfield('site_detail', 'site_id', $ctm['partial_site_id'], 'site_name');?></td>
-								<td><?php echo $ctm['partial_type'];?></td>
-								<td><?php echo $ctm['partial_payment_type'];?></td>
-								<td><?php echo $ctm['partial_date'];?></td>
-								<td align="right"><?php if($ctm['partial_type']=='Income'){echo $ctm['partial_amt'];$creditTotal += $ctm['partial_amt'];}?></td>
-								<td align="right"><?php if($ctm['partial_type']=='Expense' || $ctm['partial_type']=='Vendor' ){echo $ctm['partial_amt'];$debitTotal += $ctm['partial_amt'];}?></td>
+							  <tr align="left" >
+								<td title="<?php echo $ctm['partial_remark'];?>"><?php echo $sno;?>.</td>
+								<td title="<?php echo $ctm['partial_remark'];?>"><?php echo sprintf("%04d",$ctm['partial_id']);?></td>
+								<td title="<?php echo $this->Common_model->findfield('site_detail', 'site_id', $ctm['partial_site_id'], 'site_name');?>"><?php echo $this->Common_model->findfield('site_detail', 'site_id', $ctm['partial_site_id'], 'site_short_name');?></td>
+								<td title="<?php echo $ctm['partial_remark'];?>"><?php echo $ctm['partial_type'];?></td>
+								<td title="<?php echo $ctm['partial_remark'];?>"><?php echo $ctm['partial_payment_type'];?></td>
+								<td title="<?php echo $ctm['partial_remark'];?>"><?php echo $ctm['partial_date'];?></td>
+								<td title="<?php echo $ctm['partial_remark'];?>" align="right"><?php if($ctm['partial_type']=='Income'){echo $ctm['partial_amt'];$creditTotal += $ctm['partial_amt'];}?></td>
+								<td title="<?php echo $ctm['partial_remark'];?>" align="right"><?php if($ctm['partial_type']=='Expense' || $ctm['partial_type']=='Vendor' ){echo $ctm['partial_amt'];$debitTotal += $ctm['partial_amt'];}?></td>
 							  </tr>
 							  <?php endforeach;?>
 							  <tr align="left">

@@ -119,9 +119,39 @@
 											<input type="text" name="ledger_rate" id="ledger_rate" onkeyup="CalculateAmt()"  placeholder="Rate Per Unit">
 										</label>
 									</section>-->
+						     <section class="col col-12">
+								<table class="table table-bordered">
+								<thead>
+								 <th>S.No</th>
+								 <th>Item</th>
+								 <th>Qty</th>
+								 <th>Unit</th>
+								 <th>Price</th>
+								</thead>
+								<tbody>
+								<?php for($i=1; $i<=3; $i++){ ?>
+								<tr>
+								 <td><?php echo $i; ?></td>
+								 <td><input type="text" name="item_<?php echo $i; ?>" id="item_<?php echo $i; ?>"  placeholder="Item" class="form-control"></td>
+								 <td><input type="number" name="qty_<?php echo $i; ?>" id="qty_<?php echo $i; ?>"  placeholder="Quantity" value="0.00" class="form-control" onkeyup="CalculateItemAmt();"></td>
+								 <td><input type="text" name="unit_<?php echo $i; ?>" id="unit_<?php echo $i; ?>"  placeholder="Item Unit" class="form-control"></td>
+								 <td><input type="number" name="price_<?php echo $i; ?>" id="price_<?php echo $i; ?>"  placeholder="Total Price" onkeyup="CalculateItemAmt();" value="0.00" class="form-control"></td>
+								</tr>
+								<?php } ?>
+								</tbody>
+								</table>
+						     </section>
+								</div>
+
+								
+							</fieldset>
+									</section>
+							<section class="col col-6">
+							 <fieldset>
+								<div class="row">
 									<section class="col col-12">Total Price
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
-											<input type="text" name="ledger_amount" id="ledger_amount" onkeyup="CalculateAmt()"  placeholder="Total Price">
+											<input type="text" name="ledger_amount" id="ledger_amount" onkeyup="CalculateAmt()"  placeholder="Total Price" readonly>
 										</label>
 									</section>
 									<section class="col col-12">Loading-Unloading (Extra charges)
@@ -129,14 +159,6 @@
 											<input type="text" name="extra_amount" id="extra_amount" onkeyup="CalculateAmt()"  placeholder="Extra Charges" value="0.00">
 										</label>
 									</section>
-								</div>
-
-								
-							</fieldset>
-									</section>
-									<section class="col col-6">
-								<fieldset>
-								<div class="row">
 									<section class="col col-12">Discount
 										<label class="input"> <i class="icon-prepend fa fa-money"></i>
 											<input type="text" name="ledger_discount" id="ledger_discount" onkeyup="CalculateAmt()"  placeholder="Discount" value="0.00">
@@ -188,8 +210,6 @@
 							</fieldset>
 							</section>
 							</div>
-
-
 							<footer>
 								<button type="submit" class="btn btn-primary" onclick="/*AddVendorLedger()*/" id="save_btn" data-loading-text="Please Wait..."> Add to List </button>
 								<button type="reset" class="btn btn-default" > RESET </button>
@@ -288,10 +308,10 @@ $(document).ready(function(){
 		function GetVendorLedger(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Vendor name</th><th>Voucher No.</th><th>Date</th><th>Item</th><th>Total Amount</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
+		content +='<table class="table table-bordered"><thead><tr><th>Site name</th><th>Vendor name</th><th>Voucher No.</th><th>Date</th><th>Site</th><th>Item</th><th>Total Amount</th><th>Balance</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getVendor_ledger'); ?>','', function(res){
 					$.each(res, function (k, v) {
-					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.vendor_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_goods_name +'</td><td  style="text-align:right">'+ v.ledger_payable_amt +'</td><td style="text-align:right;color:red">'+ v.ledger_balance_amt +'</td><td>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'/Vendor" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
+					  content +='<tr><td>'+ v.site_name +'</td><td>'+ v.vendor_name +'</td><td>'+ v.ledger_voucher_no +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.site_short_name +'</td><td>'+ v.ledger_goods_name +'</td><td  style="text-align:right">'+ v.ledger_payable_amt +'</td><td style="text-align:right;color:red">'+ v.ledger_balance_amt +'</td><td>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteVendorLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'/Vendor" title="Purchase & Payment Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
 					});					
 					content +='</tbody></table>';	
 				$("#result_data").html(content);
@@ -388,6 +408,28 @@ $(document).ready(function(){
 			var balance = balance;
 			}
 			$("#ledger_balance_amt").val(balance);
+		}	
+		
+		function  CalculateItemAmt(){
+			var i = '';
+			var payble = 0;
+			var total_qty = 0;
+			for(i=1; i<=3; i++){
+			// var total = 0;
+			var qty = $("#qty_" + i).val();
+			var total = $("#price_" + i).val();
+			// var rate = $("#rate_" + i).val();
+			// var total = parseFloat(qty) *  parseFloat(rate);
+			// if(isNaN(total)) {			
+			  // $("#price_" + i).val(0);	
+			// }else{	
+			  // $("#price_" + i).val(total);	
+			// }
+			var payble = parseFloat(payble) +  parseFloat(total);	
+			$("#ledger_amount").val(payble);
+			var total_qty = parseFloat(total_qty) +  parseFloat(qty);	
+			$("#ledger_qty").val(total_qty);
+			}
 		}	
 </script>
 <script type="text/javascript">

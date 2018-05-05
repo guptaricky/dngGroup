@@ -55,6 +55,7 @@ class CUSTOMER extends MY_Controller {
 	public function addCustomerSellProperty(){
 		$userid = (array_slice($this->session->userdata, 8, 1));
 		$uid = $userid['user_id'];
+		// echo $_POST['cust_id'];die;
 		$data = array(
 			'cust_fname' => ucwords(strtolower($_POST['fname'])),
 			'cust_lname' => ucwords(strtolower($_POST['lname'])),
@@ -111,6 +112,7 @@ class CUSTOMER extends MY_Controller {
 			'prop_emi_amount' => $_POST['emi_amount'],
 			'prop_finance_by_bank' => $_POST['prop_finance_by_bank'],
 			'prop_remark' => $_POST['prop_remark'],
+			'prop_entrydt' => date('Y-m-d H:i:s'),
 			'prop_status' => 1,
 		);
 		
@@ -118,6 +120,7 @@ class CUSTOMER extends MY_Controller {
 		// $this->Crud_model->insert_record('property_detail',$data_prop_sold);
 		$id = $this->Crud_model->insert_record('property_other_detail',$data_prop);
 		$this->Crud_model->edit_record_by_anyid('property_detail','property_id',$_POST['prop_id'],$data_prop_update);
+		// echo $this->db->last_query();
 		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'Property Sold');
 		// echo $this->db->last_query();
 		// die;

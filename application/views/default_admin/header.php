@@ -41,8 +41,58 @@
 		* 'fixed-page-footer' - Fixes footer
 		* 'container'         - boxed layout mode (non-responsive: will not work with fixed-navigation & fixed-ribbon)
 	-->
-	<body class="smart-style-0" ng-app="dngGroup">
+<body class="smart-style-0" ng-app="dngGroup">
 
+<div class="modal fade" id="modal-alerte">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			 <form method='post' class="form-horizontal"  action="<?php echo base_url('auth/change_password'); ?>" >
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title"><span id="addnewdept">Change Password</span></h4>
+			</div>
+			 <div class="modal-body">
+				<div class="row-fluid">
+          <div class="span10" style="margin-left:100px;">
+            <span class="control-group">
+              <label class="control-label" for="oldpass">Old Password &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <span class="controls">
+                <input type="password" class='form-control input-sm' id="oldpass" name='oldpass'  style="width: 250px;"  placeholder="Old Password" required>
+              </span>
+            </span>
+          </div>
+          </div>
+		  <div class="row-fluid">
+		  <div class="span10" style="margin-left:100px;">
+            <span class="control-group">
+              <label class="control-label" for="newpass">New Password &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <span class="controls">
+                <input type="password" id="newpass" class='form-control input-sm' name='newpass'  style="width: 250px;" placeholder="New Password not less than 8 character" required>
+				<span style="font-size:10px;">Password length can not be less than 8 character</span>
+              </span>
+            </span>
+          </div>
+          </div>
+		  <div class="row-fluid">
+		  <div class="span10" style="margin-left:100px;">
+            <span class="control-group">
+              <label class="control-label" for="confpass">Confirm New &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <span class="controls">
+                <input type="password" id="confpass" class='form-control input-sm' name='confpass'  style="width: 250px;" placeholder="Confirm new Password" required>
+				<input type="hidden" id="user_id" name="user_id" >
+              </span>
+            </span>
+          </div>
+        </div><br/>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-sm btn-danger" id="save" name="save">Submit </button>
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
 		<!-- #HEADER -->
 		<header id="header">
 			<div id="logo-group">
@@ -174,7 +224,10 @@
 
 				<!-- logout button -->
 				<div id="logout" class="btn-header transparent pull-right">
-					<span> <a href="<?php echo base_url().'auth/logout';?>" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
+					<span> <a href="<?php echo base_url().'auth/logout';?>" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-power-off"></i></a> </span>
+				</div>
+				<div id="change_password" class="btn-header transparent pull-right">
+					<span><a href="#modal-alerte" data-toggle="modal" title="Change Password" ><i class="fa fa-key"></i></a></span>
 				</div>
 				<!-- end logout button -->
 

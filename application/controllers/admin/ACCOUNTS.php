@@ -75,10 +75,10 @@ class ACCOUNTS extends MY_Controller {
 		if($data['emp_site']>0){
 		$site = $data['emp_site'];}
 		if($group == 'admin'){
-			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_receive_from, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_remark, s.site_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id where 1 and ledger_type=? and ledger_status=? order by ledger_payment_date,ledger_id desc",array("Income",1));
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_receive_from, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_remark, s.site_name, s.site_short_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id where 1 and ledger_type=? and ledger_status=? order by ledger_payment_date desc,ledger_id desc",array("Income",1));
 		}
 		else{
-			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_receive_from, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_remark, s.site_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id where ledger_site_id = ? and ledger_type=? and ledger_status=? order by ledger_payment_date,ledger_id desc",array($site,"Income",1));
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_receive_from, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_remark, s.site_name, s.site_short_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id where ledger_site_id = ? and ledger_type=? and ledger_status=? order by ledger_payment_date desc,ledger_id desc",array($site,"Income",1));
 		}
 		echo json_encode($vendor);
 	}
@@ -204,10 +204,10 @@ class ACCOUNTS extends MY_Controller {
 		if($data['emp_site']>0){
 		$site = $data['emp_site'];}
 		if($group == 'admin'){
-			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id where 1 and ledger_type=? and ledger_status=? order by ledger_payment_date,ledger_id desc",array("Expense",1));
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, s.site_short_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id where 1 and ledger_type=? and ledger_status=? order by ledger_payment_date desc,ledger_id desc",array("Expense",1));
 		}
 		else{
-			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id where ledger_site_id = ? and ledger_type=? and ledger_status=? order by ledger_payment_date,ledger_id desc",array($site,"Expense",1));
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id,l.ledger_type, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, s.site_short_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id where ledger_site_id = ? and ledger_type=? and ledger_status=? order by ledger_payment_date desc,ledger_id desc",array($site,"Expense",1));
 		}
 		echo json_encode($vendor);
 	}
@@ -359,7 +359,6 @@ class ACCOUNTS extends MY_Controller {
 			$error = array('error' => $this->upload->display_errors());
 			$data['ledger_voucher_image'] = $path . '/' . $data1['upload_data']['file_name'];
 		}
-		
 		$data1 = array(
 		'partial_date' 			=> $_POST['ledger_payment_date'],
 		'partial_type' 			=> "Vendor",
@@ -386,6 +385,16 @@ class ACCOUNTS extends MY_Controller {
 		$this->manage_account($_POST['ledger_site_id'], "", "0", $_POST['ledger_paid_amt']);
 		}
 		
+		for($i=1; $i<=3; $i++){ 
+		$data2 = array(
+		'ledger_id' 			=> $insert_id,
+		'item_name' 			=> $_POST['item_'.$i],
+		'item_qty' 				=> $_POST['qty_'.$i],
+		'item_unit' 			=> $_POST['unit_'.$i],
+		'item_price' 			=> $_POST['price_'.$i],
+		);	
+		$this->Crud_model->insert_record('vendor_purchase_item',$data2);
+		}
 		
 		
 	}
@@ -398,10 +407,10 @@ class ACCOUNTS extends MY_Controller {
 		$site = $data['emp_site'];
 		if($data['emp_site']!=0){
 			
-			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where ledger_site_id = ? and ledger_type=? and ledger_status=? order by ledger_payment_date,ledger_id desc",array($site,'Vendor',1));	
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, s.site_short_name, e.cat_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where ledger_site_id = ? and ledger_type=? and ledger_status=? order by ledger_payment_date desc,ledger_id desc",array($site,'Vendor',1));	
 		}
 		else{
-			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, e.cat_name, v.vendor_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where ledger_type=? and ledger_status=? order by ledger_payment_date,ledger_id desc",array('Vendor',1));
+			$vendor = $this->Common_model->get_data_by_query_pdo("select l.ledger_id, l.ledger_voucher_no, l.ledger_goods_name, l.ledger_payable_amt, l.ledger_payment_date, l.ledger_balance_amt, s.site_name, s.site_short_name, e.cat_name, v.vendor_name from vendor_ledger l left join site_detail s on s.site_id=l.ledger_site_id left join expense_category e on e.cat_id=l.ledger_vendor_id left join vendor_master v on v.vendor_id=l.ledger_vendor_id where ledger_type=? and ledger_status=? order by ledger_payment_date desc,ledger_id desc",array('Vendor',1));
 		}
 		// $group = $this->session->userdata('group');
 		
@@ -465,7 +474,7 @@ class ACCOUNTS extends MY_Controller {
 		$uid = $userid['user_id'];
 		$data = array(
 		'partial_ledger_id' 	=> $_POST['partial_ledger_id'],
-		'partial_site_id' 			=> $_POST['partial_site_id'],
+		'partial_site_id' 		=> $_POST['partial_site_id'],
 		'partial_date' 			=> $_POST['partial_date'],
 		'partial_amt' 			=> $_POST['partial_amt'],
 		'partial_type'			=> $_POST['partial_type'],
@@ -497,7 +506,7 @@ class ACCOUNTS extends MY_Controller {
 
 	public function getVendor_partial_payment(){
 		$lid = $this->input->get('lid');
-		$payment = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment where partial_ledger_id=? and partial_status=? order by partial_date,partial_id desc",array($lid,1));
+		$payment = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment where partial_ledger_id=? and partial_status=? order by partial_date desc,partial_id desc",array($lid,1));
 		echo json_encode($payment);
 	}
 	
@@ -992,14 +1001,14 @@ class ACCOUNTS extends MY_Controller {
 		$debitTotal = 0;
 		foreach ($data['transactions'] as $ctm):$sno++;?>
 		<tr align="left" title="<?php echo $ctm['partial_remark'];?>">
-		<td><?php echo $sno;?>.</td>
-		<td><?php echo sprintf("%04d",$ctm['partial_id']);?></td>
-		<td><?php echo $this->Common_model->findfield('site_detail', 'site_id', $ctm['partial_site_id'], 'site_name');?></td>
-		<td><?php echo $ctm['partial_type'];?></td>
-		<td><?php echo $ctm['partial_payment_type'];?></td>
-		<td><?php echo $ctm['partial_date'];?></td>
-		<td align="right"><?php if($ctm['partial_type']=='Income'){echo $ctm['partial_amt'];$creditTotal += $ctm['partial_amt'];}?></td>
-		<td align="right"><?php if($ctm['partial_type']=='Expense' || $ctm['partial_type']=='Vendor' ){echo $ctm['partial_amt'];$debitTotal += $ctm['partial_amt'];}?></td>
+		<td title="<?php echo $ctm['partial_remark'];?>"><?php echo $sno;?>.</td>
+		<td title="<?php echo $ctm['partial_remark'];?>"><?php echo sprintf("%04d",$ctm['partial_id']);?></td>
+		<td title="<?php echo $this->Common_model->findfield('site_detail', 'site_id', $ctm['partial_site_id'], 'site_name');?>"><?php echo $this->Common_model->findfield('site_detail', 'site_id', $ctm['partial_site_id'], 'site_short_name');?></td>
+		<td title="<?php echo $ctm['partial_remark'];?>"><?php echo $ctm['partial_type'];?></td>
+		<td title="<?php echo $ctm['partial_remark'];?>"><?php echo $ctm['partial_payment_type'];?></td>
+		<td title="<?php echo $ctm['partial_remark'];?>"><?php echo $ctm['partial_date'];?></td>
+		<td title="<?php echo $ctm['partial_remark'];?>" align="right"><?php if($ctm['partial_type']=='Income'){echo $ctm['partial_amt'];$creditTotal += $ctm['partial_amt'];}?></td>
+		<td title="<?php echo $ctm['partial_remark'];?>" align="right"><?php if($ctm['partial_type']=='Expense' || $ctm['partial_type']=='Vendor' ){echo $ctm['partial_amt'];$debitTotal += $ctm['partial_amt'];}?></td>
 		</tr>
 		<?php endforeach;?>
 		<tr align="left">

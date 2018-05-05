@@ -252,10 +252,10 @@
 		function GetReceiveLedger(){
 		$("#result_data").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
-		content +='<table class="table table-bordered"><thead><tr><th>Receive From</th><th>Date</th><th>Amount</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
+		content +='<table class="table table-bordered"><thead><tr><th>Receive From</th><th>Date</th><th>Site</th><th>Amount</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
 		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getReceive_ledger'); ?>','', function(res){
 				$.each(res, function (k, v) {
-				  content +='<tr><td>'+ v.ledger_receive_from +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.ledger_payable_amt +'</td><td width="40%">'+ v.ledger_remark +'</td><td>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteReceiveLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'/Receive" title="Receive Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
+				  content +='<tr><td>'+ v.ledger_receive_from +'</td><td>'+ v.ledger_payment_date +'</td><td>'+ v.site_short_name +'</td><td>'+ v.ledger_payable_amt +'</td><td width="40%">'+ v.ledger_remark +'</td><td>&nbsp;<button class="btn btn-danger btn-xs" title="Delete" onclick="DeleteReceiveLedger('+ v.ledger_id +')" ><i class="fa fa-remove"></i></button>&nbsp;<a class="btn btn-primary btn-xs" href="<?php echo base_url('admin/ACCOUNTS/vendor_partial_payment'); ?>/'+ v.ledger_id +'/Receive" title="Receive Details"><i class="fa fa-eye-open"></i> Detail</a></td></tr>';
 				});					
 				content +='</tbody></table>';	
 			$("#result_data").html(content);

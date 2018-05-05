@@ -83,7 +83,7 @@ class MASTERS extends MY_Controller {
 		$this->load->view('default_admin/head');
 		$this->load->view('default_admin/header');
 		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
-		$data['banks'] = $this->Common_model->get_data_by_query("select * from bank_master");
+		$data['banks'] = $this->Common_model->get_data_by_query_pdo("select * from bank_master",array());
 		$this->load->view('admin/MASTERS/site_master');
 		$this->load->view('default_admin/footer');
 	}
@@ -253,7 +253,55 @@ class MASTERS extends MY_Controller {
 		$this->load->view('admin/MASTERS/manageSite',$data);
 		$this->load->view('default_admin/footer');
 	}
+	public function manageSite_new(){
+		$empid = (array_slice($this->session->userdata,10,1));
+		$empid = $empid['emp_id'];
+		
+		$group = $this->session->userdata('group');
+			
+			if($group == 'admin'){
+				$data['sites'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_status=?",array(1));
+			}
+			else{
+			// $data['emp_site'] = $this->Common_model->get_data_by_query_pdo("select emp_alloted_site from employes where emp_id=?",array($empid));
+			// @$emp_alloted_site = $data['emp_site'][0]['emp_alloted_site'];
+			@$emp_alloted_site = @$this->Common_model->get_alloted_site($uid);
+			
+			$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=? and site_status=?",array($emp_alloted_site,1));
+			}
+		
+		$this->load->view('default_admin/head');
+		$this->load->view('default_admin/header');
+		$this->load->view($this->Common_model->toggle_sidebar().'/sidebar');
+		$this->load->view('admin/MASTERS/manageSite_new',$data);
+		$this->load->view('default_admin/footer');
+	}
 
+	public function getSitedata_new(){
+		
+		$site_id = $_POST['site_id'];
+		
+		$group = $this->session->userdata('group');
+		if($group == 'admin'){
+			$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($site_id));
+		}
+		else{
+		$empids = (array_slice($this->session->userdata,10,1));
+		$empid = $empids['emp_id'];
+		// $data['emp_site'] = $this->Common_model->get_alloted_site($empid);
+		$site_id = $this->Common_model->get_alloted_site($empid);
+		$data['site'] = $this->Common_model->get_data_by_query_pdo("select * from site_detail where site_id=?",array($site_id));
+		}
+		$data['customer'] = $this->Common_model->get_data_by_query_pdo("select * from customers where cust_active=?",array(1));
+		$data['propertytype'] = $this->Common_model->get_data_by_query_pdo("select distinct(detail_type) as detail_type from site_other_detail where detail_site_id=?",array($site_id));
+		$data['propertytypedetail'] = $this->Common_model->get_data_by_query_pdo("select * from property_detail pd
+		left join property_other_detail pod on pd.property_id = pod.prop_id
+ 		where pd.property_site_id=?",array($site_id));
+		@$detail_type = $data['propertytype'][0]['detail_type'];
+		$data['banks'] = $this->Common_model->get_data_by_query_pdo("select * from bank_master",array());
+		$this->load->view('admin/PROPERTY/site_property_new',$data);
+	}
+	
 	public function getSitedata(){
 		
 		$site_id = $_POST['site_id'];

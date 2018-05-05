@@ -81,7 +81,7 @@
 								<td><?php echo $ctm['cust_phone1']; echo ($ctm['cust_phone2']!='')? '</br>': ''; echo $ctm['cust_phone2'];?></td>
 								<td><?php echo $ctm['cust_address'];?></td>
 								<td><?php echo $ctm['cust_additional_info'];?></td>
-								<td><?php echo $c['prop_remaining_amt'];?></td>
+								<td><?php echo $this->Common_model->moneyFormatIndia($c['prop_remaining_amt']);?></td>
 								<td data-title="Action">
 								<button class="btn btn-primary btn-xs hide" id="add_tab">Send sms</button>
 								<a href="<?php echo base_url().'admin/CUSTOMER/customers_ledger_detail/'.$ctm['cust_id'];?>" class="btn btn-warning btn-xs">View Detail</a>

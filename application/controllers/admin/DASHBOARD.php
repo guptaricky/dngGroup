@@ -42,9 +42,10 @@ class DASHBOARD extends MY_Controller {
 		$this->data['expensesCat'] = $this->Common_model->get_data_by_query_pdo("select * from expense_category where cat_status=?",array(1));
 		$this->data['vendorlist'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_master where vendor_status=?",array(1));
 		$this->data['expensesongraph'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=? and date_format(ledger_payment_date,'%Y-%m') = '$cury-$curm' group by ledger_vendor_id",array($site,'Expense',1));
-		$this->data['expenses'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=? and date_format(ledger_payment_date,'%Y-%m') = '$cury-$curm' ",array($site,'Expense',1));
+		$this->data['expenses'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=? and date_format(ledger_payment_date,'%Y-%m') = '$cury-$curm' order by ledger_payment_date desc ",array($site,'Expense',1));
 		$this->data['expensesthismonth'] = $this->Common_model->get_data_by_query_pdo("select sum(ledger_paid_amt) as totalexpensethismonth from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=? and date_format(ledger_payment_date,'%Y-%m') = '$cury-$curm' ",array($site,'Expense',1));
-		$this->data['vendor'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=?",array($site,'Vendor',1));
+		$this->data['vendor'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=? order by ledger_payment_date desc",array($site,'Vendor',1));
+		$this->data['receives'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_ledger where ledger_site_id = ? and ledger_type=? and ledger_status=? order by ledger_payment_date desc",array($site,'Income',1));
 		// echo $this->db->last_query();die;
 		$this->load->view('admin/DASHBOARD/user-dashboard',$this->data);
 		$this->load->view('default_admin/footer');
@@ -89,10 +90,10 @@ class DASHBOARD extends MY_Controller {
 				<tr>
 					<td><?php echo $sno;?>.</td>
 					<td><?php echo date('d M, Y', strtotime($exp['ledger_payment_date']))?></td>
+					<td><?php echo $this->Common_model->findfield('site_detail','site_id',$exp['ledger_site_id'],'site_short_name');?></td>
 					<td><?php echo $exp['ledger_remark'];?></td>
 					<td><?php echo $this->Common_model->findfield('expense_category','cat_id',$exp['ledger_vendor_id'],'cat_name');?></td>
-					<td><?php echo $exp['ledger_paid_amt'];?></td>
-					<td></td>
+					<td style="text-align:right"><?php echo $exp['ledger_paid_amt'];?></td>
 				</tr>
 		 <?php }
 	}
@@ -128,12 +129,13 @@ class DASHBOARD extends MY_Controller {
 				<tr>
 					<td><?php echo $sno;?>.</td>
 					<td><?php echo $this->Common_model->findfield('vendor_master','vendor_id',$ven['ledger_vendor_id'],'vendor_name');?></td>
+					<td><?php echo $this->Common_model->findfield('site_detail','site_id',$ven['ledger_site_id'],'site_short_name');?></td>
 					<td><?php echo $ven['ledger_voucher_no']; ?></td>
 					<td><?php echo date('d M, Y', strtotime($ven['ledger_payment_date']))?></td>
 					<td><?php echo $ven['ledger_goods_name'];?></td>
 					
-					<td><?php echo $ven['ledger_payable_amt'];?></td>
-					<td><?php echo $ven['ledger_balance_amt'];?></td>
+					<td style="text-align:right"><?php echo $ven['ledger_payable_amt'];?></td>
+					<td style="text-align:right"><?php echo $ven['ledger_balance_amt'];?></td>
 				</tr>
 		 <?php }
 	}
