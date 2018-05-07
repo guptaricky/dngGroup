@@ -116,15 +116,19 @@ class CUSTOMER extends MY_Controller {
 			'prop_status' => 1,
 		);
 		
-		
+		if(!empty($_POST['prop_detail_id'])){
+		$this->Crud_model->edit_record_by_anyid('property_other_detail','prop_detail_id',$_POST['prop_detail_id'],$data_prop);
+		$notify = $this->Common_model->insert_notification($uid,'edit',$_POST['prop_detail_id'],'Property Sold Edited');
+		}else{
 		// $this->Crud_model->insert_record('property_detail',$data_prop_sold);
 		$id = $this->Crud_model->insert_record('property_other_detail',$data_prop);
 		$this->Crud_model->edit_record_by_anyid('property_detail','property_id',$_POST['prop_id'],$data_prop_update);
+		
 		// echo $this->db->last_query();
 		$notify = $this->Common_model->insert_notification($uid,'insert',$id,'Property Sold');
 		// echo $this->db->last_query();
 		// die;
-		
+		}
 	}
 	
 	public function editPropertySell(){

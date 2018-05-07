@@ -29,6 +29,7 @@
 			</div>
 			<div class="row">
 				<section class="col col-6">
+					<input class="form-control" name="prop_detail_id" id="prop_detail_id" type="hidden">
 					<input class="form-control" name="prop_id" id="prop_id" type="hidden">
 					<input class="form-control" id="prepend" name="bookingDate" value="<?php echo $dateToday = date('d-m-Y')?>" type="hidden">
 					<label class="label">First Name</label>
@@ -306,6 +307,72 @@
 					</tr>
 				</tbody>
 			</table>
+			<div class="col col-4">
+			<legend>Installment Detail</legend>
+			<div id="installment"></div>
+			<legend>Installment Form</legend>
+			<div id="installment_form">
+			<form action="#" id="installment-form" class="smart-form" novalidate="novalidate" enctype="multipart/form-data">
+							<input type="hidden" name="emi_id" id="emi_id">
+							<input type="hidden" name="emi_prop_detail_id" id="emi_prop_detail_id">
+							<fieldset>
+								<div class="row">
+									<section class="col col-2 hide">
+										<label class="label">Installment</label>
+										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
+											<input type="text" id ="emi_number" name="emi_number" placeholder="Installment" >
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="label">Payment Date</label>
+										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
+											<input type="text" id ="emi_date" name="emi_date" class="datepicker" placeholder="Date" >
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="label">Amount</label>
+										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
+											<input type="number" id ="emi_amount" name="emi_amount" placeholder="Amount">
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="label">Payment Type</label>
+										<label class="select"> 
+											<select name="emi_payment_type" id="emi_payment_type">
+												<option value=""> SELECT PAYMENT TYPE </option>
+												<option value="Cash" selected >Cash</option>
+												<option value="Cheque">Cheque</option>
+												<option value="Bank">Bank</option>
+											</select><i></i>
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="label">Transaction No.</label>
+										<label class="input"> <i class="icon-prepend fa fa-bar-chart-o"></i>
+											<input type="text" id ="emi_transaction_no" name="emi_transaction_no" placeholder="Transection No">
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="label">Remark</label>
+										<label class="textarea"> 										
+											<textarea rows="3" id="emi_remark" name="emi_remark" placeholder="Remark"></textarea> 
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="label">&nbsp;</label>
+										<button type="button" class="btn btn-primary btn-sm" onclick="addEmi()" id="save_emi_btn" data-loading-text="Please Wait..."> Save </button>
+									</section>										
+								</div>
+
+								
+							</fieldset>
+
+
+							
+						</form><br>
+						
+			</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -356,7 +423,7 @@
 							$detail_type = $data['sitedetail'][0]['detail_type'];
 							if($pt['detail_type'] == $detail_type){
 						?>
-						<li style="margin:5px;width:10%"><a href="#property_form" data-toggle="modal" onclick="GetDetail('<?php echo $prop_count;?>','<?php echo $detail_type;?>','<?php echo $ptd['property_sno'];?>','<?php echo $ptd['property_status'];?>','<?php echo $ptd['property_id'];?>')"><?php echo $ptd['property_sno'];?><span style="color:<?php if($ptd['property_status'] == 'Sold'){echo 'red';}elseif($ptd['property_status']=='Cancelled'){echo 'green';}elseif($ptd['property_status']=='Available'){echo '';}?>"><?php echo $ptd['property_status'];?></span></a></li>
+						<li style="margin:5px;width:10%"><a href="#property_form" data-toggle="modal" onclick="GetDetail('<?php echo $prop_count;?>','<?php echo $detail_type;?>','<?php echo $ptd['property_sno'];?>','<?php echo $ptd['property_status'];?>','<?php echo $ptd['property_id'];?>','<?php echo $ptd['prop_detail_id'];?>')"><?php echo $ptd['property_sno'];?><span style="color:<?php if($ptd['property_status'] == 'Sold'){echo 'red';}elseif($ptd['property_status']=='Cancelled'){echo 'green';}elseif($ptd['property_status']=='Available'){echo '';}?>"><?php echo $ptd['property_status'];?></span></a></li>
 						<?php } } ?>
 						</ul>
 					</div>
@@ -391,39 +458,56 @@
 			
 	<script>
 
-	function CalculateAmt(c){
-			var total = $("#actualprice_" +c).val();
-			var disc = $("#discount_" +c).val();
+	function CalculateAmt(){
+			var total = $("#actualprice").val();
+			var disc = $("#discount").val();
 			var payble = parseFloat(total) - parseFloat(disc);			
 			if(isNaN(payble)) {
 				var payble = 0;
 			}else{
 				var payble = payble;
 			}
-			$("#sellprice_" +c).val(payble);
-			$("#remaining_amt_" +c).val(payble);
-			var paid = $("#booking_amt_" +c).val();
+			$("#sellprice").val(payble);
+			$("#remaining_amt").val(payble);
+			var paid = $("#booking_amt").val();
 			var balance = parseFloat(payble) - parseFloat(paid);			
 			if(isNaN(balance)) {
 				var balance = 0;
 			}else{
 				var balance = balance;
 			}
-			$("#remaining_amt_" +c).val(balance);
-			var emi_duration = $("#emi_duration_" +c).val();
+			$("#remaining_amt").val(balance);
+			var emi_duration = $("#emi_duration").val();
 			var emi_amt = parseFloat(balance) / parseFloat(emi_duration);			
 			if(isNaN(emi_amt)) {
 				var emi_amt = 0;
 			}else{
 				var emi_amt = emi_amt.toFixed(2);;
 			}
-			$("#emi_amount_" +c).val(emi_amt);
+			$("#emi_amount").val(emi_amt);
 		}	
+		
+		function GetEmi(detail_id){
+		$("#installment").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
+		var content ='';	
+		var c = 0;	
+		content +='<table class="table table-bordered"><thead><tr><th>S.No.</th><th>Installment</th><th>Amount</th><th>Date</th><th>Remark</th></tr></thead><tbody>';			
+		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getEmi'); ?>',{'detail_id':detail_id}, function(res){
+					$.each(res, function (k, v) { c++;
+					if(c==1){ inst= "1st"; }else if(c==2){ inst= "2nd"; }else if(c==3){ inst= "3rd"; }else{ inst= c  +"th"; }
+					  content +='<tr><td>'+ c +'.</td><td>'+ inst +' Installment</td><td>'+ v.emi_amt +'</td><td>'+ v.emi_date +'</td><td>'+ v.emi_remark +'</td></tr>';
+					});					
+					content +='</tbody></table>';	
+				$("#installment").html(content);
+			});	 
+		}
 
-	function GetDetail(sno, prop_type, prop_no, prop_status, prop_id){
+	function GetDetail(sno, prop_type, prop_no, prop_status, prop_id, prop_detail_id){
 			// alert(prop_status);
 			// alert(prop_id);
 		(prop_id != '') ? $("#prop_id").val(prop_id) : '';
+		(prop_detail_id != '') ? $("#prop_detail_id").val(prop_detail_id) : '';
+		(prop_detail_id != '') ? $("#emi_prop_detail_id").val(prop_detail_id) : '';
 		if(prop_status=='Available'){
 			// $('#checkout-form').reset();
 			$('#checkout-form')[0].reset();
@@ -445,16 +529,16 @@
 					(v.prop_remaining_amt != 0) ? $("#balance").html(v.prop_remaining_amt) : $("#balance").css("color", "red");
 					(v.prop_paid_amt != 0) ? $("#paid_amt").html(v.prop_paid_amt) : $("#paid_amt").css("color", "red");
 					(v.prop_emi_duration != 0) ? $("#emi_dura").html(v.prop_emi_duration) : $("#emi_dura").css("color", "red");
-					(v.prop_emi_amount != 0) ? $("#install_amt").html(prop_emi_amount) : $("#install_amt").css("color", "red");
+					(v.prop_emi_amount != 0) ? $("#install_amt").html(v.prop_emi_amount) : $("#install_amt").css("color", "red");
 					(v.prop_finance_by_bank != '') ? $("#fin_bank").html(v.prop_finance_by_bank) : $("#fin_bank").css("color", "red");
 					});	
 			});
+		GetEmi(prop_detail_id);
 		// $('#edit_prop_sell').html("");
 		// document.getElementById('myTabContent').scrollIntoView();
 		// document.getElementById('checkout-form_'+sno).scrollIntoView();
 		// $("#prop_detail_print").html("");
 		// $("#prop_detail_print_"+sno).html(prop_type + " : <strong>" + prop_no + "</strong>");
-		
 		
 		}
 		
@@ -544,6 +628,7 @@
 				(v.prop_buildup_area != '') ? $("#builduparea").val(v.prop_buildup_area) : $("#builduparea").css("border-color", "red");
 				(v.prop_type != '') ? $("#propertytype").val(v.prop_type) : $("#propertytype").css("border-color", "red");
 				(v.prop_price != '') ? $("#actualprice").val(v.prop_price) : $("#actualprice").css("border-color", "red");
+				(v.prop_discount != '') ? $("#discount").val(v.prop_discount) : $("#discount").css("border-color", "red");
 				//(v.cust_additional_info != '') ? $("#discount").val(v.cust_additional_info) : $("#discount").css("border-color", "red");
 				(v.prop_sell_price != '') ? $("#sellprice").val(v.prop_sell_price) : $("#sellprice").css("border-color", "red");
 				(v.prop_paid_amt != '') ? $("#booking_amt").val(v.prop_paid_amt) : $("#booking_amt").css("border-color", "red");
@@ -570,31 +655,16 @@ $(function() {
 			<?php } ?>
 		});
 		
-		function GetEmi(detail_id){
-		$("#emi_data_" + detail_id).html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
-		var content ='';	
-		var c = 0;	
-		content +='<table class="table table-bordered"><thead><tr><th>S.No.</th><th>Installment</th><th>Amount</th><th>Date</th><th>Remark</th><th>Action</th></tr></thead><tbody>';			
-		$.getJSON('<?php echo base_url('admin/ACCOUNTS/getEmi'); ?>',{'detail_id':detail_id}, function(res){
-					$.each(res, function (k, v) { c++;
-					if(c==1){ inst= "1st"; }else if(c==2){ inst= "2nd"; }else if(c==3){ inst= "3rd"; }else{ inst= c  +"th"; }
-					  content +='<tr><td>'+ c +'.</td><td>'+ inst +' Installment</td><td>'+ v.emi_amt +'</td><td>'+ v.emi_date +'</td><td>'+ v.emi_remark +'</td><td><a class="btn btn-info btn-xs" title="Edit" onclick="EditEmi('+ v.emi_id +')">Edit</a> <a class="btn btn-danger btn-xs" title="Edit" onclick="DeleteEmi('+ v.emi_id +','+ v.emi_prop_detail_id +')">Delete</a></td></tr>';
-					});					
-					content +='</tbody></table>';	
-				$("#emi_data_" + detail_id).html(content);
-			});	 
-		}
-	
-
-		
-		function addEmi(detail_id){  
+			
+		function addEmi(){  
 		
 		$(".btn").button('loading');		
-                   var form_data = $('#checkout-form_' + detail_id).serialize();
+                   var detail_id = $('#emi_prop_detail_id').val();
+                   var form_data = $('#installment-form').serialize();
 			$.post('<?php echo base_url('admin/ACCOUNTS/addEmi'); ?>', form_data, function (response) {
-				$("#emi_id_" + detail_id).val('');
+				$("#emi_id").val('');
 				$(".btn").button('reset');
-				$('#checkout-form_' + detail_id)[0].reset();
+				$('#installment-form')[0].reset();
 				GetEmi(detail_id);
 			});
 		}	
