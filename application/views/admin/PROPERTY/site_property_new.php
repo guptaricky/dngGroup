@@ -430,7 +430,20 @@
 							$detail_type = $data['sitedetail'][0]['detail_type'];
 							if($pt['detail_type'] == $detail_type){
 						?>
-						<li style="margin:5px;width:10%"><a href="#property_form" data-toggle="modal" onclick="GetDetail('<?php echo $prop_count;?>','<?php echo $detail_type;?>','<?php echo $ptd['property_sno'];?>','<?php echo $ptd['property_status'];?>','<?php echo $ptd['property_id'];?>','<?php echo $ptd['prop_detail_id'];?>')"><?php echo $ptd['property_sno'];?><span style="color:<?php if($ptd['property_status'] == 'Sold'){echo 'red';}elseif($ptd['property_status']=='Cancelled'){echo 'green';}elseif($ptd['property_status']=='Available'){echo '';}?>"><?php echo $ptd['property_status'];?></span></a></li>
+						<li style="margin:5px;width:10%">
+						<a 
+						href="#property_form"
+						data-toggle="modal"
+						onclick="GetDetail('<?php echo $prop_count;?>',
+						'<?php echo $detail_type;?>',
+						'<?php echo $ptd['property_sno'];?>',
+						'<?php echo $ptd['property_status'];?>',
+						'<?php echo $ptd['property_id'];?>',
+						'<?php echo $ptd['prop_detail_id'];?>')">
+						<?php echo $ptd['property_sno'];?>
+						<span style="color:<?php if($ptd['property_status'] == 'Sold'){echo 'red';}elseif($ptd['property_status']=='Cancelled'){echo 'green';}elseif($ptd['property_status']=='Available'){echo '';}?>"><?php echo $ptd['property_status'];?></span>
+						</a>
+						</li>
 						<?php } } ?>
 						</ul>
 					</div>
@@ -494,7 +507,7 @@
 			$("#emi_amount").val(emi_amt);
 		}	
 		
-		function GetEmi(detail_id){
+	function GetEmi(detail_id){
 		$("#installment").html("<center><img src='<?php echo base_url('img/ajax-loader.gif'); ?>'></center>");
 		var content ='';	
 		var c = 0;	
@@ -589,15 +602,22 @@
 	function addCustomer(){  
 		
 		// var prop_id = $("#prop_id").val();
-		// alert('#checkout-form');		
+		// alert(prop_id);		
 		$(".btn").button('loading');
             var form_data = $('#checkout-form').serialize();
 			$.post('<?php echo base_url('admin/CUSTOMER/addCustomerSellProperty'); ?>', form_data, function (response) {
 				$(".btn").button('reset');
 				$('#checkout-form')[0].reset();
-				$('#alert_check').removeclass('hide');
-				$('#property_form').modal('hide');
-			});
+				$('#alert_check').removeClass('hide');
+				 $('#property_form').modal('hide');
+			}) .done(function() {
+				
+				setTimeout(function(){ getSite(); }, 1000);
+				 // $('#property_form').removeClass('modal-backdrop');
+				 // $('#property_form').addClass('modal');
+				// getSite();
+				
+			  });
 	}
 		
 		

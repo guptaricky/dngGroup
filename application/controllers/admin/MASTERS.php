@@ -296,7 +296,7 @@ class MASTERS extends MY_Controller {
 		$data['propertytype'] = $this->Common_model->get_data_by_query_pdo("select distinct(detail_type) as detail_type from site_other_detail where detail_site_id=?",array($site_id));
 		$data['propertytypedetail'] = $this->Common_model->get_data_by_query_pdo("select * from property_detail pd
 		left join property_other_detail pod on pd.property_id = pod.prop_id
- 		where pd.property_site_id=?",array($site_id));
+ 		where pd.property_site_id=? order by property_id",array($site_id));
 		@$detail_type = $data['propertytype'][0]['detail_type'];
 		$data['banks'] = $this->Common_model->get_data_by_query_pdo("select * from bank_master",array());
 		$this->load->view('admin/PROPERTY/site_property_new',$data);
