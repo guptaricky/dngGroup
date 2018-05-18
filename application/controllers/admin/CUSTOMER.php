@@ -92,7 +92,7 @@ class CUSTOMER extends MY_Controller {
 		
 		$data_prop = array(
 			'prop_id' => $_POST['prop_id'],
-			'prop_booking_date' => date('Y-m-d',strtotime($_POST['bookingDate'])),
+			'prop_booking_date' => date('Y-m-d',strtotime($_POST['booking_date'])),
 			//'prop_sold_to' => strtoupper($_POST['prop_sold_to']),
 			'prop_name' => strtoupper($_POST['propertyname']),
 			'prop_no' => strtoupper($_POST['propertyNo']),
@@ -166,7 +166,7 @@ class CUSTOMER extends MY_Controller {
 		// $cust = $this->Common_model->get_data_by_query_pdo("select max(cust_id) as cust_id from customers",array(0));
 		$data_prop = array(
 			'prop_id' => $_POST['prop_id'],
-			'prop_booking_date' => date('Y-m-d',strtotime($_POST['bookingDate'])),
+			'prop_booking_date' => date('Y-m-d',strtotime($_POST['booking_date'])),
 			//'prop_sold_to' => strtoupper($_POST['prop_sold_to']),
 			'prop_name' => strtoupper($_POST['propertyname']),
 			'prop_no' => strtoupper($_POST['propertyNo']),

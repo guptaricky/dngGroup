@@ -168,10 +168,17 @@
 						</label>
 					</section>
 					
-					<section class="col col-5">
+					<section class="col col-3">
 					  <label class="label">Property Type</label>
 						<label class="input">
 							<input type="text" id="propertytype" name="propertytype" placeholder="Property Type">
+						</label>
+					</section>
+					
+					<section class="col col-2">
+					  <label class="label">Booking Date</label>
+						<label class="input">
+							<input type="text" id="booking_date" name="booking_date" class="datepicker" placeholder="dd-mm-yyyy">
 						</label>
 					</section>
 				</div>
@@ -627,6 +634,7 @@
 				(v.prop_carper_area != '') ? $("#carpetarea").val(v.prop_carper_area) : $("#carpetarea").css("border-color", "red");
 				(v.prop_buildup_area != '') ? $("#builduparea").val(v.prop_buildup_area) : $("#builduparea").css("border-color", "red");
 				(v.prop_type != '') ? $("#propertytype").val(v.prop_type) : $("#propertytype").css("border-color", "red");
+				(v.prop_booking_date != '') ? $("#booking_date").val(v.prop_booking_date) : $("#booking_date").css("border-color", "red");
 				(v.prop_price != '') ? $("#actualprice").val(v.prop_price) : $("#actualprice").css("border-color", "red");
 				(v.prop_discount != '') ? $("#discount").val(v.prop_discount) : $("#discount").css("border-color", "red");
 				//(v.cust_additional_info != '') ? $("#discount").val(v.cust_additional_info) : $("#discount").css("border-color", "red");

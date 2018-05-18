@@ -62,7 +62,7 @@
 						<a href="<?php echo base_url().'admin/ACCOUNTS/vendor_ledger'?>" title="Vendor's Payment"><i class="fa fa-lg fa-fw fa-rupee"></i> <span class="menu-item-parent">Vendor's Payment</span></a>
 					</li>
 					<li class="">
-						<a href="<?php echo base_url().'admin/MASTERS/manageSite'?>" title="Property Sell"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Property Sell</span></a>
+						<a href="<?php echo base_url().'admin/MASTERS/manageSite_new'?>" title="Property Sell"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Property Sell</span></a>
 					</li>
 					<li class="">
 						<a href="<?php echo base_url().'admin/ACCOUNTS/fund_transfer'?>" title="Fund Transfer"><i class="fa fa-lg fa-fw fa-suitcase"></i> <span class="menu-item-parent">Fund Transfer</span></a>
