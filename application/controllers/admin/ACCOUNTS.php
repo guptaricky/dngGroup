@@ -955,6 +955,7 @@ class ACCOUNTS extends MY_Controller {
 		$uid = $userid['emp_id'];
 		$alloted_site = @$this->Common_model->get_alloted_site($uid);
 		$group = $this->session->userdata('group');
+		$data['expense'] = $this->Common_model->get_data_by_query_pdo("select cat_id,cat_name from expense_category where 1 and cat_status=?",array(1));
 		$data['sites'] = $this->Common_model->get_data_by_query_pdo("select site_id,site_name from site_detail where 1 and site_status=?",array(1));
 		if($group == 'admin'){
 			$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
@@ -971,6 +972,7 @@ class ACCOUNTS extends MY_Controller {
 		
 	public function ledgerSiteWise(){		
 		$site_id = $this->input->post('site_id');
+		$exp_id = $this->input->post('exp_id');
 		$fromdate = date("Y-m-d", strtotime($this->input->post('fromdate')));
 		$todate = date("Y-m-d", strtotime($this->input->post('todate')));
 		if($fromdate == "1970-01-01")$fromdate='';
@@ -983,7 +985,12 @@ class ACCOUNTS extends MY_Controller {
 		{
 			$querry .= " and date_format(partial_date,'%Y-%m-%d') between '$fromdate' and '$todate'";	
 		}
-		// echo $site_id;
+		if($exp_id !='')
+		{
+			$querry .= " and partial_ledger_id = $exp_id";	
+		}
+		 // echo $querry;
+		 // echo $site_id;die;
 		if($site_id!=''){
 		$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
 			where partial_status=? and partial_site_id=? $querry",array(1,$site_id));
@@ -991,7 +998,7 @@ class ACCOUNTS extends MY_Controller {
 		}
 		else{
 			$data['transactions'] = $this->Common_model->get_data_by_query_pdo("select * from vendor_partial_payment
-			where partial_status=? $querry and date_format(partial_date,'%Y-%m') = '$cury-$curm'",array(1));
+			where partial_status=? $querry",array(1));
 			// and date_format(partial_date,'%Y-%m') = '$cury-$curm'
 		}
 		// echo $this->db->last_query();
@@ -1085,7 +1092,7 @@ class ACCOUNTS extends MY_Controller {
 
 	public function getEmi(){
 		$detail_id = $this->input->get('detail_id');
-		$payment = $this->Common_model->get_data_by_query_pdo("select * from customer_emi_payment where emi_prop_detail_id=? and emi_status=? order by emi_date desc",array($detail_id,1));
+		$payment = $this->Common_model->get_data_by_query_pdo("select * from customer_emi_payment where emi_prop_detail_id=? and emi_status=? order by emi_date asc",array($detail_id,1));
 		echo json_encode($payment);
 	}
 	
